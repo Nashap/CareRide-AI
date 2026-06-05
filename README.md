@@ -2,74 +2,29 @@
 
 ## Smart Mobility Assistance Platform
 
-CareRide AI is an AI-powered mobility assistance platform designed to help people with disabilities, elderly citizens, and recovering patients travel safely and independently.
-
-The platform connects users with verified helpers and provides AI-powered recommendations for accessible travel, helper matching, and emergency support.
+CareRide AI is a social-impact web application designed to help people with disabilities, elderly citizens, and recovering patients travel safely and independently. The platform connects users with verified helpers and uses AI to recommend suitable assistance based on individual travel needs.
 
 ---
 
 ## Problem Statement
 
-Many individuals requiring mobility assistance face difficulties finding reliable support, accessible transportation, and safe travel routes. Existing ride-booking services focus primarily on transportation and often overlook accessibility requirements.
+Many people who require mobility assistance face challenges in finding reliable support, accessible transportation, and safe travel routes. Existing transportation services often do not address accessibility requirements.
 
-CareRide AI addresses this challenge by combining mobility assistance, accessibility-focused route recommendations, and AI-powered helper matching in a single platform.
-
----
-
-## Key Features
-
-### User Authentication
-
-* Secure Registration and Login
-* Role-based Access (Passenger, Helper, Admin)
-
-### Travel Assistance Request
-
-* Select Pickup Location
-* Select Destination
-* Choose Assistance Type
-* Add Additional Notes
-
-### AI Helper Matching
-
-* Match passengers with suitable helpers
-* Consider skills, availability, and assistance needs
-* AI-generated recommendation reasoning
-
-### Accessible Route Recommendation
-
-* Wheelchair-friendly route suggestions
-* Accessibility information and guidance
-
-### Emergency SOS
-
-* One-click emergency alert
-* Notify administrators and emergency contacts
+CareRide AI aims to bridge this gap by providing a platform that combines mobility assistance, helper matching, and accessibility-focused travel support.
 
 ---
 
-## Target Users
+## Planned MVP Features
 
-### Primary Users
-
-* People with disabilities
-* Elderly citizens
-* Post-surgery patients
-
-### Secondary Users
-
-* Volunteers
-* Caregivers
-* Student helpers
-
-### Administrators
-
-* Platform administrators
-* Verification managers
+* User Authentication (Passenger, Helper, Admin)
+* Travel Assistance Request Booking
+* AI-Powered Helper Matching
+* Accessibility Route Recommendations
+* Emergency SOS Alert System
 
 ---
 
-## Technology Stack
+## Tech Stack
 
 ### Frontend
 
@@ -86,95 +41,19 @@ CareRide AI addresses this challenge by combining mobility assistance, accessibi
 
 * PostgreSQL (Supabase)
 
-### AI Integration
+### AI
 
 * Google Gemini API
 
-### Maps & Navigation
+### Maps
 
-* OpenStreetMap
-* Leaflet.js
-
-### Deployment
-
-* Railway
+* OpenStreetMap + Leaflet.js
 
 ---
 
-## Project Structure
+## Project Status
 
-```text
-CareRide-AI/
-│
-├── backend/
-│   ├── users/
-│   ├── helpers/
-│   ├── rides/
-│   ├── ai_services/
-│   └── manage.py
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── docs/
-│   ├── project-spec.md
-│   ├── database-design.md
-│   └── api-documentation.md
-│
-├── tests/
-│
-├── README.md
-└── LICENSE
-```
-
----
-
-## Database Entities
-
-### User
-
-* id
-* name
-* email
-* password
-* role
-
-### Passenger
-
-* user_id
-* disability_type
-* emergency_contact
-
-### Helper
-
-* user_id
-* skills
-* rating
-* availability
-
-### TravelRequest
-
-* passenger_id
-* pickup_location
-* destination
-* travel_date
-* assistance_type
-* additional_note
-* status
-
-### MatchRecommendation
-
-* travel_request_id
-* helper_id
-* recommendation_reason
-
-### SOSAlert
-
-* travel_request_id
-* message
-* created_at
+ Currently under development as part of an AI and Full-Stack Development internship project.
 
 ---
 
@@ -184,24 +63,10 @@ CareRide-AI/
 * Voice Assistant
 * Live Location Tracking
 * Accessible Vehicle Booking
-* NGO Integration
-* Volunteer Reward System
-* AI Travel Companion Recommendation
-
----
-
-## Expected Outcome
-
-CareRide AI aims to improve mobility, accessibility, and independence for people who require travel assistance by leveraging artificial intelligence, accessibility-focused design, and community support.
+* NGO & Volunteer Integration
 
 ---
 
 ## Author
 
 **Nasha P**
-
----
-
-## License
-
-This project is developed for educational, internship, and social-impact purposes.
