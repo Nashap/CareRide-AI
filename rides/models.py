@@ -1,7 +1,6 @@
 from django.db import models
 from users.models import Passenger
 from helpers.models import Helper
-
 class TravelRequest(models.Model):
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
     pickup_location = models.CharField(max_length=255)
@@ -11,6 +10,8 @@ class TravelRequest(models.Model):
     additional_note = models.TextField(blank=True)
     status = models.CharField(max_length=20, default="Pending")
 
+    def __str__(self):
+        return f"{self.pickup_location} → {self.destination}"
 class MatchRecommendation(models.Model):
     travel_request = models.ForeignKey(
         TravelRequest,
