@@ -1,3 +1,4 @@
+![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
 # CareRide AI ♿
 
 ## Smart Mobility Assistance Platform
