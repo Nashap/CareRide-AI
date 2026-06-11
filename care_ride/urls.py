@@ -12,6 +12,7 @@ urlpatterns = [
     # Your existing APIs
     path('api/', include('users.urls')),
     path('api/', include('rides.urls')),
+    path('api/', include('helpers.urls')),
 
     # JWT Token APIs
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
