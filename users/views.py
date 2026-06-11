@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
-from care_ride.supabase_client import supabase
+from care_ride.supabase_client import get_supabase
 from .models import Passenger, DisabilityCertificate
 
 
@@ -16,6 +16,14 @@ def register(request):
     password = request.data.get('password')
 
     try:
+        supabase = get_supabase()
+
+        if not supabase:
+            return Response(
+                {"error": "Supabase not configured"},
+                status=500
+            )
+
         response = supabase.auth.sign_up({
             "email": email,
             "password": password
@@ -39,6 +47,14 @@ def login(request):
     password = request.data.get('password')
 
     try:
+        supabase = get_supabase()
+
+        if not supabase:
+            return Response(
+                {"error": "Supabase not configured"},
+                status=500
+            )
+
         response = supabase.auth.sign_in_with_password({
             "email": email,
             "password": password
@@ -72,16 +88,26 @@ class UploadCertificateView(APIView):
         file_path = f"certificates/{uploaded_file.name}"
 
         try:
-            # Upload to Supabase Storage
+            supabase = get_supabase()
+
+            if not supabase:
+                return Response(
+                    {"error": "Supabase not configured"},
+                    status=500
+                )
+
+            # Upload file
             supabase.storage.from_("disability-certificates").upload(
                 file_path,
                 uploaded_file.read()
             )
 
             # Get public URL
-            file_url = supabase.storage.from_(
-                "disability-certificates"
-            ).get_public_url(file_path)
+            file_url = (
+                supabase.storage
+                .from_("disability-certificates")
+                .get_public_url(file_path)
+            )
 
             # Use first passenger for testing
             passenger = Passenger.objects.first()
@@ -99,6 +125,7 @@ class UploadCertificateView(APIView):
             })
 
         except Exception as e:
-            return Response({
-                "error": str(e)
-            }, status=400)
+            return Response(
+                {"error": str(e)},
+                status=400
+            )
