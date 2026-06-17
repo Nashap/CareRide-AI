@@ -1,27 +1,70 @@
 ![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
+![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
+
 # CareRide AI ♿
 
 ## Smart Mobility Assistance Platform
 
-CareRide AI is a social-impact web application designed to help people with disabilities, elderly citizens, and recovering patients travel safely and independently. The platform connects users with verified helpers and uses AI to recommend suitable assistance based on individual travel needs.
+CareRide AI is an AI-powered mobility assistance platform designed to help elderly individuals, persons with disabilities, and patients travel safely and independently. The platform connects users with verified helpers and uses AI-powered recommendations to identify the most suitable assistance for each travel request.
 
 ---
 
 ## Problem Statement
 
-Many people who require mobility assistance face challenges in finding reliable support, accessible transportation, and safe travel routes. Existing transportation services often do not address accessibility requirements.
+Many individuals requiring mobility assistance struggle to find reliable helpers, accessible transportation, and safe travel support. Traditional transportation services often do not adequately address accessibility requirements.
 
-CareRide AI aims to bridge this gap by providing a platform that combines mobility assistance, helper matching, and accessibility-focused travel support.
+CareRide AI bridges this gap by combining helper matching, travel assistance, and AI-driven recommendations into a single platform.
 
 ---
 
-## Planned MVP Features
+## Key Features
 
-* User Authentication (Passenger, Helper, Admin)
-* Travel Assistance Request Booking
-* AI-Powered Helper Matching
-* Accessibility Route Recommendations
-* Emergency SOS Alert System
+### Authentication & Security
+
+* User Registration and Login
+* JWT Authentication
+* Role-Based Access Control
+
+### Helper Management
+
+* Create, View, Update, and Delete Helpers
+* Helper Skill Tracking
+* Availability Management
+
+### Travel Assistance
+
+* Travel Request Booking
+* Accessibility Support
+* Mobility Assistance Planning
+
+### AI Recommendation System
+
+* Google Gemini AI Integration
+* Intelligent Helper Matching
+* Skill-Based Ranking
+* Distance and Availability Analysis
+* AI Recommendation Storage in Supabase
+
+### API Documentation
+
+* Swagger/OpenAPI Documentation
+* Interactive API Testing Interface
+
+---
+
+## AI Recommendation Workflow
+
+Travel Request
+⬇
+Gemini AI Analysis
+⬇
+Helper Ranking & Match Scoring
+⬇
+Recommendation Generation
+⬇
+Store Results in Supabase
+⬇
+Return API Response
 
 ---
 
@@ -37,30 +80,86 @@ CareRide AI aims to bridge this gap by providing a platform that combines mobili
 
 * Django
 * Django REST Framework
+* Simple JWT
 
 ### Database
 
-* PostgreSQL (Supabase)
+* PostgreSQL
+* Supabase
 
 ### AI
 
 * Google Gemini API
 
-### Maps
+### Documentation
 
-* OpenStreetMap + Leaflet.js
+* drf-spectacular (Swagger/OpenAPI)
+* MkDocs
+
+### DevOps
+
+* GitHub Actions
+* GitHub Pull Requests
 
 ---
 
-## Project Status
+## API Documentation
 
- Currently under development as part of an AI and Full-Stack Development internship project.
+### Swagger UI
+
+```text
+/api/schema/swagger-ui/
+```
+
+### OpenAPI Schema
+
+```text
+/api/schema/
+```
 
 ---
 
-## Future Enhancements
+## Project Structure
 
-* Real-time Chat
+```text
+CareRide-AI/
+│
+├── backend/
+│   ├── users/
+│   ├── helpers/
+│   ├── rides/
+│   ├── ai_services/
+│   └── care_ride/
+│
+├── frontend/
+├── .github/
+├── prompts.md
+└── README.md
+```
+
+---
+
+## Current Status
+
+### Completed
+
+* User Authentication
+* JWT Integration
+* Helper APIs
+* Travel Request APIs
+* Gemini AI Recommendation System
+* Supabase Integration
+* Swagger Documentation
+* GitHub Actions CI/CD
+
+### In Progress
+
+* Frontend Development
+* Accessibility Enhancements
+
+### Future Enhancements
+
+* Real-Time Chat
 * Voice Assistant
 * Live Location Tracking
 * Accessible Vehicle Booking

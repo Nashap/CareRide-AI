@@ -2,10 +2,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from drf_spectacular.utils import extend_schema
+
 from .ai_service import call_ai_recommendation
 from .supabase_client import supabase
 
 
+@extend_schema(
+    summary="Generate AI Helper Recommendation",
+    description="""
+    Uses Gemini AI to analyze a travel request and generate
+    ranked helper recommendations.
+
+    The generated recommendations are stored in Supabase.
+    """
+)
 class RecommendHelperView(APIView):
 
     permission_classes = [IsAuthenticated]
