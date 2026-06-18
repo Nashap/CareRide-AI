@@ -193,19 +193,25 @@ Frontend URL:
 http://localhost:5173/
 ```
 
-### MkDocs Documentation
+---
 
 # API Documentation
 
 ### Swagger UI
 
+```text
 http://127.0.0.1:8000/api/schema/swagger-ui/
+```
 
 ### OpenAPI Schema
 
+```text
 http://127.0.0.1:8000/api/schema/
+```
 
 ### MkDocs Documentation
+
+Run:
 
 ```bash
 mkdocs serve
@@ -232,7 +238,7 @@ The API endpoints are documented and tested using Postman.
 
 ### Postman Collection
 
-(https://documenter.getpostman.com/view/55567557/2sBXwvH81g)
+https://documenter.getpostman.com/view/55567557/2sBXwvH81g
 
 ---
 
