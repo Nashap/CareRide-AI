@@ -18,6 +18,14 @@ from .supabase_client import supabase
     """
 )
 class RecommendHelperView(APIView):
+    """
+    Generates AI-powered helper recommendations for travel requests.
+
+    This endpoint receives travel request data, sends it to
+    the Gemini AI recommendation service, returns ranked
+    helper recommendations, and stores the generated
+    recommendation results in Supabase for future reference.
+    """
 
     permission_classes = [IsAuthenticated]
 

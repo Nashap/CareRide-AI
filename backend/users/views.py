@@ -12,6 +12,14 @@ from .models import Passenger, DisabilityCertificate
 # ----------------------------
 @api_view(['POST'])
 def register(request):
+    """
+    Registers a new user using Supabase Authentication.
+
+    This endpoint creates a new user account with the
+    provided email and password and returns the
+    generated Supabase user ID.
+    """
+
     email = request.data.get('email')
     password = request.data.get('password')
 
@@ -43,6 +51,14 @@ def register(request):
 # ----------------------------
 @api_view(['POST'])
 def login(request):
+    """
+    Authenticates a user using Supabase Authentication.
+
+    This endpoint validates user credentials and returns
+    the authenticated user's Supabase ID upon successful
+    login.
+    """
+
     email = request.data.get('email')
     password = request.data.get('password')
 
@@ -73,6 +89,15 @@ def login(request):
 # UPLOAD DISABILITY CERTIFICATE
 # ----------------------------
 class UploadCertificateView(APIView):
+    """
+    Uploads disability certificate documents to Supabase Storage.
+
+    This endpoint allows authenticated users to upload
+    disability certificates. The uploaded file is stored
+    in Supabase Storage and the file metadata is saved
+    in the DisabilityCertificate model.
+    """
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
