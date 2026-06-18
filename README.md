@@ -1,172 +1,294 @@
-![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
-![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
-
 # CareRide AI ♿
 
-## Smart Mobility Assistance Platform
+> Connecting elderly individuals, persons with disabilities, and patients with verified helpers and AI-powered transportation recommendations.
 
-CareRide AI is an AI-powered mobility assistance platform designed to help elderly individuals, persons with disabilities, and patients travel safely and independently. The platform connects users with verified helpers and uses AI-powered recommendations to identify the most suitable assistance for each travel request.
-
----
-
-## Problem Statement
-
-Many individuals requiring mobility assistance struggle to find reliable helpers, accessible transportation, and safe travel support. Traditional transportation services often do not adequately address accessibility requirements.
-
-CareRide AI bridges this gap by combining helper matching, travel assistance, and AI-driven recommendations into a single platform.
+![Django Tests](https://github.com/Nashap/CareRide-AI/actions/workflows/django.yml/badge.svg)
 
 ---
 
-## Key Features
+# Table of Contents
 
-### Authentication & Security
+* Problem Statement
+* Features
+* Tech Stack
+* Architecture
+* Setup Guide
+* API Documentation
+* API Testing
+* Project Status
+* Screenshots
+* Live Demo
+* Contributing
+* Author
+* License
 
-* User Registration and Login
-* JWT Authentication
-* Role-Based Access Control
+---
 
-### Helper Management
+# Problem Statement
 
-* Create, View, Update, and Delete Helpers
-* Helper Skill Tracking
-* Availability Management
+Elderly individuals, persons with disabilities, and patients frequently struggle to find transportation that is safe, verified, and suited to their specific needs. Existing transportation services rarely account for accessibility requirements or offer any guarantee that a driver or helper is trustworthy and trained to assist.
 
-### Travel Assistance
+CareRide AI closes this gap by connecting riders with verified helpers and using AI-powered recommendations to match each request with the most suitable helper, reducing risk and friction for some of the most vulnerable users of transportation services.
 
-* Travel Request Booking
-* Accessibility Support
-* Mobility Assistance Planning
+---
 
-### AI Recommendation System
+# Features
 
-* Google Gemini AI Integration
-* Intelligent Helper Matching
-* Skill-Based Ranking
-* Distance and Availability Analysis
-* AI Recommendation Storage in Supabase
-
-### API Documentation
-
+* Secure User Authentication using JWT
+* Passenger and Helper Management
+* Travel Request Booking System
+* AI-Powered Helper Recommendations
+* Supabase PostgreSQL Integration
 * Swagger/OpenAPI Documentation
-* Interactive API Testing Interface
+* MkDocs Documentation Website
+* RESTful API Architecture
+* GitHub Actions Continuous Integration
 
 ---
 
-## AI Recommendation Workflow
+# Tech Stack
 
-Travel Request
-⬇
-Gemini AI Analysis
-⬇
-Helper Ranking & Match Scoring
-⬇
-Recommendation Generation
-⬇
-Store Results in Supabase
-⬇
-Return API Response
-
----
-
-## Tech Stack
-
-### Frontend
-
-* React.js
-* Tailwind CSS
-* ShadCN UI
-
-### Backend
-
-* Django
-* Django REST Framework
-* Simple JWT
-
-### Database
-
-* PostgreSQL
-* Supabase
-
-### AI
-
-* Google Gemini API
-
-### Documentation
-
-* drf-spectacular (Swagger/OpenAPI)
-* MkDocs
-
-### DevOps
-
-* GitHub Actions
-* GitHub Pull Requests
+| Layer          | Technology                    |
+| -------------- | ----------------------------- |
+| Frontend       | React.js, Tailwind CSS        |
+| Backend        | Django, Django REST Framework |
+| Database       | PostgreSQL (Supabase)         |
+| Authentication | JWT                           |
+| AI             | Google Gemini API             |
+| API Docs       | Swagger (drf-spectacular)     |
+| Project Docs   | MkDocs                        |
+| CI/CD          | GitHub Actions                |
 
 ---
 
-## API Documentation
+# Architecture
+
+```mermaid
+graph LR
+
+A[User] --> B[React Frontend]
+
+B --> C[Django REST API]
+
+C --> D[JWT Authentication]
+
+C --> E[Gemini AI]
+
+C --> F[Supabase PostgreSQL]
+
+E --> C
+
+F --> C
+
+C --> B
+```
+
+---
+
+# Setup Guide
+
+## Prerequisites
+
+* Python 3.10+
+* Node.js 18+
+* Git
+* Supabase Project
+* Google Gemini API Key
+
+---
+
+## Clone Repository
+
+```bash
+git clone https://github.com/Nashap/CareRide-AI.git
+cd CareRide-AI
+```
+
+## Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+### Linux / Mac
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## Install Backend Dependencies
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+---
+
+## Configure Environment Variables
+
+Create a `.env` file inside the backend directory.
+
+```env
+SECRET_KEY=your_secret_key
+
+DEBUG=True
+
+SUPABASE_URL=your_supabase_url
+
+SUPABASE_KEY=your_supabase_key
+
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+---
+
+## Run Migrations
+
+```bash
+python manage.py migrate
+```
+
+---
+
+## Start Backend Server
+
+```bash
+python manage.py runserver
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000/
+```
+
+---
+
+## Start Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend URL:
+
+```text
+http://localhost:5173/
+```
+
+---
+
+# API Documentation
 
 ### Swagger UI
 
 ```text
-/api/schema/swagger-ui/
+http://127.0.0.1:8000/api/schema/swagger-ui/
 ```
 
 ### OpenAPI Schema
 
 ```text
-/api/schema/
+http://127.0.0.1:8000/api/schema/
 ```
 
 ---
 
-## Project Structure
+# API Testing
 
-```text
-CareRide-AI/
-│
-├── backend/
-│   ├── users/
-│   ├── helpers/
-│   ├── rides/
-│   ├── ai_services/
-│   └── care_ride/
-│
-├── frontend/
-├── .github/
-├── prompts.md
-└── README.md
-```
+The API endpoints are documented and tested using Postman.
 
----
+### Available Collections
 
-## Current Status
-
-### Completed
-
-* User Authentication
-* JWT Integration
+* Authentication APIs
 * Helper APIs
 * Travel Request APIs
-* Gemini AI Recommendation System
-* Supabase Integration
-* Swagger Documentation
-* GitHub Actions CI/CD
+* AI Recommendation APIs
 
-### In Progress
+### Postman Collection
 
-* Frontend Development
-* Accessibility Enhancements
-
-### Future Enhancements
-
-* Real-Time Chat
-* Voice Assistant
-* Live Location Tracking
-* Accessible Vehicle Booking
-* NGO & Volunteer Integration
+Coming Soon
 
 ---
 
-## Author
+# Project Status
+
+Current Development Progress:
+
+* User Authentication Completed
+* Helper Management Completed
+* Travel Request APIs Completed
+* Supabase Integration Completed
+* Gemini AI Integration Completed
+* AI Recommendation Storage Completed
+* Swagger Documentation Completed
+* MkDocs Documentation Completed
+* React Frontend In Progress
+
+---
+
+# Screenshots
+
+## Swagger Documentation
+
+*Add screenshot here*
+
+## AI Recommendation Endpoint
+
+*Add screenshot here*
+
+## MkDocs Documentation
+
+*Add screenshot here*
+
+---
+
+# Live Demo
+
+| Service  | URL         |
+| -------- | ----------- |
+| Frontend | Coming Soon |
+| Backend  | Coming Soon |
+
+---
+
+# Contributing
+
+Contributions are welcome.
+
+Please read the CONTRIBUTING.md file before submitting pull requests.
+
+---
+
+# Author
 
 **Nasha P**
+
+AI & Full-Stack Developer
+
+GitHub:
+
+https://github.com/Nashap
+
+Project Repository:
+
+https://github.com/Nashap/CareRide-AI
+
+---
+
+# License
+
+This project is developed as part of an AI and Full-Stack Development Internship project.
