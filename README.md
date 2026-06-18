@@ -206,8 +206,6 @@ http://127.0.0.1:8000/api/schema/swagger-ui/
 http://127.0.0.1:8000/api/schema/
 
 ### MkDocs Documentation
-http://127.0.0.1:8000/
-Run:
 
 ```bash
 mkdocs serve
