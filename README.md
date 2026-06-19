@@ -15,6 +15,7 @@
 * Setup Guide
 * API Documentation
 * API Testing
+* Test Coverage
 * Project Status
 * Screenshots
 * Live Demo
@@ -45,21 +46,24 @@ CareRide AI addresses this problem by connecting passengers with verified helper
 * MkDocs Documentation Website
 * RESTful API Architecture
 * GitHub Actions Continuous Integration
+* Automated Testing with Pytest
+* Code Coverage Reporting
 
 ---
 
 # Tech Stack
 
-| Layer                 | Technology                    |
-| --------------------- | ----------------------------- |
-| Frontend              | React.js, Tailwind CSS        |
-| Backend               | Django, Django REST Framework |
-| Database              | PostgreSQL (Supabase)         |
-| Authentication        | JWT                           |
-| AI                    | Google Gemini API             |
-| API Documentation     | Swagger (drf-spectacular)     |
-| Project Documentation | MkDocs                        |
-| CI/CD                 | GitHub Actions                |
+| Layer                 | Technology                        |
+| --------------------- | --------------------------------- |
+| Frontend              | React.js, Tailwind CSS            |
+| Backend               | Django, Django REST Framework     |
+| Database              | PostgreSQL (Supabase)             |
+| Authentication        | JWT                               |
+| AI                    | Google Gemini API                 |
+| API Documentation     | Swagger (drf-spectacular)         |
+| Project Documentation | MkDocs                            |
+| Testing               | Pytest, Pytest-Django, Pytest-Cov |
+| CI/CD                 | GitHub Actions                    |
 
 ---
 
@@ -242,6 +246,60 @@ https://documenter.getpostman.com/view/55567557/2sBXwvH81g
 
 ---
 
+# Test Coverage
+
+CareRide AI uses **Pytest**, **Pytest-Django**, and **Pytest-Cov** for automated testing.
+
+### Test Coverage Summary
+
+* Serializer Unit Tests
+* View Unit Tests
+* Authentication Flow Tests
+* AI Recommendation Integration Test (Mocked Gemini API)
+* GitHub Actions CI Testing
+
+### Coverage Report
+
+Current automated test coverage:
+
+**82% Coverage**
+
+![Coverage Report](docs/images/coverage-report.png)
+
+### Test Results
+
+```text
+11 passed
+0 failed
+Coverage: 82%
+```
+
+### Run Tests
+
+```bash
+pytest
+```
+
+### Run Tests with Coverage
+
+```bash
+pytest --cov=. --cov-report=term
+```
+
+### Generate HTML Coverage Report
+
+```bash
+pytest --cov=. --cov-report=html
+```
+
+Generated report:
+
+```text
+htmlcov/index.html
+```
+
+---
+
 # Project Status
 
 Current Development Progress:
@@ -255,6 +313,8 @@ Current Development Progress:
 * AI Recommendation Storage Completed
 * Swagger Documentation Completed
 * MkDocs Documentation Completed
+* Automated Test Suite Completed
+* 82% Code Coverage Achieved
 * GitHub Actions CI Configured
 * React Frontend In Progress
 
@@ -273,6 +333,10 @@ Current Development Progress:
 ## MkDocs Documentation
 
 ![MkDocs Documentation](docs/images/mkdocs.png)
+
+## Coverage Report
+
+![Coverage Report](docs/images/coverage-report.png)
 
 ---
 
