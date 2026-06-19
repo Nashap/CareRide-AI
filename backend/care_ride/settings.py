@@ -14,7 +14,6 @@ from pathlib import Path
 import environ
 from datetime import timedelta
 
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -22,31 +21,27 @@ SIMPLE_JWT = {
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env()
 
 # Load local .env only if it exists
 env_file = BASE_DIR / ".env"
 if env_file.exists():
     environ.Env.read_env(env_file)
-GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env(
     'SECRET_KEY',
     default='github-actions-secret-key'
-    )
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=True)
-ALLOWED_HOSTS = [
-    "careride-ai-production.up.railway.app",
-    "localhost",
-    "127.0.0.1",
-]
 
+# Railway
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -101,9 +96,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'care_ride.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -122,9 +115,7 @@ DATABASES = {
     }
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -141,9 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -153,22 +142,22 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# Static files
 
 STATIC_URL = 'static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 SUPABASE_URL = env("SUPABASE_URL", default="")
 SUPABASE_KEY = env("SUPABASE_KEY", default="")
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+
     "DEFAULT_SCHEMA_CLASS":
         "drf_spectacular.openapi.AutoSchema",
 
@@ -181,4 +170,18 @@ REST_FRAMEWORK = {
 
     'PAGE_SIZE': 5,
 }
+
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Railway Production Settings
+
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https"
+)
+
+USE_X_FORWARDED_HOST = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://careride-ai-production.up.railway.app"
+]
