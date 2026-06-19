@@ -24,7 +24,10 @@ SIMPLE_JWT = {
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 
-environ.Env.read_env(BASE_DIR / ".env")
+# Load local .env only if it exists
+env_file = BASE_DIR / ".env"
+if env_file.exists():
+    environ.Env.read_env(env_file)
 GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 
 # Quick-start development settings - unsuitable for production
