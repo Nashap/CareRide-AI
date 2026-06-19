@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path, include
 
 from rest_framework_simplejwt.views import (
@@ -9,8 +10,18 @@ from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
 )
-
+def home(request):
+    return JsonResponse({
+        "status": "CareRide API Running"
+    })
 urlpatterns = [
+    path("", home),
+
+    path(
+        "api/schema/",
+        SpectacularAPIView.as_view(),
+        name="schema"
+    ),
     path(
         'api/schema/',
         SpectacularAPIView.as_view(),
