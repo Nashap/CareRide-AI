@@ -39,11 +39,6 @@ def fallback_response(message):
 
 
 def call_ai_recommendation(ai_input):
-    """
-    Calls Gemini AI and returns helper recommendations.
-    Falls back gracefully if Gemini fails.
-    """
-
     try:
         model = genai.GenerativeModel("gemini-2.5-flash")
 
@@ -53,7 +48,7 @@ def call_ai_recommendation(ai_input):
 
         result_text = response.text.strip()
 
-        # Remove markdown formatting if Gemini returns it
+        # Remove markdown wrappers if Gemini returns them
         result_text = result_text.replace("```json", "")
         result_text = result_text.replace("```", "")
         result_text = result_text.strip()
@@ -65,7 +60,6 @@ def call_ai_recommendation(ai_input):
         return result
 
     except json.JSONDecodeError:
-
         return fallback_response(
             "Invalid AI response received."
         )
@@ -73,8 +67,6 @@ def call_ai_recommendation(ai_input):
     except Exception as e:
 
         error_text = str(e)
-
-        print("Gemini Error:", error_text)
 
         # Rate limit handling
         if "429" in error_text:
@@ -88,13 +80,7 @@ def call_ai_recommendation(ai_input):
                 "Token limit exceeded."
             )
 
-        # Timeout handling
-        if "deadline" in error_text.lower() or "timeout" in error_text.lower():
-            return fallback_response(
-                "AI request timed out."
-            )
-
-        # Generic fallback
+        # Generic API error
         return fallback_response(
             f"AI service error: {error_text}"
         )

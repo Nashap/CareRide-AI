@@ -1,3 +1,6 @@
+
+---
+
 # CareRide AI ♿
 
 > Connecting elderly individuals, persons with disabilities, and patients with verified helpers through AI-powered mobility assistance and transportation recommendations.
@@ -16,6 +19,8 @@
 * API Documentation
 * API Testing
 * Test Coverage
+* Live Deployment
+* Production Monitoring
 * Project Status
 * Screenshots
 * Live Demo
@@ -48,6 +53,11 @@ CareRide AI addresses this problem by connecting passengers with verified helper
 * GitHub Actions Continuous Integration
 * Automated Testing with Pytest
 * Code Coverage Reporting
+* Rate Limiting with django-ratelimit
+* Custom Serializer Validation
+* CORS Security Configuration
+* OWASP Security Review
+* Performance Testing (50 Rapid API Requests)
 
 ---
 
@@ -203,9 +213,7 @@ http://localhost:5173/
 
 ### Swagger UI
 
-```text
-http://127.0.0.1:8000/api/schema/swagger-ui/
-```
+https://careride-ai-production.up.railway.app/api/schema/swagger-ui/
 
 ### OpenAPI Schema
 
@@ -300,6 +308,34 @@ htmlcov/index.html
 
 ---
 
+## Live Deployment
+
+Backend URL:
+https://careride-ai-production.up.railway.app/
+
+Swagger Documentation:
+https://careride-ai-production.up.railway.app/api/schema/swagger-ui/
+
+Production Monitoring:
+UptimeRobot Active (100% Operational)
+
+---
+
+# Production Monitoring
+
+The CareRide AI production deployment is continuously monitored using UptimeRobot to ensure service availability and uptime tracking.
+
+### Monitoring Details
+
+* Monitoring Type: HTTP(s)
+* Monitoring Interval: 5 Minutes
+* Current Status: Operational
+* Uptime: 100%
+
+![UptimeRobot Status](docs/images/uptimerobot.png)
+
+---
+
 # Project Status
 
 Current Development Progress:
@@ -316,7 +352,9 @@ Current Development Progress:
 * Automated Test Suite Completed
 * 82% Code Coverage Achieved
 * GitHub Actions CI Configured
-* React Frontend In Progress
+* Railway Production Deployment Completed
+* UptimeRobot Monitoring Configured
+* React Frontend Development In Progress
 
 ---
 
@@ -338,14 +376,19 @@ Current Development Progress:
 
 ![Coverage Report](docs/images/coverage-report.png)
 
+## UptimeRobot Monitoring
+
+![UptimeRobot Status](docs/images/uptimerobot.png)
+
 ---
 
 # Live Demo
 
-| Service  | URL         |
-| -------- | ----------- |
-| Frontend | Coming Soon |
-| Backend  | Coming Soon |
+| Service      | URL                                                                  |
+| ------------ | -------------------------------------------------------------------- |
+| Backend API  | https://careride-ai-production.up.railway.app/                       |
+| Swagger Docs | https://careride-ai-production.up.railway.app/api/schema/swagger-ui/ |
+| Frontend     | In Development                                                       |
 
 ---
 
