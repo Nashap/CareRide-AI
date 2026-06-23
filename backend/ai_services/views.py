@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from drf_spectacular.utils import extend_schema
 
+from .serializers import AIRecommendationSerializer
 from .ai_service import call_ai_recommendation
 from .supabase_client import supabase
 
@@ -18,7 +19,9 @@ from .supabase_client import supabase
     ranked helper recommendations.
 
     The generated recommendations are stored in Supabase.
-    """
+    """,
+    request=AIRecommendationSerializer,
+    responses={201: dict},
 )
 @method_decorator(
     ratelimit(
@@ -40,9 +43,7 @@ class RecommendHelperView(APIView):
 
         ai_input = request.data
 
-        travel_request_id = ai_input.get(
-            "travel_request_id"
-        )
+        travel_request_id = ai_input.get("travel_request_id")
 
         if not travel_request_id:
             return Response(
@@ -53,11 +54,9 @@ class RecommendHelperView(APIView):
             )
 
         try:
-
             result = call_ai_recommendation(ai_input)
 
         except Exception as e:
-
             return Response(
                 {
                     "error": "AI service unavailable",
@@ -67,7 +66,6 @@ class RecommendHelperView(APIView):
             )
 
         try:
-
             if supabase:
 
                 save_response = supabase.table(
@@ -91,7 +89,6 @@ class RecommendHelperView(APIView):
                 )
 
             else:
-
                 print(
                     "Supabase not configured. Skipping save."
                 )
