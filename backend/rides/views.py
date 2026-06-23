@@ -17,7 +17,9 @@ class TravelRequestViewSet(viewsets.ModelViewSet):
     management and helper matching.
     """
 
-    queryset = TravelRequest.objects.all()
+    queryset = TravelRequest.objects.select_related(
+        "passenger"
+    ).all()
 
     serializer_class = TravelRequestSerializer
 

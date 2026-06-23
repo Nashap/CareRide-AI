@@ -1,3 +1,6 @@
+from django.utils.decorators import method_decorator
+from django_ratelimit.decorators import ratelimit
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -17,14 +20,18 @@ from .supabase_client import supabase
     The generated recommendations are stored in Supabase.
     """
 )
+@method_decorator(
+    ratelimit(
+        key="ip",
+        rate="10/m",
+        method="POST",
+        block=True
+    ),
+    name="post"
+)
 class RecommendHelperView(APIView):
     """
     Generates AI-powered helper recommendations for travel requests.
-
-    This endpoint receives travel request data, sends it to
-    the Gemini AI recommendation service, returns ranked
-    helper recommendations, and stores the generated
-    recommendation results in Supabase for future reference.
     """
 
     permission_classes = [IsAuthenticated]
@@ -45,7 +52,19 @@ class RecommendHelperView(APIView):
                 status=400
             )
 
-        result = call_ai_recommendation(ai_input)
+        try:
+
+            result = call_ai_recommendation(ai_input)
+
+        except Exception as e:
+
+            return Response(
+                {
+                    "error": "AI service unavailable",
+                    "details": str(e)
+                },
+                status=500
+            )
 
         try:
 
@@ -72,6 +91,7 @@ class RecommendHelperView(APIView):
                 )
 
             else:
+
                 print(
                     "Supabase not configured. Skipping save."
                 )
