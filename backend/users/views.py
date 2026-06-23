@@ -3,25 +3,41 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
+from drf_spectacular.utils import extend_schema
+
 from care_ride.supabase_client import get_supabase
 from .models import Passenger, DisabilityCertificate
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer
+)
 
 
 # ----------------------------
 # REGISTER
 # ----------------------------
+@extend_schema(
+    request=RegisterSerializer,
+    responses={200: dict},
+    summary="Register User",
+    description="Registers a new user using Supabase Authentication."
+)
 @api_view(['POST'])
 def register(request):
     """
     Registers a new user using Supabase Authentication.
-
-    This endpoint creates a new user account with the
-    provided email and password and returns the
-    generated Supabase user ID.
     """
 
-    email = request.data.get('email')
-    password = request.data.get('password')
+    serializer = RegisterSerializer(
+        data=request.data
+    )
+
+    serializer.is_valid(
+        raise_exception=True
+    )
+
+    email = serializer.validated_data["email"]
+    password = serializer.validated_data["password"]
 
     try:
         supabase = get_supabase()
@@ -43,24 +59,38 @@ def register(request):
         })
 
     except Exception as e:
-        return Response({"error": str(e)}, status=400)
+
+        return Response(
+            {"error": str(e)},
+            status=400
+        )
 
 
 # ----------------------------
 # LOGIN
 # ----------------------------
+@extend_schema(
+    request=LoginSerializer,
+    responses={200: dict},
+    summary="Login User",
+    description="Authenticates a user using Supabase Authentication."
+)
 @api_view(['POST'])
 def login(request):
     """
     Authenticates a user using Supabase Authentication.
-
-    This endpoint validates user credentials and returns
-    the authenticated user's Supabase ID upon successful
-    login.
     """
 
-    email = request.data.get('email')
-    password = request.data.get('password')
+    serializer = LoginSerializer(
+        data=request.data
+    )
+
+    serializer.is_valid(
+        raise_exception=True
+    )
+
+    email = serializer.validated_data["email"]
+    password = serializer.validated_data["password"]
 
     try:
         supabase = get_supabase()
@@ -82,7 +112,11 @@ def login(request):
         })
 
     except Exception as e:
-        return Response({"error": str(e)}, status=400)
+
+        return Response(
+            {"error": str(e)},
+            status=400
+        )
 
 
 # ----------------------------
@@ -91,11 +125,6 @@ def login(request):
 class UploadCertificateView(APIView):
     """
     Uploads disability certificate documents to Supabase Storage.
-
-    This endpoint allows authenticated users to upload
-    disability certificates. The uploaded file is stored
-    in Supabase Storage and the file metadata is saved
-    in the DisabilityCertificate model.
     """
 
     permission_classes = [IsAuthenticated]
@@ -110,9 +139,12 @@ class UploadCertificateView(APIView):
                 status=400
             )
 
-        file_path = f"certificates/{uploaded_file.name}"
+        file_path = (
+            f"certificates/{uploaded_file.name}"
+        )
 
         try:
+
             supabase = get_supabase()
 
             if not supabase:
@@ -121,35 +153,42 @@ class UploadCertificateView(APIView):
                     status=500
                 )
 
-            # Upload file
-            supabase.storage.from_("disability-certificates").upload(
+            supabase.storage.from_(
+                "disability-certificates"
+            ).upload(
                 file_path,
                 uploaded_file.read()
             )
 
-            # Get public URL
             file_url = (
                 supabase.storage
                 .from_("disability-certificates")
                 .get_public_url(file_path)
             )
 
-            # Use first passenger for testing
-            passenger = Passenger.objects.first()
+            passenger = (
+                Passenger.objects.first()
+            )
 
-            certificate = DisabilityCertificate.objects.create(
-                passenger=passenger,
-                file_name=uploaded_file.name,
-                file_url=file_url
+            certificate = (
+                DisabilityCertificate.objects.create(
+                    passenger=passenger,
+                    file_name=uploaded_file.name,
+                    file_url=file_url
+                )
             )
 
             return Response({
-                "message": "Certificate uploaded successfully",
-                "certificate_id": certificate.id,
-                "file_url": file_url
+                "message":
+                    "Certificate uploaded successfully",
+                "certificate_id":
+                    certificate.id,
+                "file_url":
+                    file_url
             })
 
         except Exception as e:
+
             return Response(
                 {"error": str(e)},
                 status=400
