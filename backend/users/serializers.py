@@ -2,16 +2,39 @@ from rest_framework import serializers
 from .models import DisabilityCertificate
 
 
-class DisabilityCertificateSerializer(serializers.ModelSerializer):
-    """
-    Serializes disability certificate data for API requests
-    and responses.
-
-    This serializer handles validation and conversion of
-    disability certificate records, including uploaded
-    document information associated with passengers.
-    """
+class DisabilityCertificateSerializer(
+    serializers.ModelSerializer
+):
 
     class Meta:
         model = DisabilityCertificate
-        fields = '__all__'
+        fields = "__all__"
+
+    def validate_file_name(self, value):
+
+        allowed_extensions = (
+            ".pdf",
+            ".jpg",
+            ".jpeg",
+            ".png"
+        )
+
+        if not value.lower().endswith(
+            allowed_extensions
+        ):
+            raise serializers.ValidationError(
+                "Only PDF, JPG, JPEG and PNG files are allowed."
+            )
+
+        return value
+
+    def validate_file_url(self, value):
+
+        if not value.startswith(
+            ("http://", "https://")
+        ):
+            raise serializers.ValidationError(
+                "Invalid file URL."
+            )
+
+        return value
