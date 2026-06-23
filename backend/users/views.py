@@ -9,7 +9,8 @@ from care_ride.supabase_client import get_supabase
 from .models import Passenger, DisabilityCertificate
 from .serializers import (
     RegisterSerializer,
-    LoginSerializer
+    LoginSerializer,
+    UploadCertificateSerializer
 )
 
 
@@ -19,14 +20,10 @@ from .serializers import (
 @extend_schema(
     request=RegisterSerializer,
     responses={200: dict},
-    summary="Register User",
-    description="Registers a new user using Supabase Authentication."
+    summary="Register User"
 )
 @api_view(['POST'])
 def register(request):
-    """
-    Registers a new user using Supabase Authentication.
-    """
 
     serializer = RegisterSerializer(
         data=request.data
@@ -40,6 +37,7 @@ def register(request):
     password = serializer.validated_data["password"]
 
     try:
+
         supabase = get_supabase()
 
         if not supabase:
@@ -54,8 +52,10 @@ def register(request):
         })
 
         return Response({
-            "message": "User registered successfully",
-            "user": str(response.user.id)
+            "message":
+                "User registered successfully",
+            "user":
+                str(response.user.id)
         })
 
     except Exception as e:
@@ -72,14 +72,10 @@ def register(request):
 @extend_schema(
     request=LoginSerializer,
     responses={200: dict},
-    summary="Login User",
-    description="Authenticates a user using Supabase Authentication."
+    summary="Login User"
 )
 @api_view(['POST'])
 def login(request):
-    """
-    Authenticates a user using Supabase Authentication.
-    """
 
     serializer = LoginSerializer(
         data=request.data
@@ -93,6 +89,7 @@ def login(request):
     password = serializer.validated_data["password"]
 
     try:
+
         supabase = get_supabase()
 
         if not supabase:
@@ -107,8 +104,10 @@ def login(request):
         })
 
         return Response({
-            "message": "Login successful",
-            "user": str(response.user.id)
+            "message":
+                "Login successful",
+            "user":
+                str(response.user.id)
         })
 
     except Exception as e:
@@ -120,18 +119,22 @@ def login(request):
 
 
 # ----------------------------
-# UPLOAD DISABILITY CERTIFICATE
+# UPLOAD CERTIFICATE
 # ----------------------------
+@extend_schema(
+    request=UploadCertificateSerializer,
+    responses={200: dict},
+    summary="Upload Disability Certificate"
+)
 class UploadCertificateView(APIView):
-    """
-    Uploads disability certificate documents to Supabase Storage.
-    """
 
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
-        uploaded_file = request.FILES.get("file")
+        uploaded_file = request.FILES.get(
+            "file"
+        )
 
         if not uploaded_file:
             return Response(
