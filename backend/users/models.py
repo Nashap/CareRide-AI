@@ -1,16 +1,41 @@
 from django.db import models
+import uuid
+
+
+class UserProfile(models.Model):
+
+    ROLE_CHOICES = [
+        ("rider", "Rider"),
+        ("helper", "Helper"),
+    ]
+
+    auth_user_id = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4
+    )
+
+    name = models.CharField(
+        max_length=100
+    )
+
+    email = models.EmailField(
+        unique=True
+    )
+
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.name} ({self.role})"
 
 
 class Passenger(models.Model):
-    """
-    Stores passenger profile information.
-
-    Passengers are users who request travel assistance
-    through the CareRide platform. This model contains
-    personal information, disability details, and
-    emergency contact information required for safe
-    travel assistance.
-    """
 
     auth_user_id = models.UUIDField(
         unique=True,
@@ -39,14 +64,6 @@ class Passenger(models.Model):
 
 
 class DisabilityCertificate(models.Model):
-    """
-    Stores disability certificate documents uploaded
-    by passengers for verification purposes.
-
-    The certificate file information is used to
-    validate passenger eligibility for accessibility
-    and mobility assistance services.
-    """
 
     passenger = models.ForeignKey(
         Passenger,

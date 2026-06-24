@@ -6,7 +6,13 @@ from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
 from care_ride.supabase_client import get_supabase
-from .models import Passenger, DisabilityCertificate
+
+from .models import (
+    Passenger,
+    DisabilityCertificate,
+    UserProfile
+)
+
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
@@ -22,7 +28,7 @@ from .serializers import (
     responses={200: dict},
     summary="Register User"
 )
-@api_view(['POST'])
+@api_view(["POST"])
 def register(request):
 
     serializer = RegisterSerializer(
@@ -33,8 +39,10 @@ def register(request):
         raise_exception=True
     )
 
+    name = serializer.validated_data["name"]
     email = serializer.validated_data["email"]
     password = serializer.validated_data["password"]
+    role = serializer.validated_data["role"]
 
     try:
 
@@ -51,11 +59,17 @@ def register(request):
             "password": password
         })
 
+        UserProfile.objects.create(
+            auth_user_id=response.user.id,
+            name=name,
+            email=email,
+            role=role
+        )
+
         return Response({
-            "message":
-                "User registered successfully",
-            "user":
-                str(response.user.id)
+            "message": "User registered successfully",
+            "user": str(response.user.id),
+            "role": role
         })
 
     except Exception as e:
@@ -67,6 +81,34 @@ def register(request):
 
 
 # ----------------------------
+# PROFILE
+# ----------------------------
+@api_view(["GET"])
+def my_profile(request):
+
+    email = request.query_params.get("email")
+
+    try:
+
+        profile = UserProfile.objects.get(
+            email=email
+        )
+
+        return Response({
+            "name": profile.name,
+            "email": profile.email,
+            "role": profile.role
+        })
+
+    except UserProfile.DoesNotExist:
+
+        return Response(
+            {"error": "Profile not found"},
+            status=404
+        )
+
+
+# ----------------------------
 # LOGIN
 # ----------------------------
 @extend_schema(
@@ -74,7 +116,7 @@ def register(request):
     responses={200: dict},
     summary="Login User"
 )
-@api_view(['POST'])
+@api_view(["POST"])
 def login(request):
 
     serializer = LoginSerializer(
@@ -104,10 +146,8 @@ def login(request):
         })
 
         return Response({
-            "message":
-                "Login successful",
-            "user":
-                str(response.user.id)
+            "message": "Login successful",
+            "user": str(response.user.id)
         })
 
     except Exception as e:
@@ -132,9 +172,7 @@ class UploadCertificateView(APIView):
 
     def post(self, request):
 
-        uploaded_file = request.FILES.get(
-            "file"
-        )
+        uploaded_file = request.FILES.get("file")
 
         if not uploaded_file:
             return Response(
@@ -169,25 +207,24 @@ class UploadCertificateView(APIView):
                 .get_public_url(file_path)
             )
 
-            passenger = (
-                Passenger.objects.first()
-            )
+            passenger = Passenger.objects.first()
 
-            certificate = (
-                DisabilityCertificate.objects.create(
-                    passenger=passenger,
-                    file_name=uploaded_file.name,
-                    file_url=file_url
+            if not passenger:
+                return Response(
+                    {"error": "No passenger found"},
+                    status=404
                 )
+
+            certificate = DisabilityCertificate.objects.create(
+                passenger=passenger,
+                file_name=uploaded_file.name,
+                file_url=file_url
             )
 
             return Response({
-                "message":
-                    "Certificate uploaded successfully",
-                "certificate_id":
-                    certificate.id,
-                "file_url":
-                    file_url
+                "message": "Certificate uploaded successfully",
+                "certificate_id": certificate.id,
+                "file_url": file_url
             })
 
         except Exception as e:

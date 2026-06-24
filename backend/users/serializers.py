@@ -4,11 +4,17 @@ from .models import DisabilityCertificate
 
 class RegisterSerializer(serializers.Serializer):
 
+    name = serializers.CharField()
+
     email = serializers.EmailField()
 
     password = serializers.CharField(
         write_only=True,
         min_length=6
+    )
+
+    role = serializers.ChoiceField(
+        choices=["rider", "helper"]
     )
 
 
@@ -24,7 +30,6 @@ class LoginSerializer(serializers.Serializer):
 class UploadCertificateSerializer(
     serializers.Serializer
 ):
-
     file = serializers.FileField()
 
 

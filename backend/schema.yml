@@ -1,0 +1,1070 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/ai/recommend-helper/:
+    post:
+      operationId: ai_recommend_helper_create
+      description: "\n    Uses Gemini AI to analyze a travel request and generate\n
+        \   ranked helper recommendations.\n\n    The generated recommendations are
+        stored in Supabase.\n    "
+      summary: Generate AI Helper Recommendation
+      tags:
+      - ai
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIRecommendation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AIRecommendation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AIRecommendation'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/helpers/:
+    get:
+      operationId: helpers_list
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - helpers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHelperList'
+          description: ''
+    post:
+      operationId: helpers_create
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      tags:
+      - helpers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Helper'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Helper'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Helper'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Helper'
+          description: ''
+  /api/helpers/{id}/:
+    get:
+      operationId: helpers_retrieve
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this helper.
+        required: true
+      tags:
+      - helpers
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Helper'
+          description: ''
+    put:
+      operationId: helpers_update
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this helper.
+        required: true
+      tags:
+      - helpers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Helper'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Helper'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Helper'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Helper'
+          description: ''
+    patch:
+      operationId: helpers_partial_update
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this helper.
+        required: true
+      tags:
+      - helpers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedHelper'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedHelper'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedHelper'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Helper'
+          description: ''
+    delete:
+      operationId: helpers_destroy
+      description: |-
+        Provides CRUD operations for helper profiles.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete helper records. Helper
+        information includes skills, availability status,
+        and ratings used by the AI recommendation system
+        to match helpers with travel requests.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this helper.
+        required: true
+      tags:
+      - helpers
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/login/:
+    post:
+      operationId: login_create
+      summary: Login User
+      tags:
+      - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/register/:
+    post:
+      operationId: register_create
+      summary: Register User
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/travel-requests/:
+    get:
+      operationId: travel_requests_list
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      parameters:
+      - in: query
+        name: assistance_level
+        schema:
+          type: string
+          enum:
+          - High
+          - Low
+          - Medium
+        description: |-
+          * `Low` - Low
+          * `Medium` - Medium
+          * `High` - High
+      - in: query
+        name: assistance_type
+        schema:
+          type: string
+          enum:
+          - Crutches support
+          - Elderly care
+          - Govt. office help
+          - Hearing impaired
+          - Hospital visit
+          - Post-surgery
+          - Shopping help
+          - Travel companion
+          - Visually impaired
+          - Walker support
+          - Walking assistance
+          - Wheelchair assistance
+        description: |-
+          * `Wheelchair assistance` - Wheelchair assistance
+          * `Walker support` - Walker support
+          * `Crutches support` - Crutches support
+          * `Walking assistance` - Walking assistance
+          * `Travel companion` - Travel companion
+          * `Hospital visit` - Hospital visit
+          * `Shopping help` - Shopping help
+          * `Govt. office help` - Govt. office help
+          * `Elderly care` - Elderly care
+          * `Visually impaired` - Visually impaired
+          * `Hearing impaired` - Hearing impaired
+          * `Post-surgery` - Post-surgery
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: service_type
+        schema:
+          type: string
+          enum:
+          - Govt. office
+          - Hospital visit
+          - Other
+          - Religious place
+          - School / Work
+          - Shopping
+        description: |-
+          * `Hospital visit` - Hospital visit
+          * `Govt. office` - Govt. office
+          * `Shopping` - Shopping
+          * `School / Work` - School / Work
+          * `Religious place` - Religious place
+          * `Other` - Other
+      - in: query
+        name: status
+        schema:
+          type: string
+      tags:
+      - travel-requests
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTravelRequestList'
+          description: ''
+    post:
+      operationId: travel_requests_create
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      tags:
+      - travel-requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRequest'
+          description: ''
+  /api/travel-requests/{id}/:
+    get:
+      operationId: travel_requests_retrieve
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this travel request.
+        required: true
+      tags:
+      - travel-requests
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRequest'
+          description: ''
+    put:
+      operationId: travel_requests_update
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this travel request.
+        required: true
+      tags:
+      - travel-requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TravelRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRequest'
+          description: ''
+    patch:
+      operationId: travel_requests_partial_update
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this travel request.
+        required: true
+      tags:
+      - travel-requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTravelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTravelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTravelRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelRequest'
+          description: ''
+    delete:
+      operationId: travel_requests_destroy
+      description: |-
+        Provides CRUD operations for travel requests.
+
+        This ViewSet allows authenticated users to create,
+        retrieve, update, and delete travel assistance requests.
+        It also supports filtering by service type, assistance type,
+        assistance level, and request status to simplify request
+        management and helper matching.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this travel request.
+        required: true
+      tags:
+      - travel-requests
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/upload-certificate/:
+    post:
+      operationId: upload_certificate_create
+      summary: Upload Disability Certificate
+      tags:
+      - upload-certificate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadCertificate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UploadCertificate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadCertificate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    AIRecommendation:
+      type: object
+      properties:
+        travel_request_id:
+          type: integer
+      required:
+      - travel_request_id
+    AssistanceLevelEnum:
+      enum:
+      - Low
+      - Medium
+      - High
+      type: string
+      description: |-
+        * `Low` - Low
+        * `Medium` - Medium
+        * `High` - High
+    AssistanceTypeEnum:
+      enum:
+      - Wheelchair assistance
+      - Walker support
+      - Crutches support
+      - Walking assistance
+      - Travel companion
+      - Hospital visit
+      - Shopping help
+      - Govt. office help
+      - Elderly care
+      - Visually impaired
+      - Hearing impaired
+      - Post-surgery
+      type: string
+      description: |-
+        * `Wheelchair assistance` - Wheelchair assistance
+        * `Walker support` - Walker support
+        * `Crutches support` - Crutches support
+        * `Walking assistance` - Walking assistance
+        * `Travel companion` - Travel companion
+        * `Hospital visit` - Hospital visit
+        * `Shopping help` - Shopping help
+        * `Govt. office help` - Govt. office help
+        * `Elderly care` - Elderly care
+        * `Visually impaired` - Visually impaired
+        * `Hearing impaired` - Hearing impaired
+        * `Post-surgery` - Post-surgery
+    Helper:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        auth_user_id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+          maxLength: 100
+        skills:
+          type: string
+        rating:
+          type: number
+          format: double
+        availability:
+          type: boolean
+      required:
+      - id
+      - name
+      - skills
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    PaginatedHelperList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Helper'
+    PaginatedTravelRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelRequest'
+    PatchedHelper:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        auth_user_id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+          maxLength: 100
+        skills:
+          type: string
+        rating:
+          type: number
+          format: double
+        availability:
+          type: boolean
+    PatchedTravelRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pickup_location:
+          type: string
+          maxLength: 255
+        destination:
+          type: string
+          maxLength: 255
+        travel_date:
+          type: string
+          format: date
+        service_type:
+          $ref: '#/components/schemas/ServiceTypeEnum'
+        assistance_type:
+          $ref: '#/components/schemas/AssistanceTypeEnum'
+        assistance_level:
+          $ref: '#/components/schemas/AssistanceLevelEnum'
+        additional_note:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        passenger:
+          type: integer
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 6
+      required:
+      - email
+      - password
+    ServiceTypeEnum:
+      enum:
+      - Hospital visit
+      - Govt. office
+      - Shopping
+      - School / Work
+      - Religious place
+      - Other
+      type: string
+      description: |-
+        * `Hospital visit` - Hospital visit
+        * `Govt. office` - Govt. office
+        * `Shopping` - Shopping
+        * `School / Work` - School / Work
+        * `Religious place` - Religious place
+        * `Other` - Other
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TravelRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        pickup_location:
+          type: string
+          maxLength: 255
+        destination:
+          type: string
+          maxLength: 255
+        travel_date:
+          type: string
+          format: date
+        service_type:
+          $ref: '#/components/schemas/ServiceTypeEnum'
+        assistance_type:
+          $ref: '#/components/schemas/AssistanceTypeEnum'
+        assistance_level:
+          $ref: '#/components/schemas/AssistanceLevelEnum'
+        additional_note:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        passenger:
+          type: integer
+      required:
+      - assistance_type
+      - created_at
+      - destination
+      - id
+      - passenger
+      - pickup_location
+      - service_type
+      - travel_date
+    UploadCertificate:
+      type: object
+      properties:
+        file:
+          type: string
+          format: uri
+      required:
+      - file
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
