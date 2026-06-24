@@ -6,27 +6,32 @@ from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
 from care_ride.supabase_client import get_supabase
-from .models import Passenger, DisabilityCertificate
-from .serializers import (
-    RegisterSerializer,
-    LoginSerializer
+
+from .models import (
+    Passenger,
+    DisabilityCertificate,
+    UserProfile
 )
 
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    UploadCertificateSerializer
+)
 
 # ----------------------------
+
 # REGISTER
+
 # ----------------------------
+
 @extend_schema(
     request=RegisterSerializer,
     responses={200: dict},
-    summary="Register User",
-    description="Registers a new user using Supabase Authentication."
+    summary="Register User"
 )
-@api_view(['POST'])
+@api_view(["POST"])
 def register(request):
-    """
-    Registers a new user using Supabase Authentication.
-    """
 
     serializer = RegisterSerializer(
         data=request.data
@@ -36,10 +41,13 @@ def register(request):
         raise_exception=True
     )
 
+    name = serializer.validated_data["name"]
     email = serializer.validated_data["email"]
     password = serializer.validated_data["password"]
+    role = serializer.validated_data["role"]
 
     try:
+
         supabase = get_supabase()
 
         if not supabase:
@@ -53,9 +61,17 @@ def register(request):
             "password": password
         })
 
+        UserProfile.objects.create(
+            auth_user_id=response.user.id,
+            name=name,
+            email=email,
+            role=role
+        )
+
         return Response({
             "message": "User registered successfully",
-            "user": str(response.user.id)
+            "user": str(response.user.id),
+            "role": role
         })
 
     except Exception as e:
@@ -65,21 +81,49 @@ def register(request):
             status=400
         )
 
+# ----------------------------
+
+# PROFILE
 
 # ----------------------------
-# LOGIN
+
+@api_view(["GET"])
+def my_profile(request):
+
+    email = request.query_params.get("email")
+
+    try:
+
+        profile = UserProfile.objects.get(
+            email=email
+        )
+
+        return Response({
+            "name": profile.name,
+            "email": profile.email,
+            "role": profile.role
+        })
+
+    except UserProfile.DoesNotExist:
+
+        return Response(
+            {"error": "Profile not found"},
+            status=404
+        )
+
 # ----------------------------
+
+# LOGIN
+
+# ----------------------------
+
 @extend_schema(
     request=LoginSerializer,
     responses={200: dict},
-    summary="Login User",
-    description="Authenticates a user using Supabase Authentication."
+    summary="Login User"
 )
-@api_view(['POST'])
+@api_view(["POST"])
 def login(request):
-    """
-    Authenticates a user using Supabase Authentication.
-    """
 
     serializer = LoginSerializer(
         data=request.data
@@ -93,6 +137,7 @@ def login(request):
     password = serializer.validated_data["password"]
 
     try:
+
         supabase = get_supabase()
 
         if not supabase:
@@ -118,20 +163,26 @@ def login(request):
             status=400
         )
 
+# ----------------------------
+
+# UPLOAD CERTIFICATE
 
 # ----------------------------
-# UPLOAD DISABILITY CERTIFICATE
-# ----------------------------
+
+@extend_schema(
+    request=UploadCertificateSerializer,
+    responses={200: dict},
+    summary="Upload Disability Certificate"
+)
 class UploadCertificateView(APIView):
-    """
-    Uploads disability certificate documents to Supabase Storage.
-    """
 
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
-        uploaded_file = request.FILES.get("file")
+        uploaded_file = request.FILES.get(
+            "file"
+        )
 
         if not uploaded_file:
             return Response(
@@ -170,6 +221,15 @@ class UploadCertificateView(APIView):
                 Passenger.objects.first()
             )
 
+            if not passenger:
+                return Response(
+                    {
+                        "error":
+                        "No passenger found"
+                    },
+                    status=404
+                )
+
             certificate = (
                 DisabilityCertificate.objects.create(
                     passenger=passenger,
@@ -180,11 +240,13 @@ class UploadCertificateView(APIView):
 
             return Response({
                 "message":
-                    "Certificate uploaded successfully",
+                "Certificate uploaded successfully",
+
                 "certificate_id":
-                    certificate.id,
+                certificate.id,
+
                 "file_url":
-                    file_url
+                file_url
             })
 
         except Exception as e:

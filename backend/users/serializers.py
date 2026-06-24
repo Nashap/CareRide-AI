@@ -2,9 +2,9 @@ from rest_framework import serializers
 from .models import DisabilityCertificate
 
 
-class RegisterSerializer(
-    serializers.Serializer
-):
+class RegisterSerializer(serializers.Serializer):
+
+    name = serializers.CharField()
 
     email = serializers.EmailField()
 
@@ -13,16 +13,24 @@ class RegisterSerializer(
         min_length=6
     )
 
+    role = serializers.ChoiceField(
+        choices=["rider", "helper"]
+    )
 
-class LoginSerializer(
-    serializers.Serializer
-):
+
+class LoginSerializer(serializers.Serializer):
 
     email = serializers.EmailField()
 
     password = serializers.CharField(
         write_only=True
     )
+
+
+class UploadCertificateSerializer(
+    serializers.Serializer
+):
+    file = serializers.FileField()
 
 
 class DisabilityCertificateSerializer(
@@ -33,10 +41,7 @@ class DisabilityCertificateSerializer(
         model = DisabilityCertificate
         fields = "__all__"
 
-    def validate_file_name(
-        self,
-        value
-    ):
+    def validate_file_name(self, value):
 
         allowed_extensions = (
             ".pdf",
@@ -54,10 +59,7 @@ class DisabilityCertificateSerializer(
 
         return value
 
-    def validate_file_url(
-        self,
-        value
-    ):
+    def validate_file_url(self, value):
 
         if not value.startswith(
             ("http://", "https://")
