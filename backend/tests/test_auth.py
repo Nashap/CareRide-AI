@@ -1,11 +1,16 @@
 import pytest
 from unittest.mock import Mock, patch
+
 from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
+@patch("users.views.UserProfile.objects.create")
 @patch("users.views.get_supabase")
-def test_register(mock_supabase):
+def test_register(
+    mock_supabase,
+    mock_create_profile
+):
 
     fake_user = Mock()
     fake_user.id = "123"
@@ -18,19 +23,26 @@ def test_register(mock_supabase):
 
     mock_supabase.return_value = mock_client
 
+    mock_create_profile.return_value = Mock()
+
     client = APIClient()
 
     response = client.post(
         "/api/register/",
         {
+            "name": "Test User",
             "email": "test@test.com",
-            "password": "Password123"
+            "password": "Password123",
+            "role": "rider"
         },
         format="json"
     )
 
+    print(response.data)
+
     assert response.status_code == 200
     assert response.data["message"] == "User registered successfully"
+    assert response.data["role"] == "rider"
 
 
 @pytest.mark.django_db
