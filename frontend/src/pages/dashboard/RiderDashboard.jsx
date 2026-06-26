@@ -1,42 +1,73 @@
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+import RiderNavbar from "../../components/dashboard/RiderNavbar";
+import RiderSidebar from "../../components/dashboard/RiderSidebar";
+import DashboardCard from "../../components/dashboard/DashboardCard";
+import EmptyState from "../../components/dashboard/EmptyState";
+
 function RiderDashboard() {
+  const navigate = useNavigate();
+
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="flex min-h-screen bg-gray-100">
 
-      <h1 className="text-3xl font-bold mb-8">
-        Rider Dashboard
-      </h1>
+      {/* Sidebar */}
+      <RiderSidebar />
 
-      <div className="grid md:grid-cols-3 gap-6">
+      {/* Right Section */}
+      <div className="flex-1 flex flex-col">
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="font-semibold">
-            Book a Ride
-          </h2>
+        {/* Navbar */}
+        <RiderNavbar />
 
-          <p className="text-gray-500 mt-2">
-            Request mobility assistance.
-          </p>
-        </div>
+        {/* Dashboard Content */}
+        <main className="flex-1 p-8 overflow-y-auto">
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="font-semibold">
-            My Rides
-          </h2>
+          {/* Header */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
 
-          <p className="text-gray-500 mt-2">
-            View upcoming and past rides.
-          </p>
-        </div>
+            <div>
+              <h1 className="text-4xl font-bold text-gray-800">
+                My Rides
+              </h1>
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="font-semibold">
-            AI Assistant
-          </h2>
+              <p className="text-gray-500 mt-2">
+                Welcome to CareRide AI. Manage your rides and book new journeys with confidence.
+              </p>
+            </div>
 
-          <p className="text-gray-500 mt-2">
-            Get travel recommendations.
-          </p>
-        </div>
+            <button
+              onClick={() => navigate("/book-ride")}
+              className="
+                mt-5
+                lg:mt-0
+                flex
+                items-center
+                gap-2
+                bg-teal-500
+                hover:bg-teal-600
+                text-white
+                px-6
+                py-3
+                rounded-xl
+                font-semibold
+                transition
+              "
+            >
+              <Plus size={20} />
+              Book a Ride
+            </button>
+
+          </div>
+
+          {/* Statistics */}
+          <DashboardCard />
+
+          {/* Empty State */}
+          <EmptyState />
+
+        </main>
 
       </div>
 
