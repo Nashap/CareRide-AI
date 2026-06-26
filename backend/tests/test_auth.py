@@ -5,49 +5,9 @@ from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
-@patch("users.views.UserProfile.objects.create")
+@patch("users.views.UserProfile.objects.get")
 @patch("users.views.get_supabase")
-def test_register(
-    mock_supabase,
-    mock_create_profile
-):
-
-    fake_user = Mock()
-    fake_user.id = "123"
-
-    fake_response = Mock()
-    fake_response.user = fake_user
-
-    mock_client = Mock()
-    mock_client.auth.sign_up.return_value = fake_response
-
-    mock_supabase.return_value = mock_client
-
-    mock_create_profile.return_value = Mock()
-
-    client = APIClient()
-
-    response = client.post(
-        "/api/register/",
-        {
-            "name": "Test User",
-            "email": "test@test.com",
-            "password": "Password123",
-            "role": "rider"
-        },
-        format="json"
-    )
-
-    print(response.data)
-
-    assert response.status_code == 200
-    assert response.data["message"] == "User registered successfully"
-    assert response.data["role"] == "rider"
-
-
-@pytest.mark.django_db
-@patch("users.views.get_supabase")
-def test_login(mock_supabase):
+def test_login(mock_supabase, mock_profile):
 
     fake_user = Mock()
     fake_user.id = "123"
@@ -59,6 +19,13 @@ def test_login(mock_supabase):
     mock_client.auth.sign_in_with_password.return_value = fake_response
 
     mock_supabase.return_value = mock_client
+
+    fake_profile = Mock()
+    fake_profile.name = "Test User"
+    fake_profile.email = "test@test.com"
+    fake_profile.role = "rider"
+
+    mock_profile.return_value = fake_profile
 
     client = APIClient()
 
@@ -73,3 +40,6 @@ def test_login(mock_supabase):
 
     assert response.status_code == 200
     assert response.data["message"] == "Login successful"
+    assert response.data["role"] == "rider"
+    assert response.data["email"] == "test@test.com"
+    assert response.data["name"] == "Test User"

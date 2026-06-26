@@ -145,9 +145,16 @@ def login(request):
             "password": password
         })
 
+        profile = UserProfile.objects.get(
+            email=email
+        )
+
         return Response({
             "message": "Login successful",
-            "user": str(response.user.id)
+            "user": str(response.user.id),
+            "name": profile.name,
+            "email": profile.email,
+            "role": profile.role
         })
 
     except Exception as e:
@@ -180,9 +187,7 @@ class UploadCertificateView(APIView):
                 status=400
             )
 
-        file_path = (
-            f"certificates/{uploaded_file.name}"
-        )
+        file_path = f"certificates/{uploaded_file.name}"
 
         try:
 
