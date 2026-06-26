@@ -191,6 +191,7 @@ CACHES = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://careride-six.vercel.app",
 ]
 
 # Railway Production Settings
@@ -203,5 +204,6 @@ SECURE_PROXY_SSL_HEADER = (
 USE_X_FORWARDED_HOST = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://careride-ai-production.up.railway.app"
+    "https://careride-ai-production.up.railway.app",
+    "https://careride-six.vercel.app",
 ]
