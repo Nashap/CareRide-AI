@@ -7,11 +7,7 @@ from drf_spectacular.utils import extend_schema
 
 from care_ride.supabase_client import get_supabase
 
-from .models import (
-    Passenger,
-    DisabilityCertificate,
-    UserProfile
-)
+from .models import Passenger, DisabilityCertificate, UserProfile
 
 from .serializers import (
     RegisterSerializer,
@@ -20,9 +16,9 @@ from .serializers import (
 )
 
 
-# ----------------------------
+# =========================
 # REGISTER
-# ----------------------------
+# =========================
 @extend_schema(
     request=RegisterSerializer,
     responses={200: dict},
@@ -31,13 +27,8 @@ from .serializers import (
 @api_view(["POST"])
 def register(request):
 
-    serializer = RegisterSerializer(
-        data=request.data
-    )
-
-    serializer.is_valid(
-        raise_exception=True
-    )
+    serializer = RegisterSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
 
     name = serializer.validated_data["name"]
     email = serializer.validated_data["email"]
@@ -45,7 +36,6 @@ def register(request):
     role = serializer.validated_data["role"]
 
     try:
-
         supabase = get_supabase()
 
         if not supabase:
@@ -54,13 +44,21 @@ def register(request):
                 status=500
             )
 
-        response = supabase.auth.sign_up({
+        # Supabase signup
+        auth_response = supabase.auth.sign_up({
             "email": email,
             "password": password
         })
 
+        if not auth_response.user:
+            return Response(
+                {"error": "Supabase signup failed"},
+                status=400
+            )
+
+        # Create profile in Django DB
         UserProfile.objects.create(
-            auth_user_id=response.user.id,
+            auth_user_id=auth_response.user.id,
             name=name,
             email=email,
             role=role
@@ -68,49 +66,23 @@ def register(request):
 
         return Response({
             "message": "User registered successfully",
-            "user": str(response.user.id),
+            "user_id": str(auth_response.user.id),
             "role": role
         })
 
     except Exception as e:
-
         return Response(
-            {"error": str(e)},
+            {
+                "error": str(e),
+                "step": "register"
+            },
             status=400
         )
 
 
-# ----------------------------
-# PROFILE
-# ----------------------------
-@api_view(["GET"])
-def my_profile(request):
-
-    email = request.query_params.get("email")
-
-    try:
-
-        profile = UserProfile.objects.get(
-            email=email
-        )
-
-        return Response({
-            "name": profile.name,
-            "email": profile.email,
-            "role": profile.role
-        })
-
-    except UserProfile.DoesNotExist:
-
-        return Response(
-            {"error": "Profile not found"},
-            status=404
-        )
-
-
-# ----------------------------
+# =========================
 # LOGIN
-# ----------------------------
+# =========================
 @extend_schema(
     request=LoginSerializer,
     responses={200: dict},
@@ -119,19 +91,13 @@ def my_profile(request):
 @api_view(["POST"])
 def login(request):
 
-    serializer = LoginSerializer(
-        data=request.data
-    )
-
-    serializer.is_valid(
-        raise_exception=True
-    )
+    serializer = LoginSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
 
     email = serializer.validated_data["email"]
     password = serializer.validated_data["password"]
 
     try:
-
         supabase = get_supabase()
 
         if not supabase:
@@ -140,39 +106,72 @@ def login(request):
                 status=500
             )
 
-        response = supabase.auth.sign_in_with_password({
+        # Supabase login
+        auth_response = supabase.auth.sign_in_with_password({
             "email": email,
             "password": password
         })
 
-        profile = UserProfile.objects.get(
-            email=email
-        )
+        if not auth_response.user:
+            return Response(
+                {"error": "Invalid credentials (Supabase rejected login)"},
+                status=401
+            )
+
+        # Fetch profile from DB
+        profile = UserProfile.objects.get(email=email)
 
         return Response({
             "message": "Login successful",
-            "user": str(response.user.id),
+            "user_id": str(auth_response.user.id),
             "name": profile.name,
             "email": profile.email,
             "role": profile.role
         })
 
-    except Exception as e:
-
+    except UserProfile.DoesNotExist:
         return Response(
-            {"error": str(e)},
+            {"error": "User profile not found"},
+            status=404
+        )
+
+    except Exception as e:
+        return Response(
+            {
+                "error": str(e),
+                "step": "login"
+            },
             status=400
         )
 
 
-# ----------------------------
+# =========================
+# PROFILE
+# =========================
+@api_view(["GET"])
+def my_profile(request):
+
+    email = request.query_params.get("email")
+
+    try:
+        profile = UserProfile.objects.get(email=email)
+
+        return Response({
+            "name": profile.name,
+            "email": profile.email,
+            "role": profile.role
+        })
+
+    except UserProfile.DoesNotExist:
+        return Response(
+            {"error": "Profile not found"},
+            status=404
+        )
+
+
+# =========================
 # UPLOAD CERTIFICATE
-# ----------------------------
-@extend_schema(
-    request=UploadCertificateSerializer,
-    responses={200: dict},
-    summary="Upload Disability Certificate"
-)
+# =========================
 class UploadCertificateView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -190,7 +189,6 @@ class UploadCertificateView(APIView):
         file_path = f"certificates/{uploaded_file.name}"
 
         try:
-
             supabase = get_supabase()
 
             if not supabase:
@@ -233,8 +231,10 @@ class UploadCertificateView(APIView):
             })
 
         except Exception as e:
-
             return Response(
-                {"error": str(e)},
+                {
+                    "error": str(e),
+                    "step": "upload_certificate"
+                },
                 status=400
             )
