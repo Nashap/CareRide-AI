@@ -3,52 +3,36 @@ import { useNavigate } from "react-router-dom";
 
 function RiderNavbar() {
   const navigate = useNavigate();
-
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     navigate("/");
   };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between">
+    <header className="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center">
 
-      {/* Left */}
-      <div className="flex items-center gap-3">
-
-        <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold">
-          CR
-        </div>
-
-        <h1 className="text-xl font-bold text-gray-800">
-          CareRide AI
-        </h1>
-
-        <span className="bg-teal-100 text-teal-700 text-xs font-medium px-3 py-1 rounded-full">
+      {/* Logo */}
+      <div className="flex items-center gap-2">
+        <span className="text-teal-600 font-bold text-base">✦ CareRide</span>
+        <span className="text-teal-600 text-sm font-semibold">AI</span>
+        <span className="bg-teal-100 text-teal-700 text-xs font-semibold px-2 py-0.5 rounded-full ml-1">
           Rider
         </span>
-
       </div>
 
-      {/* Right */}
-      <div className="flex items-center gap-6">
-
-        <p className="text-sm text-gray-500 hidden md:block">
-          {user?.email || "rider@email.com"}
-        </p>
-
+      {/* Right: email + sign out */}
+      <div className="flex items-center gap-4 text-sm text-gray-600">
+        <span>{user?.email ?? "nasharioushaid19@gmail.com"}</span>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition"
+          className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition"
         >
-          <LogOut size={18} />
-          <span className="text-sm font-medium">
-            Sign Out
-          </span>
+          <LogOut size={14} />
+          <span>Sign out</span>
         </button>
-
       </div>
 
     </header>
