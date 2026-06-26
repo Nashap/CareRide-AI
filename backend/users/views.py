@@ -98,28 +98,36 @@ def login(request):
     password = serializer.validated_data["password"]
 
     try:
+
         supabase = get_supabase()
 
         if not supabase:
-            return Response({"error": "Supabase not configured"}, status=500)
+            return Response(
+                {"error": "Supabase not configured"},
+                status=500
+            )
 
-        # LOGIN WITH SUPABASE
+        # Login with Supabase
         auth_response = supabase.auth.sign_in_with_password({
             "email": email,
             "password": password
         })
 
         if not auth_response.user:
-            return Response({"error": "Invalid credentials"}, status=401)
+            return Response(
+                {"error": "Invalid login credentials"},
+                status=401
+            )
 
-        # GET USER PROFILE (SAFE FIX)
-        profile = UserProfile.objects.filter(email=email).first()
+        # Get user profile
+        try:
+            profile = UserProfile.objects.get(email=email)
 
-        if not profile:
-            return Response({
-                "error": "User exists in Supabase but NOT in Django UserProfile table",
-                "hint": "Profile not created during registration"
-            }, status=404)
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"error": "User profile not found"},
+                status=404
+            )
 
         return Response({
             "message": "Login successful",
@@ -130,13 +138,15 @@ def login(request):
         })
 
     except Exception as e:
-        return Response({
-            "error": str(e),
-            "step": "login"
-        },
-        status=400
-        )
 
+        return Response(
+            {
+                "error": str(e),
+                "step": "login"
+            },
+            status=400
+        )
+        
 # =========================
 # PROFILE
 # =========================
