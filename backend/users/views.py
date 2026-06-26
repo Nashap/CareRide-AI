@@ -101,25 +101,25 @@ def login(request):
         supabase = get_supabase()
 
         if not supabase:
-            return Response(
-                {"error": "Supabase not configured"},
-                status=500
-            )
+            return Response({"error": "Supabase not configured"}, status=500)
 
-        # Supabase login
+        # LOGIN WITH SUPABASE
         auth_response = supabase.auth.sign_in_with_password({
             "email": email,
             "password": password
         })
 
         if not auth_response.user:
-            return Response(
-                {"error": "Invalid credentials (Supabase rejected login)"},
-                status=401
-            )
+            return Response({"error": "Invalid credentials"}, status=401)
 
-        # Fetch profile from DB
-        profile = UserProfile.objects.get(email=email)
+        # GET USER PROFILE (SAFE FIX)
+        profile = UserProfile.objects.filter(email=email).first()
+
+        if not profile:
+            return Response({
+                "error": "User exists in Supabase but NOT in Django UserProfile table",
+                "hint": "Profile not created during registration"
+            }, status=404)
 
         return Response({
             "message": "Login successful",
@@ -129,21 +129,13 @@ def login(request):
             "role": profile.role
         })
 
-    except UserProfile.DoesNotExist:
-        return Response(
-            {"error": "User profile not found"},
-            status=404
-        )
-
     except Exception as e:
-        return Response(
-            {
-                "error": str(e),
-                "step": "login"
-            },
-            status=400
+        return Response({
+            "error": str(e),
+            "step": "login"
+        },
+        status=400
         )
-
 
 # =========================
 # PROFILE
