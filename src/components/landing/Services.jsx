@@ -1,101 +1,116 @@
 import {
+  Car,
   Accessibility,
   HeartHandshake,
-  ShieldPlus,
+  Hospital,
+  ShoppingBag,
+  Bot,
 } from "lucide-react";
 
 function Services() {
   const services = [
     {
-      icon: Accessibility,
-      title: "Mobility Support",
-      items: [
-        "Wheelchair assistance",
-        "Walker support",
-        "Crutches support",
-        "Walking assistance",
-      ],
+      icon: <Car size={34} />,
+      title: "Accessible Transport",
+      description:
+        "Comfortable transportation designed for elderly people and persons with disabilities.",
     },
     {
-      icon: HeartHandshake,
-      title: "Companion Support",
-      items: [
-        "Travel companion",
-        "Hospital visits",
-        "Shopping assistance",
-        "Government office help",
-      ],
+      icon: <Accessibility size={34} />,
+      title: "Wheelchair Assistance",
+      description:
+        "Professional helpers assist with wheelchair support from pickup to destination.",
     },
     {
-      icon: ShieldPlus,
-      title: "Special Assistance",
-      items: [
-        "Blind guide support",
-        "Visually impaired assistance",
-        "Hearing impaired assistance",
-        "Post-surgery support",
-      ],
+      icon: <HeartHandshake size={34} />,
+      title: "Personal Companion",
+      description:
+        "Verified companions travel with you during hospital visits, shopping and appointments.",
+    },
+    {
+      icon: <Hospital size={34} />,
+      title: "Hospital Visits",
+      description:
+        "Safe transportation and assistance for treatments, medical appointments and checkups.",
+    },
+    {
+      icon: <ShoppingBag size={34} />,
+      title: "Shopping Assistance",
+      description:
+        "Travel comfortably to supermarkets, pharmacies and shopping malls with a helper.",
+    },
+    {
+      icon: <Bot size={34} />,
+      title: "AI Recommendation",
+      description:
+        "Our AI recommends the most suitable helper according to your needs and location.",
     },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-14">
-      <div className="mb-10">
-        <h2 className="text-4xl font-bold text-gray-900">
-          Services you can request
-        </h2>
+    <section
+      id="services"
+      className="py-24 bg-white"
+    >
+      <div className="max-w-7xl mx-auto px-6">
 
-        <p className="text-gray-500 mt-2">
-          Personalized support for elderly citizens, persons with
-          disabilities and recovering patients.
-        </p>
-      </div>
+        {/* Heading */}
 
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-        {services.map((service, index) => {
-          const Icon = service.icon;
+        <div className="text-center mb-16">
 
-          return (
+          <span className="bg-teal-100 text-teal-700 px-4 py-2 rounded-full font-medium">
+            Our Services
+          </span>
+
+          <h2 className="text-5xl font-bold mt-6 text-slate-900">
+            Everything you need for
+            <span className="text-teal-600"> safe travel</span>
+          </h2>
+
+          <p className="mt-6 text-lg text-gray-600 max-w-3xl mx-auto">
+            CareRide AI combines trusted helpers,
+            intelligent recommendations and accessible
+            transportation to make every journey safer
+            and easier.
+          </p>
+
+        </div>
+
+        {/* Service Cards */}
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {services.map((service, index) => (
+
             <div
               key={index}
-              className="
-                bg-white
-                rounded-2xl
-                border
-                border-gray-200
-                p-6
-                shadow-sm
-                hover:shadow-lg
-                hover:-translate-y-1
-                transition-all
-                duration-300
-              "
+              className="bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition duration-300"
             >
-              <div className="w-14 h-14 rounded-xl bg-teal-50 flex items-center justify-center mb-5">
-                <Icon
-                  size={28}
-                  className="text-teal-600"
-                />
+
+              <div className="w-16 h-16 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center mb-6">
+
+                {service.icon}
+
               </div>
 
-              <h3 className="text-xl font-semibold mb-4">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">
+
                 {service.title}
+
               </h3>
 
-              <ul className="space-y-3">
-                {service.items.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-center gap-3 text-gray-600"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-teal-500"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <p className="text-gray-600 leading-7">
+
+                {service.description}
+
+              </p>
+
             </div>
-          );
-        })}
+
+          ))}
+
+        </div>
+
       </div>
     </section>
   );
