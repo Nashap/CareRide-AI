@@ -11,39 +11,49 @@ function RiderDashboard() {
   return (
     <div className="min-h-screen bg-[#F5F0E8]">
 
-      {/* Top Navbar */}
+      {/* Navbar */}
       <RiderNavbar />
 
-      <div className="flex">
+      {/* Same container style as Home page */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
 
-        {/* Sidebar */}
-        <RiderSidebar />
+        <div className="flex gap-8">
 
-        {/* Main Content */}
-        <main className="flex-1 px-10 py-8">
+          {/* Sidebar */}
+          <RiderSidebar />
 
-          {/* Header row */}
-          <div className="flex justify-between items-start mb-5">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">My rides</h1>
-              <p className="text-gray-500 text-sm mt-0.5">
-                Track and manage your CareRide bookings.
-              </p>
+          {/* Main Content */}
+          <main className="flex-1">
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  My rides
+                </h1>
+
+                <p className="text-gray-500 text-sm mt-1">
+                  Track and manage your CareRide bookings.
+                </p>
+              </div>
+
+              <button
+                onClick={() => navigate("/book-ride")}
+                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg font-medium transition"
+              >
+                <Plus size={18} />
+                Book a new ride
+              </button>
+
             </div>
 
-            <button
-              onClick={() => navigate("/book-ride")}
-              className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
-            >
-              <Plus size={15} />
-              Book a new ride
-            </button>
-          </div>
+            {/* Empty State */}
+            <EmptyState />
 
-          {/* Empty State */}
-          <EmptyState />
+          </main>
 
-        </main>
+        </div>
 
       </div>
 
