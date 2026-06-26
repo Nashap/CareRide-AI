@@ -1,4 +1,4 @@
-import { LogOut, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function RiderNavbar() {
@@ -7,59 +7,46 @@ function RiderNavbar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center">
+    <header className="h-16 bg-white border-b border-gray-200 px-8 flex items-center justify-between">
 
-      {/* Logo */}
+      {/* Left */}
       <div className="flex items-center gap-3">
+
         <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold">
           CR
         </div>
 
-        <div>
-          <h1 className="font-bold text-xl text-gray-800">
-            CareRide AI
-          </h1>
+        <h1 className="text-xl font-bold text-gray-800">
+          CareRide AI
+        </h1>
 
-          <p className="text-xs text-gray-500">
-            Rider Dashboard
-          </p>
-        </div>
+        <span className="bg-teal-100 text-teal-700 text-xs font-medium px-3 py-1 rounded-full">
+          Rider
+        </span>
+
       </div>
 
-      {/* User */}
+      {/* Right */}
       <div className="flex items-center gap-6">
 
-        <div className="hidden md:flex items-center gap-2 text-gray-700">
-          <User size={18} />
-
-          <span className="text-sm">
-            {user?.email}
-          </span>
-        </div>
+        <p className="text-sm text-gray-500 hidden md:block">
+          {user?.email || "rider@email.com"}
+        </p>
 
         <button
           onClick={handleLogout}
-          className="
-            flex
-            items-center
-            gap-2
-            bg-red-500
-            hover:bg-red-600
-            text-white
-            px-4
-            py-2
-            rounded-lg
-            transition
-          "
+          className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition"
         >
           <LogOut size={18} />
-          Logout
+          <span className="text-sm font-medium">
+            Sign Out
+          </span>
         </button>
 
       </div>
