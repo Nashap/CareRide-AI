@@ -1,18 +1,9 @@
 from django.db import models
-from users.models import Passenger
+from users.models import UserProfile
 from helpers.models import Helper
 
 
 class TravelRequest(models.Model):
-    """
-    Stores travel assistance requests submitted by passengers.
-
-    A travel request contains pickup and destination locations,
-    travel date, required assistance type, service category,
-    urgency level, and passenger information. These requests
-    are used by the AI recommendation system to identify
-    suitable helpers.
-    """
 
     SERVICE_CHOICES = [
         ("Hospital visit", "Hospital visit"),
@@ -44,6 +35,12 @@ class TravelRequest(models.Model):
         ("High", "High"),
     ]
 
+    rider = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE,
+        related_name="travel_requests"
+    )
+
     pickup_location = models.CharField(max_length=255)
 
     destination = models.CharField(max_length=255)
@@ -71,11 +68,6 @@ class TravelRequest(models.Model):
         null=True
     )
 
-    passenger = models.ForeignKey(
-        Passenger,
-        on_delete=models.CASCADE
-    )
-
     status = models.CharField(
         max_length=20,
         default="Pending"
@@ -86,20 +78,15 @@ class TravelRequest(models.Model):
     )
 
     def __str__(self):
-        return f"{self.pickup_location} → {self.destination}"
+        return f"{self.rider.name} | {self.pickup_location} → {self.destination}"
 
 
 class MatchRecommendation(models.Model):
-    """
-    Stores helper recommendations generated for a travel request.
-
-    Each record links a travel request with a recommended helper
-    and includes the reason for the recommendation.
-    """
 
     travel_request = models.ForeignKey(
         TravelRequest,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="recommendations"
     )
 
     helper = models.ForeignKey(
@@ -109,24 +96,20 @@ class MatchRecommendation(models.Model):
 
     recommendation_reason = models.TextField()
 
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
     def __str__(self):
-        return (
-            f"{self.helper} recommended for "
-            f"{self.travel_request}"
-        )
+        return f"{self.helper.name} → {self.travel_request.id}"
 
 
 class SOSAlert(models.Model):
-    """
-    Stores emergency SOS alerts raised during a travel request.
-
-    This model records alert messages and timestamps to help
-    administrators and helpers respond to emergency situations.
-    """
 
     travel_request = models.ForeignKey(
         TravelRequest,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="sos_alerts"
     )
 
     message = models.TextField()
@@ -136,7 +119,4 @@ class SOSAlert(models.Model):
     )
 
     def __str__(self):
-        return (
-            f"SOS Alert for "
-            f"{self.travel_request}"
-        )
+        return f"SOS Alert #{self.id}"

@@ -9,6 +9,12 @@ class UserProfile(models.Model):
         ("helper", "Helper"),
     ]
 
+    GENDER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+        ("other", "Other"),
+    ]
+
     auth_user_id = models.UUIDField(
         unique=True,
         default=uuid.uuid4
@@ -27,6 +33,41 @@ class UserProfile(models.Model):
         choices=ROLE_CHOICES
     )
 
+    phone_number = models.CharField(
+        max_length=15,
+        blank=True
+    )
+
+    date_of_birth = models.DateField(
+        null=True,
+        blank=True
+    )
+
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER_CHOICES,
+        blank=True
+    )
+
+    disability_type = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
+    medical_notes = models.TextField(
+        blank=True
+    )
+
+    emergency_contact_name = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
+    emergency_contact_phone = models.CharField(
+        max_length=15,
+        blank=True
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
@@ -35,39 +76,12 @@ class UserProfile(models.Model):
         return f"{self.name} ({self.role})"
 
 
-class Passenger(models.Model):
-
-    auth_user_id = models.UUIDField(
-        unique=True,
-        null=True,
-        blank=True
-    )
-
-    name = models.CharField(
-        max_length=100
-    )
-
-    email = models.EmailField(
-        unique=True
-    )
-
-    disability_type = models.CharField(
-        max_length=100
-    )
-
-    emergency_contact = models.CharField(
-        max_length=15
-    )
-
-    def __str__(self):
-        return self.name
-
-
 class DisabilityCertificate(models.Model):
 
-    passenger = models.ForeignKey(
-        Passenger,
-        on_delete=models.CASCADE
+    user = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE,
+        related_name="certificates"
     )
 
     file_name = models.CharField(
@@ -81,4 +95,4 @@ class DisabilityCertificate(models.Model):
     )
 
     def __str__(self):
-        return self.file_name
+        return f"{self.user.name} - {self.file_name}"

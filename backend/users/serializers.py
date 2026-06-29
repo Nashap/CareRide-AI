@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DisabilityCertificate
+from .models import UserProfile, DisabilityCertificate
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -27,51 +27,35 @@ class LoginSerializer(serializers.Serializer):
     )
 
 
-class UploadCertificateSerializer(
-    serializers.Serializer
-):
+class UploadCertificateSerializer(serializers.Serializer):
     file = serializers.FileField()
 
 
-class DisabilityCertificateSerializer(
-    serializers.ModelSerializer
-):
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            "name",
+            "email",
+            "role",
+            "phone_number",
+            "date_of_birth",
+            "gender",
+            "disability_type",
+            "medical_notes",
+            "emergency_contact_name",
+            "emergency_contact_phone",
+        ]
+
+        read_only_fields = [
+            "email",
+            "role",
+        ]
+
+
+class DisabilityCertificateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DisabilityCertificate
         fields = "__all__"
-
-    def validate_file_name(
-        self,
-        value
-    ):
-
-        allowed_extensions = (
-            ".pdf",
-            ".jpg",
-            ".jpeg",
-            ".png"
-        )
-
-        if not value.lower().endswith(
-            allowed_extensions
-        ):
-            raise serializers.ValidationError(
-                "Only PDF, JPG, JPEG and PNG files are allowed."
-            )
-
-        return value
-
-    def validate_file_url(
-        self,
-        value
-    ):
-
-        if not value.startswith(
-            ("http://", "https://")
-        ):
-            raise serializers.ValidationError(
-                "Invalid file URL."
-            )
-
-        return value
