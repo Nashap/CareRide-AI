@@ -176,7 +176,6 @@ def ai_chat(message):
             "tool": "none"
         }
 
-    print("Router Decision:", decision)
 
     tool = decision.get("tool")
 
