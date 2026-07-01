@@ -153,7 +153,7 @@ SUPABASE_KEY = env("SUPABASE_KEY", default="")
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'users.authentication.SupabaseAuthentication',
     ),
 
     "DEFAULT_SCHEMA_CLASS":

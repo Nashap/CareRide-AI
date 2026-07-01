@@ -66,7 +66,8 @@ def register(request):
         return Response({
             "message": "User registered successfully",
             "user_id": str(auth_response.user.id),
-            "role": role
+            "role": role,
+            "token": auth_response.session.access_token if auth_response.session else None
         })
 
     except Exception as e:
@@ -117,14 +118,27 @@ def login(request):
                 status=401
             )
 
+        if not auth_response.session:
+            return Response(
+                {"error": "Login failed. Please confirm your email or try again."},
+                status=401
+            )
+
         profile = UserProfile.objects.get(email=email)
 
         return Response({
             "message": "Login successful",
+            "token": auth_response.session.access_token,
+
+            # Django Profile ID
+            "id": profile.id,
+
+            # Supabase UUID
             "user_id": str(auth_response.user.id),
+
             "name": profile.name,
             "email": profile.email,
-            "role": profile.role
+            "role": profile.role,
         })
 
     except UserProfile.DoesNotExist:
@@ -134,7 +148,6 @@ def login(request):
         )
 
     except Exception as e:
-
         return Response(
             {
                 "error": str(e),
@@ -142,7 +155,6 @@ def login(request):
             },
             status=400
         )
-
 
 # =========================
 # PROFILE
