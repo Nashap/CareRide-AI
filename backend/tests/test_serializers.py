@@ -12,7 +12,7 @@ def test_helper_creation():
         name="John",
         skills="Wheelchair assistance",
         rating=4.5,
-        availability=True
+        availability=True,
     )
 
     assert helper.name == "John"
@@ -20,35 +20,43 @@ def test_helper_creation():
 
 
 @pytest.mark.django_db
-def test_passenger_creation():
+def test_userprofile_creation():
 
-    UserProfile = UserProfile.objects.create(
+    user = UserProfile.objects.create(
         name="Nasha",
         email="nasha@test.com",
+        role="rider",
         disability_type="Wheelchair",
-        emergency_contact="1234567890"
+        emergency_contact_name="Parent",
+        emergency_contact_phone="1234567890",
     )
 
-    assert UserProfile.name == "Nasha"
+    assert user.name == "Nasha"
+    assert user.role == "rider"
 
 
 @pytest.mark.django_db
 def test_travel_request_creation():
 
-    UserProfile = UserProfile.objects.create(
+    user = UserProfile.objects.create(
         name="Nasha",
         email="travel@test.com",
+        role="rider",
         disability_type="Wheelchair",
-        emergency_contact="1234567890"
+        emergency_contact_name="Parent",
+        emergency_contact_phone="1234567890",
     )
 
     travel_request = TravelRequest.objects.create(
+        rider=user,
         pickup_location="A",
         destination="B",
         travel_date="2026-06-20",
         service_type="Hospital visit",
         assistance_type="Wheelchair assistance",
-        UserProfile=UserProfile
+        assistance_level="Medium",
+        additional_note="Test ride",
     )
 
     assert travel_request.destination == "B"
+    assert travel_request.rider == user
