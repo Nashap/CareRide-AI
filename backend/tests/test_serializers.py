@@ -1,7 +1,7 @@
 import pytest
 
 from helpers.models import Helper
-from users.models import Passenger
+from users.models import UserProfile
 from rides.models import TravelRequest
 
 
@@ -22,20 +22,20 @@ def test_helper_creation():
 @pytest.mark.django_db
 def test_passenger_creation():
 
-    passenger = Passenger.objects.create(
+    UserProfile = UserProfile.objects.create(
         name="Nasha",
         email="nasha@test.com",
         disability_type="Wheelchair",
         emergency_contact="1234567890"
     )
 
-    assert passenger.name == "Nasha"
+    assert UserProfile.name == "Nasha"
 
 
 @pytest.mark.django_db
 def test_travel_request_creation():
 
-    passenger = Passenger.objects.create(
+    UserProfile = UserProfile.objects.create(
         name="Nasha",
         email="travel@test.com",
         disability_type="Wheelchair",
@@ -48,7 +48,7 @@ def test_travel_request_creation():
         travel_date="2026-06-20",
         service_type="Hospital visit",
         assistance_type="Wheelchair assistance",
-        passenger=passenger
+        UserProfile=UserProfile
     )
 
     assert travel_request.destination == "B"
