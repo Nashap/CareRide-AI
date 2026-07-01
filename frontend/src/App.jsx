@@ -7,6 +7,8 @@ import Register from "./pages/auth/Register";
 
 import RiderDashboard from "./pages/dashboard/RiderDashboard";
 import HelperDashboard from "./pages/dashboard/HelperDashboard";
+import BookRide from "./pages/bookings/BookRide";
+import MyRides from "./pages/bookings/MyRides";
 
 function App() {
   return (
@@ -36,6 +38,16 @@ function App() {
         <Route
           path="/dashboard/helper"
           element={<HelperDashboard />}
+        />
+
+        <Route
+          path="/book-ride"
+          element={<BookRide />}
+        />
+
+        <Route
+          path="/my-rides"
+          element={<MyRides />}
         />
 
       </Routes>

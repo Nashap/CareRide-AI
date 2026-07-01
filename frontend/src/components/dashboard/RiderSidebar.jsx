@@ -11,7 +11,7 @@ const menuItems = [
   {
     icon: LayoutGrid,
     label: "My rides",
-    path: "/rider-dashboard",
+    path: "/my-rides",
   },
   {
     icon: Plus,
