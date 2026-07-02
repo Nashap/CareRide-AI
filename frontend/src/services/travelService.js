@@ -107,3 +107,24 @@ export const deleteTravelRequest = async (id) => {
     throw error;
   }
 };
+
+/**
+ * Accept a helper for a travel request
+ */
+export const acceptHelper = async (travelRequestId, helperId, reason) => {
+  try {
+    const response = await api.post(
+      `/travel-requests/${travelRequestId}/accept-helper/`,
+      {
+        helper_id: helperId,
+        reason: reason,
+      }
+    );
+
+    return response.data;
+
+  } catch (error) {
+    console.error("Error accepting helper:", error);
+    throw error;
+  }
+};

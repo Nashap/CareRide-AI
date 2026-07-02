@@ -47,10 +47,41 @@ function Register() {
       }, 1500);
 
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-          "Registration failed."
-      );
+      console.error("Registration error:", err);
+      let errorMsg = "Registration failed.";
+      
+      if (err.response?.data) {
+        const data = err.response.data;
+        if (typeof data === "string") {
+          errorMsg = data;
+        } else if (data.error) {
+          errorMsg = data.error;
+        } else if (data.detail) {
+          errorMsg = data.detail;
+        } else if (data.message) {
+          errorMsg = data.message;
+        } else if (typeof data === "object") {
+          // Parse serializer field validation errors (e.g. email, password validations)
+          const errors = [];
+          Object.entries(data).forEach(([field, messages]) => {
+            const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+            if (Array.isArray(messages)) {
+              errors.push(`${fieldName}: ${messages.join(" ")}`);
+            } else if (typeof messages === "object") {
+              errors.push(`${fieldName}: ${JSON.stringify(messages)}`);
+            } else {
+              errors.push(`${fieldName}: ${messages}`);
+            }
+          });
+          if (errors.length > 0) {
+            errorMsg = errors.join("\n");
+          }
+        }
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+      
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -143,7 +174,7 @@ function Register() {
           </p>
 
           {error && (
-            <div className="bg-red-100 text-red-700 rounded-xl p-3 mb-4">
+            <div className="bg-red-100 text-red-700 rounded-xl p-3 mb-4 text-sm whitespace-pre-line">
 
               {error}
 
@@ -151,7 +182,7 @@ function Register() {
           )}
 
           {success && (
-            <div className="bg-green-100 text-green-700 rounded-xl p-3 mb-4">
+            <div className="bg-green-100 text-green-700 rounded-xl p-3 mb-4 text-sm">
 
               {success}
 
@@ -224,7 +255,8 @@ function Register() {
             >
               {loading ? "Creating Account..." : "Create account"}
             </button>
-                        {/* Divider */}
+
+            {/* Divider */}
 
             <div className="flex items-center my-8">
 

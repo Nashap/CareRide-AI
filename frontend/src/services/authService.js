@@ -1,10 +1,41 @@
 import api from "./api";
 
 /**
+ * Helper to check if a JWT token is expired
+ */
+const isTokenExpired = (token) => {
+  if (!token) return true;
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+    const payload = JSON.parse(jsonPayload);
+    if (payload.exp && payload.exp * 1000 < Date.now()) {
+      return true;
+    }
+    return false;
+  } catch (e) {
+    return true; // Treat invalid tokens as expired
+  }
+};
+
+/**
  * Register User
  */
 export const registerUser = async (userData) => {
   try {
+    // Clear expired token if it exists in localStorage
+    const token = localStorage.getItem("token");
+    if (token && isTokenExpired(token)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+
     const response = await api.post(
       "/register/",
       userData

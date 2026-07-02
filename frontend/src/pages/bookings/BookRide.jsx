@@ -6,6 +6,7 @@ import RiderSidebar from "../../components/dashboard/RiderSidebar";
 
 import { createTravelRequest } from "../../services/travelService";
 import { getCurrentUser } from "../../services/authService";
+import { recommendHelper } from "../../services/aiService";
 
 export default function BookRide() {
 
@@ -50,12 +51,17 @@ export default function BookRide() {
 
     try {
 
-      await createTravelRequest(formData);
+      const response = await createTravelRequest(formData);
 
-      setSuccess("Ride booked successfully!");
+      setSuccess("Ride request created! Generating AI recommendations...");
+
+      // Call AI Recommendation API
+      await recommendHelper(response.id);
+
+      setSuccess("AI Recommendations generated successfully!");
 
       setTimeout(() => {
-        navigate("/dashboard/rider");
+        navigate(`/ai-recommendation/${response.id}`);
       }, 1000);
 
     } catch (err) {
@@ -65,7 +71,7 @@ export default function BookRide() {
       setError(
         err.response?.data?.detail ||
         err.response?.data?.error ||
-        "Unable to create ride."
+        "Unable to create ride request or generate recommendations."
       );
 
     } finally {

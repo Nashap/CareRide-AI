@@ -15,7 +15,7 @@ import {
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
-import { getTravelRequests, updateTravelRequest } from "../../services/travelService";
+import { getTravelRequests } from "../../services/travelService";
 import { getHelpers, createHelperProfile } from "../../services/helperService";
 import { getCurrentUser } from "../../services/authService";
 
@@ -24,7 +24,6 @@ export default function HelperDashboard() {
   const user = getCurrentUser();
 
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
   const [helperProfile, setHelperProfile] = useState(null);
   const [stats, setStats] = useState({
     assigned: 0,
@@ -52,6 +51,7 @@ export default function HelperDashboard() {
       let profile = allHelpers.find((h) => h.auth_user_id === user.user_id);
 
       if (!profile) {
+        // Create Helper profile if none exists
         profile = await createHelperProfile({
           auth_user_id: user.user_id,
           name: user.name || "Helper",
@@ -87,6 +87,7 @@ export default function HelperDashboard() {
       // Get most recent active assigned ride
       const activeAssigned = assignedRides.filter((ride) => ride.status === "Accepted");
       if (activeAssigned.length > 0) {
+        // Sort by id descending
         activeAssigned.sort((a, b) => b.id - a.id);
         setRecentRide(activeAssigned[0]);
       } else {
@@ -96,18 +97,6 @@ export default function HelperDashboard() {
       console.error("Dashboard Loading Error:", err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleCompleteRide = async (rideId) => {
-    setActionLoading(true);
-    try {
-      await updateTravelRequest(rideId, { status: "Completed" });
-      await loadDashboard();
-    } catch (err) {
-      console.error("Error completing ride:", err);
-    } finally {
-      setActionLoading(false);
     }
   };
 
@@ -132,20 +121,11 @@ export default function HelperDashboard() {
 
           <main className="flex-1">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">Helper Dashboard</h1>
-                <p className="text-gray-500 text-sm mt-1">
-                  Manage your assigned rides and help riders with confidence.
-                </p>
-              </div>
-              <button
-                onClick={() => navigate("/helper/availability")}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg font-medium transition"
-              >
-                <Clock size={18} />
-                Update Availability
-              </button>
+            <div className="bg-gradient-to-r from-teal-600 to-teal-500 rounded-2xl text-white p-8 mb-8">
+              <h1 className="text-3xl font-bold">Helper Dashboard</h1>
+              <p className="mt-3 text-teal-100 max-w-2xl">
+                Manage your assigned rides and help riders with confidence.
+              </p>
             </div>
 
             {/* Statistics */}
@@ -204,80 +184,67 @@ export default function HelperDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow p-8 mb-8 border border-gray-200">
+            <div className="bg-white rounded-xl shadow p-8 mb-8">
               <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-4 gap-6">
                 <button
                   onClick={() => navigate("/helper/assigned-rides")}
-                  className="flex items-center justify-between bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition text-left w-full"
+                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
-                  <div>
-                    <h3 className="text-lg font-semibold">View Assigned Rides</h3>
-                    <p className="text-teal-100 text-sm mt-1">Check your active matches.</p>
-                  </div>
-                  <ArrowRight size={28} />
+                  <Briefcase size={24} />
+                  <span className="font-semibold text-sm">View Assigned Rides</span>
                 </button>
 
                 <button
                   onClick={() => navigate("/helper/browse-requests")}
-                  className="flex items-center justify-between bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl p-6 transition text-left w-full"
+                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
-                  <div>
-                    <h3 className="text-lg font-semibold">Browse Requests</h3>
-                    <p className="text-gray-500 text-sm mt-1">Find new ride requests.</p>
-                  </div>
-                  <ArrowRight size={28} />
+                  <Search size={24} />
+                  <span className="font-semibold text-sm">Browse Ride Requests</span>
                 </button>
 
                 <button
                   onClick={() => navigate("/helper/availability")}
-                  className="flex items-center justify-between bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl p-6 transition text-left w-full"
+                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
-                  <div>
-                    <h3 className="text-lg font-semibold">Availability</h3>
-                    <p className="text-gray-500 text-sm mt-1">Set your online status.</p>
-                  </div>
-                  <ArrowRight size={28} />
+                  <Clock size={24} />
+                  <span className="font-semibold text-sm">Update Availability</span>
                 </button>
 
                 <button
                   onClick={() => navigate("/profile")}
-                  className="flex items-center justify-between bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl p-6 transition text-left w-full"
+                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
-                  <div>
-                    <h3 className="text-lg font-semibold">Profile</h3>
-                    <p className="text-gray-500 text-sm mt-1">Manage personal details.</p>
-                  </div>
-                  <ArrowRight size={28} />
+                  <Star size={24} />
+                  <span className="font-semibold text-sm">View Profile</span>
                 </button>
               </div>
             </div>
 
-            {/* Today's Assigned Ride */}
-            <div className="bg-white rounded-xl shadow p-8 border border-gray-200">
-              <h2 className="text-xl font-bold mb-6">Today's Assigned Ride</h2>
+            {/* Recent Assigned Ride */}
+            <div className="bg-white rounded-xl shadow p-8">
+              <h2 className="text-xl font-bold mb-6">Recent Assigned Ride</h2>
 
               {recentRide ? (
-                <div className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition">
-                  <div className="flex justify-between items-start">
+                <div className="border rounded-xl p-6 hover:shadow-md transition">
+                  <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                        <MapPin size={20} className="text-teal-600" />
+                      <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <MapPin size={18} className="text-teal-600" />
                         {recentRide.pickup_location}
                         <span className="text-gray-400">→</span>
                         {recentRide.destination}
-                      </h2>
+                      </h3>
                       <p className="text-gray-500 text-xs mt-1">Ride ID #{recentRide.id}</p>
                     </div>
-
-                    <span className="px-4 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
+                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                       {recentRide.status}
                     </span>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6 mt-6">
+                  <div className="grid md:grid-cols-2 gap-4 text-sm mb-6">
                     <div className="flex items-center gap-2">
-                      <Calendar size={18} className="text-teal-600" />
+                      <Calendar size={16} className="text-teal-600" />
                       <div>
                         <p className="text-gray-500 text-xs">Travel Date</p>
                         <p className="font-semibold">{recentRide.travel_date}</p>
@@ -285,7 +252,7 @@ export default function HelperDashboard() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Activity size={18} className="text-teal-600" />
+                      <Activity size={16} className="text-teal-600" />
                       <div>
                         <p className="text-gray-500 text-xs">Service Type</p>
                         <p className="font-semibold">{recentRide.service_type}</p>
@@ -293,49 +260,25 @@ export default function HelperDashboard() {
                     </div>
 
                     <div>
-                      <p className="text-gray-500 text-xs mb-1">Assistance Type</p>
+                      <p className="text-gray-500 text-xs">Assistance Type</p>
                       <p className="font-semibold">{recentRide.assistance_type}</p>
-                    </div>
-
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1">Assistance Level</p>
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full text-sm font-medium
-                        ${
-                          recentRide.assistance_level === "High"
-                            ? "bg-red-100 text-red-700"
-                            : recentRide.assistance_level === "Medium"
-                            ? "bg-orange-100 text-orange-700"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {recentRide.assistance_level}
-                      </span>
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                  <div className="flex justify-end">
                     <button
                       onClick={() => navigate("/helper/assigned-rides")}
-                      className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-5 py-2 rounded-lg font-medium transition"
+                      className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition"
                     >
                       View Details
+                      <ArrowRight size={16} />
                     </button>
-                    {recentRide.status === "Accepted" && (
-                      <button
-                        onClick={() => handleCompleteRide(recentRide.id)}
-                        disabled={actionLoading}
-                        className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition disabled:bg-gray-300"
-                      >
-                        {actionLoading ? "Completing..." : "Complete Ride"}
-                      </button>
-                    )}
                   </div>
                 </div>
               ) : (
-                <div className="border border-gray-200 rounded-xl p-8 text-center bg-gray-50">
+                <div className="border rounded-xl p-8 text-center bg-gray-50">
                   <HeartHandshake className="mx-auto text-gray-400 mb-2" size={40} />
-                  <p className="text-gray-500 text-sm">No active assigned rides found for today.</p>
+                  <p className="text-gray-500 text-sm">No active assigned rides found.</p>
                 </div>
               )}
             </div>

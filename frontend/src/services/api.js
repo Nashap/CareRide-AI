@@ -9,13 +9,29 @@ const api = axios.create({
   },
 });
 
-// Add Authorization header if a token exists
+// Add Authorization header if a token exists, excluding public auth endpoints
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const url = config.url || "";
+    const isAuthRoute =
+      url.endsWith("/register/") ||
+      url.endsWith("/register") ||
+      url.endsWith("/login/") ||
+      url.endsWith("/login") ||
+      url.endsWith("/token/") ||
+      url.endsWith("/token") ||
+      url.includes("/register") ||
+      url.includes("/login") ||
+      url.includes("/token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (!isAuthRoute) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } else {
+      // Explicitly remove Authorization header for authentication routes
+      delete config.headers.Authorization;
     }
 
     return config;
