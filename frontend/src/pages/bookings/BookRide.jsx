@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
@@ -7,6 +7,7 @@ import RiderSidebar from "../../components/dashboard/RiderSidebar";
 import { createTravelRequest } from "../../services/travelService";
 import { getCurrentUser } from "../../services/authService";
 import { recommendHelper } from "../../services/aiService";
+import { getProfile } from "../../services/profileService";
 
 export default function BookRide() {
 
@@ -22,12 +23,28 @@ export default function BookRide() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [profileCompleted, setProfileCompleted] = useState(true);
+
+
+  
+  useEffect(() => {
+    const checkProfile = async () => {
+      try {
+        const profile = await getProfile(user.email);
+        setProfileCompleted(profile.profile_completed);
+      } catch (err) {
+        console.error("Error checking profile status", err);
+      }
+    };
+    if (user) checkProfile();
+  }, [user]);
 
   const [formData, setFormData] = useState({
     rider: user.id,
     pickup_location: "",
     destination: "",
     travel_date: "",
+    travel_time: "",
     service_type: "Hospital visit",
     assistance_type: "",
     assistance_level: "Medium",
@@ -49,12 +66,61 @@ export default function BookRide() {
     setError("");
     setSuccess("");
 
+    const today = new Date().toISOString().split("T")[0];
+    if (formData.travel_date < today) {
+      setError("You cannot book a ride in the past.");
+      setLoading(false);
+      return;
+    }
+    
+    if (formData.travel_date === today && formData.travel_time) {
+      const now = new Date();
+      const currentHours = now.getHours().toString().padStart(2, "0");
+      const currentMinutes = now.getMinutes().toString().padStart(2, "0");
+      const currentTime = `${currentHours}:${currentMinutes}`;
+      
+      if (formData.travel_time < currentTime) {
+        setError("Travel time cannot be in the past for today's date.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    let response;
+
     try {
+      response = await createTravelRequest(formData);
+      setSuccess("AI is finding the best helper.");
+    } catch (err) {
+      console.error(err);
+      
+      let errorMessage = "Failed to create ride request.";
+      if (err.response?.data) {
+        if (err.response.data.detail) {
+          errorMessage = err.response.data.detail;
+        } else if (err.response.data.error) {
+          errorMessage = err.response.data.error;
+        } else if (typeof err.response.data === "object") {
+          // Handle DRF serializer validation errors (e.g. { pickup_location: ["too short"] })
+          const errors = [];
+          Object.keys(err.response.data).forEach(key => {
+            const fieldError = err.response.data[key];
+            if (Array.isArray(fieldError)) {
+              errors.push(`${key}: ${fieldError[0]}`);
+            } else {
+              errors.push(`${key}: ${fieldError}`);
+            }
+          });
+          if (errors.length > 0) errorMessage = errors.join(" | ");
+        }
+      }
+      
+      setError(errorMessage);
+      setLoading(false);
+      return;
+    }
 
-      const response = await createTravelRequest(formData);
-
-      setSuccess("Ride request created! Generating AI recommendations...");
-
+    try {
       // Call AI Recommendation API
       await recommendHelper(response.id);
 
@@ -65,19 +131,16 @@ export default function BookRide() {
       }, 1000);
 
     } catch (err) {
-
       console.error(err);
-
-      setError(
-        err.response?.data?.detail ||
-        err.response?.data?.error ||
-        "Unable to create ride request or generate recommendations."
-      );
-
+      
+      const aiError = err.response?.data?.detail || err.response?.data?.error || "AI recommendation unavailable.";
+      setError(`Ride Created Successfully, but ${aiError}`);
+      
+      setTimeout(() => {
+        navigate("/my-rides");
+      }, 3000);
     } finally {
-
       setLoading(false);
-
     }
   };
     return (
@@ -92,7 +155,22 @@ export default function BookRide() {
           <RiderSidebar />
 
           <main className="flex-1">
-
+          
+            {!profileCompleted ? (
+              <div className="bg-white rounded-xl shadow border border-gray-200 p-12 text-center max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Incomplete</h2>
+                <p className="text-gray-500 mb-8">
+                  Please complete your profile before booking your first ride.
+                </p>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition inline-block"
+                >
+                  Complete Profile
+                </button>
+              </div>
+            ) : (
+              <>
             {/* Page Header */}
 
             <div className="mb-6">
@@ -183,6 +261,24 @@ export default function BookRide() {
                       name="travel_date"
                       value={formData.travel_date}
                       onChange={handleChange}
+                      min={new Date().toISOString().split("T")[0]}
+                      className="w-full border rounded-lg p-3"
+                      required
+                    />
+
+                  </div>
+                  
+                  <div>
+
+                    <label className="block mb-2 font-medium">
+                      Travel Time
+                    </label>
+
+                    <input
+                      type="time"
+                      name="travel_time"
+                      value={formData.travel_time}
+                      onChange={handleChange}
                       className="w-full border rounded-lg p-3"
                       required
                     />
@@ -202,13 +298,10 @@ export default function BookRide() {
                       className="w-full border rounded-lg p-3"
                     >
                       <option value="Hospital visit">Hospital Visit</option>
-                      <option value="Medical appointment">Medical Appointment</option>
-                      <option value="Government office">Government Office</option>
+                      <option value="Govt. office">Govt. Office</option>
                       <option value="Shopping">Shopping</option>
-                      <option value="School / College">School / College</option>
-                      <option value="Work">Work</option>
+                      <option value="School / Work">School / Work</option>
                       <option value="Religious place">Religious Place</option>
-                      <option value="Family visit">Family Visit</option>
                       <option value="Other">Other</option>
                     </select>
 
@@ -243,38 +336,18 @@ export default function BookRide() {
                       required
                     >
                       <option value="">Select Assistance</option>
-                      <option value="Wheelchair assistance">
-                        Wheelchair Assistance
-                        </option>
-                        <option value="Walking assistance">
-                          Walking Assistance
-                          </option>
-                          <option value="Walker support">
-                            Walker Support
-                            </option>
-                            <option value="Crutches support">
-                              Crutches Support
-                              </option>
-
-                              <option value="Travel companion">
-                                Travel Companion
-                              </option>
-
-                              <option value="Visual guidance">
-                                Visual Guidance
-                              </option>
-
-                              <option value="Hearing assistance">
-                                Hearing Assistance
-                              </option>
-
-                              <option value="Luggage assistance">
-                                Luggage Assistance
-                              </option>
-
-                              <option value="General mobility support">
-                                General Mobility Support
-                              </option>
+                      <option value="Wheelchair assistance">Wheelchair assistance</option>
+                      <option value="Walker support">Walker support</option>
+                      <option value="Crutches support">Crutches support</option>
+                      <option value="Walking assistance">Walking assistance</option>
+                      <option value="Travel companion">Travel companion</option>
+                      <option value="Hospital visit">Hospital visit</option>
+                      <option value="Shopping help">Shopping help</option>
+                      <option value="Govt. office help">Govt. office help</option>
+                      <option value="Elderly care">Elderly care</option>
+                      <option value="Visually impaired">Visually impaired</option>
+                      <option value="Hearing impaired">Hearing impaired</option>
+                      <option value="Post-surgery">Post-surgery</option>
 
                     </select>
 
@@ -333,6 +406,8 @@ export default function BookRide() {
               </div>
 
             </form>
+            </>
+            )}
 
           </main>
 

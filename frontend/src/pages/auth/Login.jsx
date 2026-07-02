@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Accessibility } from "lucide-react";
 
 import { loginUser } from "../../services/authService";
+import Toast from "../../components/common/Toast";
 
 function Login() {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(false);
 
@@ -16,6 +18,7 @@ function Login() {
   });
 
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState(location.state?.message || "");
 
   const handleChange = (e) => {
 
@@ -36,7 +39,10 @@ function Login() {
 
       setError("");
 
-      const data = await loginUser(formData);
+      const data = await loginUser({
+        ...formData,
+        email: formData.email.trim().toLowerCase(),
+      });
 
       if (data.role === "rider") {
 
@@ -60,15 +66,24 @@ function Login() {
 
     catch (err) {
 
-      setError(
-
-        err.response?.data?.error ||
-
-        err.response?.data?.message ||
-
-        "Invalid email or password."
-
-      );
+      let errorMsg = "Unable to connect to the server. Please try again later.";
+      
+      if (err.response && err.response.data) {
+        const data = err.response.data;
+        errorMsg = "Invalid email or password.";
+        if (data.error) errorMsg = data.error;
+        else if (data.message) errorMsg = data.message;
+        else if (typeof data === 'object') {
+          const firstKey = Object.keys(data)[0];
+          if (data[firstKey] && Array.isArray(data[firstKey])) {
+            errorMsg = data[firstKey][0];
+          } else if (typeof data.detail === 'string') {
+            errorMsg = data.detail;
+          }
+        }
+      }
+      
+      setError(errorMsg);
 
     }
 
@@ -83,6 +98,8 @@ function Login() {
   return (
 
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 to-white flex items-center justify-center px-4 py-10">
+      
+      {successMessage && <Toast message={successMessage} onClose={() => setSuccessMessage("")} />}
 
       <div className="w-full max-w-md">
 

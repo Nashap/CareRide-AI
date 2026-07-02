@@ -17,8 +17,10 @@ import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
 
 import { getRecommendation } from "../../services/aiService";
+
 import { getTravelRequest, acceptHelper } from "../../services/travelService";
 import { getCurrentUser } from "../../services/authService";
+import { getProfile } from "../../services/profileService";
 
 export default function AIRecommendation() {
   const { travelRequestId } = useParams();
@@ -26,9 +28,10 @@ export default function AIRecommendation() {
   const user = getCurrentUser();
 
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(false);
+  const [loadingHelperId, setLoadingHelperId] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [profileCompleted, setProfileCompleted] = useState(true);
 
   const [travelRequest, setTravelRequest] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
@@ -38,6 +41,17 @@ export default function AIRecommendation() {
       navigate("/login");
       return;
     }
+    
+    const checkProfile = async () => {
+      try {
+        const profile = await getProfile(user.email);
+        setProfileCompleted(profile.profile_completed);
+      } catch (err) {
+        console.error("Error checking profile status", err);
+      }
+    };
+    checkProfile();
+    
     loadData();
   }, [travelRequestId]);
 
@@ -65,19 +79,20 @@ export default function AIRecommendation() {
   };
 
   const handleAcceptHelper = async (helperId, reason) => {
-    setActionLoading(true);
+    setLoadingHelperId(helperId);
     setError("");
     setSuccess("");
+
     try {
       await acceptHelper(travelRequestId, helperId, reason);
-      setSuccess("Helper matched successfully! Redirecting...");
+      setSuccess("Your request has been sent to the selected helper.");
       setTimeout(() => {
         navigate("/my-rides");
       }, 1500);
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || "Failed to accept the helper.");
-      setActionLoading(false);
+      setLoadingHelperId(null);
     }
   };
 
@@ -97,6 +112,22 @@ export default function AIRecommendation() {
           <RiderSidebar />
 
           <main className="flex-1">
+          
+            {!profileCompleted ? (
+              <div className="bg-white rounded-xl shadow border border-gray-200 p-12 text-center max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Incomplete</h2>
+                <p className="text-gray-500 mb-8">
+                  Please complete your profile before booking your first ride.
+                </p>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition inline-block"
+                >
+                  Complete Profile
+                </button>
+              </div>
+            ) : (
+              <>
             {/* Header */}
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
@@ -225,12 +256,12 @@ export default function AIRecommendation() {
 
                             <button
                               onClick={() => handleAcceptHelper(rh.helper_id, rh.reason)}
-                              disabled={actionLoading || !rh.availability}
+                              disabled={(loadingHelperId !== null) || !rh.availability}
                               className={`flex items-center gap-2 font-semibold px-6 py-3 rounded-xl transition shadow-sm
-                                ${!rh.availability ? "bg-gray-100 text-gray-400 cursor-not-allowed border" :
+                                ${!rh.availability || (loadingHelperId !== null && loadingHelperId !== rh.helper_id) ? "bg-gray-100 text-gray-400 cursor-not-allowed border" :
                                   "bg-teal-600 hover:bg-teal-700 text-white hover:shadow"}`}
                             >
-                              {actionLoading ? "Confirming..." : "Accept Helper"}
+                              {loadingHelperId === rh.helper_id ? "Confirming..." : "Accept Helper"}
                             </button>
                           </div>
 
@@ -305,6 +336,9 @@ export default function AIRecommendation() {
                   </div>
                 )}
               </>
+            )}
+            
+            </>
             )}
           </main>
         </div>

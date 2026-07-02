@@ -37,6 +37,7 @@ function Register() {
 
       await registerUser({
         ...formData,
+        email: formData.email.trim().toLowerCase(),
         role,
       });
 
@@ -77,6 +78,8 @@ function Register() {
             errorMsg = errors.join("\n");
           }
         }
+      } else if (err.message === "Network Error") {
+        errorMsg = "Unable to connect to the server. Please ensure the backend is running.";
       } else if (err.message) {
         errorMsg = err.message;
       }

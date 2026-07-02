@@ -37,9 +37,10 @@ export default function Profile() {
     gender: "",
     disability_type: "",
     medical_notes: "",
-    emergency_contact_name: "",
     emergency_contact_phone: "",
     role: "",
+    address: "",
+    skills: "",
   });
 
   useEffect(() => {
@@ -66,6 +67,8 @@ export default function Profile() {
         emergency_contact_name: profile.emergency_contact_name || "",
         emergency_contact_phone: profile.emergency_contact_phone || "",
         role: profile.role || "",
+        address: profile.address || "",
+        skills: profile.skills || "",
       });
     } catch (err) {
       console.error(err);
@@ -214,8 +217,20 @@ export default function Profile() {
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
-                        <option value="other">Other</option>
                       </select>
+                    </div>
+                    
+                    <div className="md:col-span-2">
+                      <label className="block mb-2 font-medium text-sm text-gray-700">Home Address</label>
+                      <input
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="Enter full address"
+                        required
+                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                      />
                     </div>
 
                     {!isHelper && (
@@ -227,6 +242,21 @@ export default function Profile() {
                           value={formData.disability_type}
                           onChange={handleChange}
                           placeholder="e.g. Wheelchair, Visually Impaired"
+                          className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                        />
+                      </div>
+                    )}
+                    
+                    {isHelper && (
+                      <div className="md:col-span-2">
+                        <label className="block mb-2 font-medium text-sm text-gray-700">Skills / Assistance Provided</label>
+                        <input
+                          type="text"
+                          name="skills"
+                          value={formData.skills}
+                          onChange={handleChange}
+                          placeholder="e.g. CPR Certified, First Aid, Mobility and travel assistance"
+                          required
                           className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
                         />
                       </div>

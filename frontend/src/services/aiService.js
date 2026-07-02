@@ -20,9 +20,9 @@ export const recommendHelper = async (travelRequestId) => {
  */
 export const getRecommendation = async (travelRequestId) => {
   try {
-    const response = await api.get(`/ai/recommend-helper/`, {
-      params: { travel_request_id: travelRequestId },
-    });
+    const response = await api.get(
+      `/ai/recommendation/${travelRequestId}/`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching helper recommendations:", error);

@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Calendar, MapPin, Activity, CheckCircle, Briefcase } from "lucide-react";
 
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
-import { getTravelRequests, updateTravelRequest } from "../../services/travelService";
+import { getTravelRequests, completeRide } from "../../services/travelService";
 import { getHelpers } from "../../services/helperService";
 import { getCurrentUser } from "../../services/authService";
+import Toast from "../../components/common/Toast";
 
 export default function AssignedRides() {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = getCurrentUser();
+
+  const [toastMessage, setToastMessage] = useState(location.state?.message || null);
 
   const [loading, setLoading] = useState(true);
   const [rides, setRides] = useState([]);
@@ -38,9 +42,11 @@ export default function AssignedRides() {
         const requestsData = await getTravelRequests();
         const allRides = requestsData.results || requestsData;
 
-        // Filter rides assigned to this helper
+        // Filter rides assigned to this helper that are actually Assigned
         const assignedRides = allRides.filter(
-          (ride) => ride.assigned_helper?.id === profile.id
+          (ride) => 
+            ride.assigned_helper?.id === profile.id && 
+            ride.status === "Assigned"
         );
         setRides(assignedRides);
       }
@@ -54,7 +60,8 @@ export default function AssignedRides() {
   const handleCompleteRide = async (rideId) => {
     setActionLoading((prev) => ({ ...prev, [rideId]: true }));
     try {
-      await updateTravelRequest(rideId, { status: "Completed" });
+      await completeRide(rideId);
+      setToastMessage("Ride completed successfully.");
       await loadData();
     } catch (err) {
       console.error("Error completing ride:", err);
@@ -77,6 +84,14 @@ export default function AssignedRides() {
   return (
     <div className="min-h-screen bg-[#F5F0E8]">
       <HelperNavbar />
+      
+      {toastMessage && (
+        <Toast 
+          message={toastMessage} 
+          duration={4000} 
+          onClose={() => setToastMessage(null)} 
+        />
+      )}
 
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="flex gap-8">
@@ -120,7 +135,7 @@ export default function AssignedRides() {
                         ${
                           ride.status === "Pending"
                             ? "bg-yellow-100 text-yellow-700"
-                            : ride.status === "Accepted"
+                            : ride.status === "Assigned"
                             ? "bg-green-100 text-green-700"
                             : ride.status === "Completed"
                             ? "bg-blue-100 text-blue-700"
@@ -136,7 +151,15 @@ export default function AssignedRides() {
                         <Calendar size={18} className="text-teal-600" />
                         <div>
                           <p className="text-gray-500 text-xs">Travel Date</p>
-                          <p className="font-semibold">{ride.travel_date}</p>
+                          <p className="font-semibold flex gap-2 items-center">
+                            {ride.travel_date}
+                            {ride.travel_time && (
+                              <>
+                                <span className="text-gray-300">|</span>
+                                <span>{ride.travel_time.slice(0, 5)}</span>
+                              </>
+                            )}
+                          </p>
                         </div>
                       </div>
 
@@ -170,6 +193,31 @@ export default function AssignedRides() {
                       </div>
                     </div>
 
+                    {/* Rider Contact Info */}
+                    {(ride.status === "Assigned" || ride.status === "Completed") && ride.rider_details && (
+                      <div className="mt-6">
+                        <p className="text-gray-500 text-xs mb-2">Rider Contact Details</p>
+                        <div className="bg-white border rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:gap-8 gap-2">
+                          <div>
+                            <p className="text-gray-500 text-xs">Name</p>
+                            <p className="font-semibold text-gray-800">{ride.rider_details.name}</p>
+                          </div>
+                          {ride.rider_details.phone_number && (
+                            <div>
+                              <p className="text-gray-500 text-xs">Phone Number</p>
+                              <p className="font-medium text-gray-800">{ride.rider_details.phone_number}</p>
+                            </div>
+                          )}
+                          {ride.rider_details.email && (
+                            <div>
+                              <p className="text-gray-500 text-xs">Email</p>
+                              <p className="font-medium text-gray-800">{ride.rider_details.email}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     {ride.additional_note && (
                       <div className="mt-6">
                         <p className="text-gray-500 text-xs mb-1">Additional Notes</p>
@@ -180,7 +228,7 @@ export default function AssignedRides() {
                     )}
 
                     <div className="flex justify-end gap-3 mt-6 border-t pt-4">
-                      {ride.status === "Accepted" && (
+                      {ride.status === "Assigned" && (
                         <button
                           onClick={() => handleCompleteRide(ride.id)}
                           disabled={actionLoading[ride.id]}

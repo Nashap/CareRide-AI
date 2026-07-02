@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { HeartHandshake, LogOut, User } from "lucide-react";
 
@@ -6,10 +8,12 @@ function HelperNavbar() {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login", { state: { message: "You have been signed out successfully." } });
   };
 
   return (
@@ -49,7 +53,7 @@ function HelperNavbar() {
             </div>
 
             <button
-              onClick={handleLogout}
+              onClick={() => setShowSignOutModal(true)}
               className="flex items-center gap-2 text-gray-700 hover:text-teal-600 transition font-medium"
             >
               <LogOut size={17} />
@@ -58,6 +62,31 @@ function HelperNavbar() {
           </div>
         </div>
       </div>
+      
+      {showSignOutModal && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm border border-gray-100 mx-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Sign Out</h3>
+            <p className="text-gray-600 text-sm mb-6">Are you sure you want to sign out?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowSignOutModal(false)}
+                className="px-4 py-2 rounded-xl text-gray-600 font-medium hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-xl bg-teal-600 text-white font-medium hover:bg-teal-700 transition"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+      
     </header>
   );
 }

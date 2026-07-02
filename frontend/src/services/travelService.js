@@ -113,18 +113,62 @@ export const deleteTravelRequest = async (id) => {
  */
 export const acceptHelper = async (travelRequestId, helperId, reason) => {
   try {
-    const response = await api.post(
-      `/travel-requests/${travelRequestId}/accept-helper/`,
+    const response = await api.patch(
+      `/travel-requests/${travelRequestId}/assign/`,
       {
         helper_id: helperId,
-        reason: reason,
       }
     );
-
     return response.data;
 
   } catch (error) {
     console.error("Error accepting helper:", error);
+    throw error;
+  }
+};
+
+/**
+ * Decline an AI recommendation
+ */
+export const declineHelper = async (travelRequestId) => {
+  try {
+    const response = await api.post(
+      `/travel-requests/${travelRequestId}/helper-decline/`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error declining helper:", error);
+    throw error;
+  }
+};
+
+/**
+ * Accept a ride (Helper)
+ */
+export const acceptRide = async (travelRequestId) => {
+  try {
+    const response = await api.patch(
+      `/travel-requests/${travelRequestId}/accept/`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error accepting ride:", error);
+    throw error;
+  }
+};
+
+/**
+ * Complete a ride (Helper)
+ */
+export const completeRide = async (travelRequestId) => {
+  try {
+    const response = await api.patch(
+      `/travel-requests/${travelRequestId}/complete/`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error completing ride:", error);
     throw error;
   }
 };

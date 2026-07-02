@@ -7,6 +7,7 @@ import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
 import { getHelpers, updateHelperProfile, createHelperProfile } from "../../services/helperService";
 import { getCurrentUser } from "../../services/authService";
+import { getProfile } from "../../services/profileService";
 
 export default function Availability() {
   const navigate = useNavigate();
@@ -17,12 +18,24 @@ export default function Availability() {
   const [helperProfile, setHelperProfile] = useState(null);
   const [available, setAvailable] = useState(true);
   const [success, setSuccess] = useState("");
+  const [profileCompleted, setProfileCompleted] = useState(true);
 
   useEffect(() => {
     if (!user) {
       navigate("/login");
       return;
     }
+    
+    const checkProfile = async () => {
+      try {
+        const profile = await getProfile(user.email);
+        setProfileCompleted(profile.profile_completed);
+      } catch (err) {
+        console.error("Error checking profile status", err);
+      }
+    };
+    checkProfile();
+    
     loadProfile();
   }, []);
 
@@ -87,6 +100,22 @@ export default function Availability() {
           <HelperSidebar />
 
           <main className="flex-1">
+          
+            {!profileCompleted ? (
+              <div className="bg-white rounded-xl shadow border border-gray-200 p-12 text-center max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Incomplete</h2>
+                <p className="text-gray-500 mb-8">
+                  Please complete your profile before accepting ride requests.
+                </p>
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition inline-block"
+                >
+                  Complete Profile
+                </button>
+              </div>
+            ) : (
+              <>
             <div className="mb-6">
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
                 <Clock className="text-teal-600" />
@@ -139,6 +168,9 @@ export default function Availability() {
                 </button>
               </div>
             </div>
+            
+            </>
+            )}
           </main>
         </div>
       </div>
