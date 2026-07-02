@@ -13,7 +13,8 @@ from .ai_service import call_ai_recommendation
 from .assistant import ai_chat
 from .supabase_client import supabase
 
-
+from rides.models import TravelRequest
+from helpers.models import Helper
 # ======================================================
 # AI HELPER RECOMMENDATION
 # ======================================================
@@ -45,19 +46,115 @@ class RecommendHelperView(APIView):
 
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def _populate_helpers(self, recommended_helpers):
+        populated_helpers = []
+        for rh in recommended_helpers:
+            h_id = rh.get("helper_id")
+            try:
+                helper_obj = Helper.objects.get(id=h_id)
+                populated_helpers.append({
+                    "helper_id": helper_obj.id,
+                    "name": helper_obj.name,
+                    "skills": helper_obj.skills,
+                    "rating": helper_obj.rating,
+                    "availability": helper_obj.availability,
+                    "match_score": rh.get("match_score"),
+                    "reason": rh.get("reason"),
+                })
+            except (Helper.DoesNotExist, ValueError):
+                pass
+        return populated_helpers
 
-        ai_input = request.data
-
-        travel_request_id = ai_input.get("travel_request_id")
+    def get(self, request):
+        travel_request_id = request.query_params.get("travel_request_id")
 
         if not travel_request_id:
             return Response(
-                {
-                    "error": "travel_request_id is required"
-                },
+                {"error": "travel_request_id is required"},
                 status=400
             )
+
+        try:
+            travel_request = TravelRequest.objects.get(id=travel_request_id)
+        except (TravelRequest.DoesNotExist, ValueError):
+            return Response(
+                {"error": "Travel request not found"},
+                status=404
+            )
+
+        try:
+            if supabase:
+                supabase_response = supabase.table("ai_recommendations")\
+                    .select("*")\
+                    .eq("travel_request_id", int(travel_request_id))\
+                    .execute()
+                
+                if supabase_response.data:
+                    rec = supabase_response.data[0]
+                    recommended_helpers = rec.get("recommended_helpers", [])
+                    populated_helpers = self._populate_helpers(recommended_helpers)
+                    
+                    return Response({
+                        "travel_request_id": rec.get("travel_request_id"),
+                        "recommended_helpers": populated_helpers,
+                        "summary": rec.get("ai_summary"),
+                        "model_used": rec.get("model_used")
+                    }, status=200)
+
+            return Response(
+                {"error": "No recommendation found for this travel request"},
+                status=404
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=500
+            )
+
+    def post(self, request):
+
+        travel_request_id = request.data.get("travel_request_id")
+
+        if not travel_request_id:
+            return Response(
+                {"error": "travel_request_id is required"},
+                status=400
+            )
+
+        try:
+            travel_request = TravelRequest.objects.get(id=travel_request_id)
+        except (TravelRequest.DoesNotExist, ValueError):
+            return Response(
+                {"error": "Travel request not found"},
+                status=404
+            )
+
+        helpers = Helper.objects.filter(availability=True)
+
+        candidates = []
+
+        for helper in helpers:
+            candidates.append({
+                "helper_id": helper.id,
+                "name": helper.name,
+                "skills": helper.skills,
+                "rating": helper.rating,
+                "availability": helper.availability,
+            })
+
+        ai_input = {
+            "travel_request_id": travel_request.id,
+            "travel_request": {
+                "pickup_location": travel_request.pickup_location,
+                "destination": travel_request.destination,
+                "service_type": travel_request.service_type,
+                "assistance_type": travel_request.assistance_type,
+                "assistance_level": travel_request.assistance_level,
+                "additional_note": travel_request.additional_note or "",
+            },
+            "candidates": candidates,
+        }
 
         try:
             result = call_ai_recommendation(ai_input)
@@ -112,6 +209,10 @@ class RecommendHelperView(APIView):
                 "Supabase Save Error:",
                 str(e)
             )
+
+        # Populate recommended helpers with full details
+        if "recommended_helpers" in result:
+            result["recommended_helpers"] = self._populate_helpers(result["recommended_helpers"])
 
         return Response(
             result,

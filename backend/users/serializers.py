@@ -17,6 +17,11 @@ class RegisterSerializer(serializers.Serializer):
         choices=["rider", "helper"]
     )
 
+    def validate_email(self, value):
+        if UserProfile.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email is already registered.")
+        return value
+
 
 class LoginSerializer(serializers.Serializer):
 

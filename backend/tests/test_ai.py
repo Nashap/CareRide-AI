@@ -2,6 +2,8 @@ import pytest
 from unittest.mock import patch
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
+from users.models import UserProfile
+from rides.models import TravelRequest
 
 
 @pytest.mark.django_db
@@ -25,6 +27,22 @@ def test_ai_recommendation(
         password="password123"
     )
 
+    rider_profile = UserProfile.objects.create(
+        name="Test Rider",
+        email="testrider@test.com",
+        role="rider"
+    )
+
+    travel_request = TravelRequest.objects.create(
+        rider=rider_profile,
+        pickup_location="Pickup A",
+        destination="Destination B",
+        travel_date="2026-07-02",
+        service_type="Hospital visit",
+        assistance_type="Wheelchair assistance",
+        assistance_level="Medium"
+    )
+
     client = APIClient()
 
     client.force_authenticate(user=user)
@@ -32,8 +50,7 @@ def test_ai_recommendation(
     response = client.post(
         "/api/ai/recommend-helper/",
         {
-            "travel_request_id":
-            "12345678-1234-1234-1234-123456789012"
+            "travel_request_id": travel_request.id
         },
         format="json"
     )

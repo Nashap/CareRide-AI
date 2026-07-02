@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from drf_spectacular.utils import extend_schema
 
@@ -20,64 +20,65 @@ from .serializers import (
 # =========================
 # REGISTER
 # =========================
-@extend_schema(
-    request=RegisterSerializer,
-    responses={200: dict},
-    summary="Register User"
-)
-@api_view(["POST"])
-def register(request):
+class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
 
-    serializer = RegisterSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+    @extend_schema(
+        request=RegisterSerializer,
+        responses={200: dict},
+        summary="Register User"
+    )
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    name = serializer.validated_data["name"]
-    email = serializer.validated_data["email"]
-    password = serializer.validated_data["password"]
-    role = serializer.validated_data["role"]
+        name = serializer.validated_data["name"]
+        email = serializer.validated_data["email"]
+        password = serializer.validated_data["password"]
+        role = serializer.validated_data["role"]
 
-    try:
-        supabase = get_supabase()
+        try:
+            supabase = get_supabase()
 
-        if not supabase:
-            return Response(
-                {"error": "Supabase not configured"},
-                status=500
+            if not supabase:
+                return Response(
+                    {"error": "Supabase not configured"},
+                    status=500
+                )
+
+            auth_response = supabase.auth.sign_up({
+                "email": email,
+                "password": password
+            })
+
+            if not auth_response.user:
+                return Response(
+                    {"error": "Supabase signup failed"},
+                    status=400
+                )
+
+            UserProfile.objects.create(
+                auth_user_id=auth_response.user.id,
+                name=name,
+                email=email,
+                role=role
             )
 
-        auth_response = supabase.auth.sign_up({
-            "email": email,
-            "password": password
-        })
+            return Response({
+                "message": "User registered successfully",
+                "user_id": str(auth_response.user.id),
+                "role": role,
+                "token": auth_response.session.access_token if auth_response.session else None
+            })
 
-        if not auth_response.user:
+        except Exception as e:
             return Response(
-                {"error": "Supabase signup failed"},
+                {
+                    "error": str(e),
+                    "step": "register"
+                },
                 status=400
             )
-
-        UserProfile.objects.create(
-            auth_user_id=auth_response.user.id,
-            name=name,
-            email=email,
-            role=role
-        )
-
-        return Response({
-            "message": "User registered successfully",
-            "user_id": str(auth_response.user.id),
-            "role": role,
-            "token": auth_response.session.access_token if auth_response.session else None
-        })
-
-    except Exception as e:
-        return Response(
-            {
-                "error": str(e),
-                "step": "register"
-            },
-            status=400
-        )
 
 
 # =========================

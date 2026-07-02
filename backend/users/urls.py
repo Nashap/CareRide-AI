@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    register,
+    RegisterAPIView,
     login,
     UploadCertificateView,
     my_profile
@@ -10,7 +10,7 @@ from .views import (
 urlpatterns = [
     path(
         "register/",
-        register
+        RegisterAPIView.as_view()
     ),
 
     path(
