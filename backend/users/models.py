@@ -38,6 +38,10 @@ class UserProfile(models.Model):
         blank=True
     )
 
+    address = models.TextField(
+        blank=True
+    )
+
     date_of_birth = models.DateField(
         null=True,
         blank=True

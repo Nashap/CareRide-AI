@@ -11,9 +11,8 @@ from drf_spectacular.utils import extend_schema
 from .serializers import AIRecommendationSerializer
 from .ai_service import call_ai_recommendation
 from .assistant import ai_chat
-from .supabase_client import supabase
 
-from rides.models import TravelRequest
+from rides.models import TravelRequest, MatchRecommendation
 from helpers.models import Helper
 # ======================================================
 # AI HELPER RECOMMENDATION
@@ -65,54 +64,17 @@ class RecommendHelperView(APIView):
                 pass
         return populated_helpers
 
-    def get(self, request):
-        travel_request_id = request.query_params.get("travel_request_id")
-
-        if not travel_request_id:
-            return Response(
-                {"error": "travel_request_id is required"},
-                status=400
-            )
-
-        try:
-            travel_request = TravelRequest.objects.get(id=travel_request_id)
-        except (TravelRequest.DoesNotExist, ValueError):
-            return Response(
-                {"error": "Travel request not found"},
-                status=404
-            )
-
-        try:
-            if supabase:
-                supabase_response = supabase.table("ai_recommendations")\
-                    .select("*")\
-                    .eq("travel_request_id", int(travel_request_id))\
-                    .execute()
-                
-                if supabase_response.data:
-                    rec = supabase_response.data[0]
-                    recommended_helpers = rec.get("recommended_helpers", [])
-                    populated_helpers = self._populate_helpers(recommended_helpers)
-                    
-                    return Response({
-                        "travel_request_id": rec.get("travel_request_id"),
-                        "recommended_helpers": populated_helpers,
-                        "summary": rec.get("ai_summary"),
-                        "model_used": rec.get("model_used")
-                    }, status=200)
-
-            return Response(
-                {"error": "No recommendation found for this travel request"},
-                status=404
-            )
-
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=500
-            )
-
     def post(self, request):
+
+        try:
+            from users.models import UserProfile
+            from users.serializers import UserProfileSerializer
+            profile = UserProfile.objects.get(auth_user_id=request.user.auth_user_id)
+            prof_serializer = UserProfileSerializer(profile)
+            if not prof_serializer.data.get("profile_completed"):
+                return Response({"error": "Please complete your profile before booking a ride."}, status=403)
+        except:
+            pass
 
         travel_request_id = request.data.get("travel_request_id")
 
@@ -158,69 +120,103 @@ class RecommendHelperView(APIView):
 
         try:
             result = call_ai_recommendation(ai_input)
-
         except Exception as e:
-            return Response(
-                {
-                    "error": "AI service unavailable",
-                    "details": str(e)
-                },
-                status=500
-            )
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"AI Recommendation failed: {e}")
+            result = {}
 
-        try:
+        # Save AI recommendations to MatchRecommendation
+        summary = result.get("summary")
+        recommended_helpers_raw = result.get("recommended_helpers", [])
+        
+        # Fallback if Gemini failed or returned no helpers, but helpers exist
+        if not recommended_helpers_raw:
+            available_helpers = Helper.objects.filter(availability=True).order_by('-rating')[:3]
+            if available_helpers.exists():
+                fallback_scores = [85, 75, 65]
+                for i, h in enumerate(available_helpers):
+                    recommended_helpers_raw.append({
+                        "helper_id": h.id,
+                        "reason": "Matched via CareRide fallback engine based on rating and availability.",
+                        "match_score": fallback_scores[i] if i < len(fallback_scores) else 50
+                    })
+                summary = "CareRide fallback engine matched these helpers due to AI service timeout."
+                result["summary"] = summary
+                result["recommended_helpers"] = recommended_helpers_raw
 
-            if supabase:
-
-                save_response = supabase.table(
-                    "ai_recommendations"
-                ).insert({
-
-                    "travel_request_id": travel_request_id,
-
-                    "recommended_helpers": result.get(
-                        "recommended_helpers"
-                    ),
-
-                    "ai_summary": result.get(
-                        "summary"
-                    ),
-
-                    "model_used": result.get(
-                        "model_used"
-                    )
-
-                }).execute()
-
-                print(
-                    "Saved to Supabase:",
-                    save_response
+        # Clear previous non-accepted recommendations just in case AI is re-run
+        MatchRecommendation.objects.filter(
+            travel_request=travel_request, 
+            status__in=["Pending", "Declined", "Expired"]
+        ).delete()
+        
+        for rh in recommended_helpers_raw:
+            try:
+                helper_obj = Helper.objects.get(id=rh.get("helper_id"))
+                MatchRecommendation.objects.create(
+                    travel_request=travel_request,
+                    helper=helper_obj,
+                    recommendation_reason=rh.get("reason"),
+                    match_score=rh.get("match_score"),
+                    ai_summary=summary,
+                    status="Pending"
                 )
-
-            else:
-
-                print(
-                    "Supabase not configured. Skipping save."
-                )
-
-        except Exception as e:
-
-            print(
-                "Supabase Save Error:",
-                str(e)
-            )
+            except Helper.DoesNotExist:
+                pass
 
         # Populate recommended helpers with full details
         if "recommended_helpers" in result:
             result["recommended_helpers"] = self._populate_helpers(result["recommended_helpers"])
+            
+        # Automatically initialize the scheduling engine
+        from rides.utils import initialize_recommendations
+        initialize_recommendations(travel_request)
 
         return Response(
             result,
             status=201
         )
 
+class RecommendationDetailView(APIView):
+    """
+    Fetches the AI recommendation details for a specific travel request.
+    """
+    permission_classes = [IsAuthenticated]
 
-# ======================================================
+    def get(self, request, travel_request_id):
+        # Query native MatchRecommendation objects
+        recs = MatchRecommendation.objects.filter(travel_request_id=travel_request_id)
+        
+        if not recs.exists():
+            return Response(
+                {"error": "No recommendation found for this travel request"},
+                status=404
+            )
+            
+        summary = recs.first().ai_summary
+        populated_helpers = []
+        
+        for rec in recs:
+            populated_helpers.append({
+                "helper_id": rec.helper.id,
+                "name": rec.helper.name,
+                "skills": rec.helper.skills,
+                "rating": rec.helper.rating,
+                "availability": rec.helper.availability,
+                "match_score": rec.match_score,
+                "reason": rec.recommendation_reason,
+            })
+            
+        # Sort by match_score descending
+        populated_helpers.sort(key=lambda x: x.get("match_score") or 0, reverse=True)
+
+        return Response({
+            "travel_request_id": travel_request_id,
+            "recommended_helpers": populated_helpers,
+            "summary": summary,
+            "model_used": "gemini-2.5-flash"
+        }, status=200)
 # AI ASSISTANT (TOOL USE)
 # ======================================================
 

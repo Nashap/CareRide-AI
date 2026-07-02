@@ -47,6 +47,8 @@ class TravelRequest(models.Model):
 
     travel_date = models.DateField()
 
+    travel_time = models.TimeField(null=True, blank=True)
+
     service_type = models.CharField(
         max_length=100,
         choices=SERVICE_CHOICES
@@ -68,8 +70,16 @@ class TravelRequest(models.Model):
         null=True
     )
 
+    assigned_helper = models.ForeignKey(
+        Helper,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_rides"
+    )
+
     status = models.CharField(
-        max_length=20,
+        max_length=50,
         default="Pending"
     )
 
@@ -95,6 +105,31 @@ class MatchRecommendation(models.Model):
     )
 
     recommendation_reason = models.TextField()
+
+    match_score = models.IntegerField(
+        null=True,
+        blank=True
+    )
+
+    ai_summary = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        default="Pending"
+    )
+
+    activated_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    response_deadline = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True

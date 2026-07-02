@@ -33,7 +33,7 @@ class RegisterAPIView(APIView):
         serializer.is_valid(raise_exception=True)
 
         name = serializer.validated_data["name"]
-        email = serializer.validated_data["email"]
+        email = serializer.validated_data["email"].strip().lower()
         password = serializer.validated_data["password"]
         role = serializer.validated_data["role"]
 
@@ -57,12 +57,21 @@ class RegisterAPIView(APIView):
                     status=400
                 )
 
-            UserProfile.objects.create(
-                auth_user_id=auth_response.user.id,
-                name=name,
-                email=email,
-                role=role
-            )
+            # Create Django Profile mapping
+            try:
+                profile = UserProfile.objects.create(
+                    auth_user_id=auth_response.user.id,
+                    email=email,
+                    name=name,
+                    role=role
+                )
+            except Exception as db_err:
+                # If the database connection times out, the user is created in Supabase but not in Django.
+                # In a real production app, we would use webhooks to sync this. 
+                return Response(
+                    {"error": "Account created in Supabase, but failed to connect to local database. Please check your DB connection."},
+                    status=503
+                )
 
             return Response({
                 "message": "User registered successfully",
@@ -95,27 +104,51 @@ def login(request):
     serializer = LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
 
-    email = serializer.validated_data["email"]
+    email = serializer.validated_data["email"].strip().lower()
     password = serializer.validated_data["password"]
 
     try:
-
         supabase = get_supabase()
 
         if not supabase:
             return Response(
-                {"error": "Supabase not configured"},
+                {"error": "Supabase not configured."},
                 status=500
             )
 
-        auth_response = supabase.auth.sign_in_with_password({
-            "email": email,
-            "password": password
-        })
+        try:
+            auth_response = supabase.auth.sign_in_with_password({
+                "email": email,
+                "password": password
+            })
+        except Exception as auth_e:
+            error_msg = str(auth_e)
+            if "Invalid login credentials" in error_msg:
+                # Check if user exists to differentiate between "User not found" and "Incorrect password"
+                try:
+                    profile = UserProfile.objects.filter(email__iexact=email).first()
+                    if profile:
+                        return Response({"error": "Incorrect password."}, status=401)
+                    else:
+                        return Response({"error": "User not found."}, status=404)
+                except Exception as db_e:
+                    # If database connection times out (IPv6 issues), gracefully fallback
+                    return Response({"error": "Invalid login credentials. (Database unreachable)"}, status=401)
+
+            elif "Email not confirmed" in error_msg:
+                return Response(
+                    {"error": "Email is not verified."},
+                    status=401
+                )
+            else:
+                return Response(
+                    {"error": f"Authentication failed: {error_msg}"},
+                    status=400
+                )
 
         if not auth_response.user:
             return Response(
-                {"error": "Invalid login credentials"},
+                {"error": "Invalid login credentials."},
                 status=401
             )
 
@@ -125,7 +158,13 @@ def login(request):
                 status=401
             )
 
-        profile = UserProfile.objects.get(email=email)
+        try:
+            profile = UserProfile.objects.get(email__iexact=email)
+        except Exception:
+            return Response(
+                {"error": "Login succeeded via Supabase, but failed to connect to local database. Please check your DB connection."},
+                status=500
+            )
 
         return Response({
             "message": "Login successful",
@@ -141,12 +180,6 @@ def login(request):
             "email": profile.email,
             "role": profile.role,
         })
-
-    except UserProfile.DoesNotExist:
-        return Response(
-            {"error": "User profile not found"},
-            status=404
-        )
 
     except Exception as e:
         return Response(
@@ -172,7 +205,7 @@ def my_profile(request):
         )
 
     try:
-        profile = UserProfile.objects.get(email=email)
+        profile = UserProfile.objects.get(email__iexact=email)
 
     except UserProfile.DoesNotExist:
         return Response(
@@ -183,8 +216,16 @@ def my_profile(request):
     if request.method == "GET":
 
         serializer = UserProfileSerializer(profile)
+        data = serializer.data
+        if profile.role == "helper":
+            try:
+                from helpers.models import Helper
+                helper = Helper.objects.get(auth_user_id=profile.auth_user_id)
+                data["skills"] = helper.skills
+            except:
+                data["skills"] = ""
 
-        return Response(serializer.data)
+        return Response(data)
 
     serializer = UserProfileSerializer(
         profile,
@@ -195,9 +236,22 @@ def my_profile(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
+    data = serializer.data
+
+    if profile.role == "helper":
+        try:
+            from helpers.models import Helper
+            helper = Helper.objects.get(auth_user_id=profile.auth_user_id)
+            if "skills" in request.data:
+                helper.skills = request.data["skills"]
+                helper.save()
+            data["skills"] = helper.skills
+        except:
+            data["skills"] = ""
+
     return Response({
         "message": "Profile updated successfully",
-        "profile": serializer.data
+        "profile": data
     })
 
 
@@ -234,7 +288,7 @@ class UploadCertificateView(APIView):
 
         try:
 
-            profile = UserProfile.objects.get(email=email)
+            profile = UserProfile.objects.get(email__iexact=email)
 
             supabase = get_supabase()
 
