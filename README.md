@@ -45,19 +45,17 @@
 
 ## 📖 Problem Statement
 
-Elderly individuals, persons with disabilities, and patients often face challenges in accessing safe, reliable, and accessible transportation. Existing transportation services rarely provide specialized assistance or guarantee that helpers are trained to support users with mobility needs. CareRide AI addresses this problem by connecting passengers with verified helpers and using AI-powered recommendations to identify the most suitable helper based on travel requirements, skills, distance, urgency, ratings, and availability.
+Elderly individuals, persons with disabilities, and patients often face challenges in accessing safe, reliable, and accessible transportation. Existing transportation services rarely provide specialized assistance or guarantee that helpers are trained to support users with mobility needs. CareRide AI addresses this problem by connecting passengers with verified helpers and using AI-powered recommendations to identify the most suitable helper based on travel requirements, skills, urgency, ratings, and availability.
 
 ## 📖 Project Overview
 
-CareRide AI is a modern, complete Full-Stack AI application. It intelligently bridges the gap between passengers with specific mobility needs and verified, capable helpers.
+CareRide AI is a modern, complete Full-Stack AI application. It intelligently bridges the gap between passengers with specific mobility needs and verified, capable helpers. The React frontend is fully built out and deployed, alongside a Django REST backend, giving the platform an end-to-end working experience for both riders and helpers.
 
 CareRide AI consists of:
-* **React Frontend**
-* **Django REST Backend**
+* **React Frontend** — completed and deployed on Vercel
+* **Django REST Backend** — deployed on Railway
 * **Supabase PostgreSQL**
 * **Gemini AI**
-* **Railway Deployment**
-* **Vercel Frontend Deployment**
 
 ---
 
@@ -104,10 +102,9 @@ CareRide AI consists of:
 * Book Ride
 * AI Helper Recommendation
 * AI Assistant Chatbot
-* Ride Tracking
+* Ride Status Tracking
 * Ride History
-* SOS Support
-* Disability Certificate Upload
+* Disability Certificate Upload & Secure Viewing
 * Profile Management
 
 ### 🤝 Helper Features
@@ -118,13 +115,14 @@ CareRide AI consists of:
 * Assigned Ride Dashboard
 * Complete Ride
 * View Assigned Rider Contact
-* View Disability Certificate (Assigned rides only)
+* Secure Disability Certificate Viewing (Assigned rides only)
 
 ### 🧠 AI Features
-* Gemini AI Helper Recommendation
-* Intelligent Helper Ranking
+* Gemini AI Helper Recommendation — ranks the **Top 3** most suitable helpers per ride
+* Exclusive Priority Window — ranked helpers get first right of acceptance before the ride opens up
+* Open Dispatch Fallback — if the priority window times out, the ride opens to general Browse Requests on a first-accept basis
+* Intelligent Helper Ranking based on skills, ratings, and availability
 * AI Chat Assistant
-* Smart Ride Assignment Workflow
 
 ### 🔒 Platform & Security
 * Secure Authentication using JWT
@@ -347,9 +345,8 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Book Ride | ![Book Ride](docs/images/book-ride.png) |
 | AI Helper Recommendation (Top 3 Ranking) | ![AI Recommendation](docs/images/ai-recommendation.png) |
 | AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
-| Ride Tracking | ![Ride Tracking](docs/images/ride-tracking.png) |
+| Ride Status Tracking | ![Ride Status Tracking](docs/images/ride-status-tracking.png) |
 | Ride History | ![Ride History](docs/images/ride-history.png) |
-| SOS Support | ![SOS Support](docs/images/sos-support.png) |
 | Disability Certificate Upload | ![Certificate Upload](docs/images/certificate-upload.png) |
 | Rider Profile | ![Rider Profile](docs/images/rider-profile.png) |
 
@@ -361,7 +358,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | AI Priority Requests | ![Priority Requests](docs/images/priority-requests.png) |
 | Assigned Ride Dashboard | ![Helper Dashboard](docs/images/helper-dashboard.png) |
 | View Assigned Rider Contact | ![Rider Contact](docs/images/rider-contact.png) |
-| View Disability Certificate (Assigned only) | ![View Certificate](docs/images/view-certificate.png) |
+| Secure Disability Certificate Viewing (Assigned only) | ![View Certificate](docs/images/view-certificate.png) |
 | Complete Ride | ![Complete Ride](docs/images/complete-ride.png) |
 
 ### ⚙️ Platform & Ops
