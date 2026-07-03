@@ -12,8 +12,12 @@ def test_login(mock_supabase, mock_profile):
     fake_user = Mock()
     fake_user.id = "123"
 
+    fake_session = Mock()
+    fake_session.access_token = "fake-token"
+
     fake_response = Mock()
     fake_response.user = fake_user
+    fake_response.session = fake_session
 
     mock_client = Mock()
     mock_client.auth.sign_in_with_password.return_value = fake_response
@@ -21,6 +25,7 @@ def test_login(mock_supabase, mock_profile):
     mock_supabase.return_value = mock_client
 
     fake_profile = Mock()
+    fake_profile.id = 1
     fake_profile.name = "Test User"
     fake_profile.email = "test@test.com"
     fake_profile.role = "rider"

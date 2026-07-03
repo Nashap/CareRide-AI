@@ -1,5 +1,12 @@
+import os
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
+
+# Mock environment variables required by AI services
+os.environ["GEMINI_API_KEY"] = "mock-api-key"
+os.environ["SUPABASE_URL"] = "http://mock-supabase"
+os.environ["SUPABASE_KEY"] = "mock-supabase-key"
+
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 from users.models import UserProfile
@@ -7,20 +14,14 @@ from rides.models import TravelRequest
 
 
 @pytest.mark.django_db
-@patch("ai_services.views.supabase")
-@patch("ai_services.views.call_ai_recommendation")
+@patch("google.generativeai.GenerativeModel.generate_content")
 def test_ai_recommendation(
-    mock_ai,
-    mock_supabase
+    mock_generate_content
 ):
 
-    mock_ai.return_value = {
-        "recommended_helpers": [],
-        "summary": "Mock recommendation",
-        "model_used": "test-model"
-    }
-
-    mock_supabase.table.return_value.insert.return_value.execute.return_value = {}
+    mock_response = MagicMock()
+    mock_response.text = '{"recommended_helpers": [], "summary": "Mock recommendation", "model_used": "test-model"}'
+    mock_generate_content.return_value = mock_response
 
     user = User.objects.create_user(
         username="testuser",
