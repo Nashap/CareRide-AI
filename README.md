@@ -1,5 +1,3 @@
----
-
 # CareRide AI ♿
 
 > Connecting elderly individuals, persons with disabilities, and patients with verified helpers through a full-stack AI-powered mobility assistance and transportation platform.
