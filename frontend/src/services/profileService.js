@@ -29,3 +29,34 @@ export const updateProfile = async (email, profileData) => {
     throw error;
   }
 };
+
+/**
+ * Upload Disability Certificate
+ */
+export const uploadCertificate = async (formData) => {
+  try {
+    const response = await api.post("/upload-certificate/", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading certificate:", error);
+    throw error;
+  }
+};
+
+/**
+ * Get My Certificate status/url
+ */
+export const getMyCertificate = async () => {
+  try {
+    const response = await api.get("/profile/certificate/");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching certificate:", error);
+    throw error;
+  }
+};
+

@@ -16,7 +16,7 @@ import RiderSidebar from "../../components/dashboard/RiderSidebar";
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
-import { getProfile, updateProfile } from "../../services/profileService";
+import { getProfile, updateProfile, uploadCertificate, getMyCertificate } from "../../services/profileService";
 import { getCurrentUser } from "../../services/authService";
 
 export default function Profile() {
@@ -28,6 +28,10 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+
+  const [certificateData, setCertificateData] = useState(null);
+  const [certFile, setCertFile] = useState(null);
+  const [uploadingCert, setUploadingCert] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -70,6 +74,16 @@ export default function Profile() {
         address: profile.address || "",
         skills: profile.skills || "",
       });
+      if (!isHelper) {
+        try {
+          const cert = await getMyCertificate();
+          if (cert.has_certificate) {
+            setCertificateData(cert);
+          }
+        } catch (e) {
+          console.error("Failed to fetch certificate", e);
+        }
+      }
     } catch (err) {
       console.error(err);
       setError("Failed to fetch profile details from backend.");
@@ -95,6 +109,37 @@ export default function Profile() {
     setError("");
     setSuccess("");
 
+    if (formData.date_of_birth) {
+      const dob = new Date(formData.date_of_birth);
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+
+      if (dob > today) {
+        setError("Date of birth cannot be in the future.");
+        setSaving(false);
+        return;
+      }
+      if (dob.toDateString() === today.toDateString()) {
+        setError("Date of birth cannot be today.");
+        setSaving(false);
+        return;
+      }
+      if (age < 18) {
+        setError("You must be at least 18 years old.");
+        setSaving(false);
+        return;
+      }
+      if (age > 120) {
+        setError("Invalid date of birth. Age exceeds 120 years.");
+        setSaving(false);
+        return;
+      }
+    }
+
     try {
       await updateProfile(user.email, formData);
       setSuccess("Profile updated successfully!");
@@ -112,6 +157,42 @@ export default function Profile() {
       setError(err.response?.data?.error || "Unable to update profile details.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 5 * 1024 * 1024) {
+        setError("File size exceeds 5MB limit.");
+        setCertFile(null);
+        return;
+      }
+      setCertFile(file);
+    }
+  };
+
+  const handleUploadCert = async () => {
+    if (!certFile) return;
+    setUploadingCert(true);
+    setError("");
+    setSuccess("");
+    try {
+      const formData = new FormData();
+      formData.append("file", certFile);
+      const res = await uploadCertificate(formData);
+      setSuccess("Certificate uploaded successfully!");
+      setCertFile(null);
+      // Refresh certificate data
+      const cert = await getMyCertificate();
+      if (cert.has_certificate) {
+        setCertificateData(cert);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.error || "Failed to upload certificate.");
+    } finally {
+      setUploadingCert(false);
     }
   };
 
@@ -309,6 +390,88 @@ export default function Profile() {
                           className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
                         />
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Disability Certificate */}
+                {!isHelper && (
+                  <div className="bg-white rounded-xl shadow p-8 border border-gray-200">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+                      <ShieldAlert size={20} className="text-teal-600" />
+                      Disability Certificate
+                    </h2>
+                    <div className="mb-4 text-sm text-gray-600">
+                      Upload your official disability certificate to help helpers understand your needs better. 
+                      This is securely stored and only visible to the helper assigned to your ride.
+                    </div>
+                    
+                    {certificateData ? (
+                      <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200 flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold text-green-800 flex items-center gap-2">
+                            <CheckCircle size={18} />
+                            Certificate Uploaded
+                          </p>
+                          <p className="text-green-600 text-sm mt-1">
+                            Uploaded on: {new Date(certificateData.uploaded_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              try {
+                                const freshCert = await getMyCertificate();
+                                if (freshCert.has_certificate && freshCert.url) {
+                                  window.open(freshCert.url, "_blank");
+                                }
+                              } catch (e) {
+                                console.error("Failed to open certificate", e);
+                                setError("Failed to open certificate.");
+                              }
+                            }}
+                            className="text-teal-600 hover:text-teal-700 font-medium text-sm underline focus:outline-none"
+                          >
+                            View Certificate
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-6 p-4 bg-gray-50 rounded-lg border text-sm text-gray-500">
+                        No certificate uploaded.
+                      </div>
+                    )}
+
+                    <div className="flex flex-col gap-3 max-w-md">
+                      <label className="block font-medium text-sm text-gray-700">
+                        {certificateData ? "Replace / Update Certificate" : "Upload Certificate"}
+                      </label>
+                      <input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={handleFileChange}
+                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+                      />
+                      <p className="text-xs text-gray-400">Supported formats: PDF, JPG, PNG. Max size: 5 MB.</p>
+                      
+                      {certFile && (
+                        <button
+                          type="button"
+                          onClick={handleUploadCert}
+                          disabled={uploadingCert}
+                          className="mt-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg font-medium transition disabled:bg-gray-400 self-start text-sm flex items-center gap-2"
+                        >
+                          {uploadingCert ? (
+                            <>
+                              <Loader2 className="animate-spin" size={16} />
+                              Uploading...
+                            </>
+                          ) : (
+                            "Upload Selected File"
+                          )}
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}

@@ -397,15 +397,22 @@ export default function MyRides() {
                       </div>
                     )}
 
-                    {/* Delete Button (Hide if waiting for available helper to avoid duplicate buttons) */}
-                    {ride.status !== "Waiting for another available helper" && (
+                    {/* Expired Ride Message */}
+                    {ride.status === "Expired" && (
+                      <div className="mt-6 flex justify-end">
+                        <span className="text-gray-500 font-medium italic">This ride has expired.</span>
+                      </div>
+                    )}
+
+                    {/* Delete Button (Hide if waiting for available helper to avoid duplicate buttons, or if Expired) */}
+                    {ride.status !== "Waiting for another available helper" && ride.status !== "Expired" && (
                       <div className="flex justify-end mt-6">
                         <button
                           onClick={() => openDeleteDialog(ride.id)}
                           className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2 rounded-lg transition font-medium"
                         >
                           <Trash2 size={18} />
-                          Delete Ride
+                          Cancel Ride
                         </button>
                       </div>
                     )}

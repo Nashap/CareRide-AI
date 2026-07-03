@@ -5,10 +5,11 @@ import { Calendar, MapPin, Activity, CheckCircle, Briefcase } from "lucide-react
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
-import { getTravelRequests, completeRide } from "../../services/travelService";
+import { getTravelRequests, completeRide, getRideCertificate } from "../../services/travelService";
 import { getHelpers } from "../../services/helperService";
 import { getCurrentUser } from "../../services/authService";
 import Toast from "../../components/common/Toast";
+import { Loader2 } from "lucide-react";
 
 export default function AssignedRides() {
   const navigate = useNavigate();
@@ -67,6 +68,23 @@ export default function AssignedRides() {
       console.error("Error completing ride:", err);
     } finally {
       setActionLoading((prev) => ({ ...prev, [rideId]: false }));
+    }
+  };
+
+  const [certLoading, setCertLoading] = useState({});
+
+  const handleViewCertificate = async (rideId) => {
+    setCertLoading((prev) => ({ ...prev, [rideId]: true }));
+    try {
+      const data = await getRideCertificate(rideId);
+      if (data && data.url) {
+        window.open(data.url, "_blank");
+      }
+    } catch (err) {
+      console.error(err);
+      setToastMessage(err.response?.data?.error || "Failed to view certificate.");
+    } finally {
+      setCertLoading((prev) => ({ ...prev, [rideId]: false }));
     }
   };
 
@@ -214,6 +232,32 @@ export default function AssignedRides() {
                               <p className="font-medium text-gray-800">{ride.rider_details.email}</p>
                             </div>
                           )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Disability Certificate Block */}
+                    {(ride.status === "Assigned" || ride.status === "Completed") && ride.rider_details && (
+                      <div className="mt-6 border-t pt-4">
+                        <p className="text-gray-500 text-xs mb-2">Disability Certificate</p>
+                        <div className="bg-white border rounded-lg p-4 shadow-sm flex items-center justify-between">
+                          <p className="text-sm text-gray-700">
+                            Securely view the rider's official disability certificate.
+                          </p>
+                          <button
+                            onClick={() => handleViewCertificate(ride.id)}
+                            disabled={certLoading[ride.id]}
+                            className="bg-teal-50 hover:bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium transition text-sm flex items-center gap-2"
+                          >
+                            {certLoading[ride.id] ? (
+                              <>
+                                <Loader2 className="animate-spin" size={16} />
+                                Loading...
+                              </>
+                            ) : (
+                              "View Certificate"
+                            )}
+                          </button>
                         </div>
                       </div>
                     )}

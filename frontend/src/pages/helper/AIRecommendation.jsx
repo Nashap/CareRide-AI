@@ -254,15 +254,19 @@ export default function AIRecommendation() {
                               </div>
                             </div>
 
-                            <button
-                              onClick={() => handleAcceptHelper(rh.helper_id, rh.reason)}
-                              disabled={(loadingHelperId !== null) || !rh.availability}
-                              className={`flex items-center gap-2 font-semibold px-6 py-3 rounded-xl transition shadow-sm
-                                ${!rh.availability || (loadingHelperId !== null && loadingHelperId !== rh.helper_id) ? "bg-gray-100 text-gray-400 cursor-not-allowed border" :
-                                  "bg-teal-600 hover:bg-teal-700 text-white hover:shadow"}`}
-                            >
-                              {loadingHelperId === rh.helper_id ? "Confirming..." : "Accept Helper"}
-                            </button>
+                            {travelRequest.status === "Expired" ? (
+                              <span className="text-gray-500 font-medium italic">This ride has expired.</span>
+                            ) : (
+                              <button
+                                onClick={() => handleAcceptHelper(rh.helper_id, rh.reason)}
+                                disabled={(loadingHelperId !== null) || !rh.availability}
+                                className={`flex items-center gap-2 font-semibold px-6 py-3 rounded-xl transition shadow-sm
+                                  ${!rh.availability || (loadingHelperId !== null && loadingHelperId !== rh.helper_id) ? "bg-gray-100 text-gray-400 cursor-not-allowed border" :
+                                    "bg-teal-600 hover:bg-teal-700 text-white hover:shadow"}`}
+                              >
+                                {loadingHelperId === rh.helper_id ? "Confirming..." : "Accept Helper"}
+                              </button>
+                            )}
                           </div>
 
                           <div className="mb-6">

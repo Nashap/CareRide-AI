@@ -172,3 +172,18 @@ export const completeRide = async (travelRequestId) => {
     throw error;
   }
 };
+
+/**
+ * Get Certificate URL for a ride
+ */
+export const getRideCertificate = async (travelRequestId) => {
+  try {
+    const response = await api.get(
+      `/travel-requests/${travelRequestId}/certificate/`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching certificate:", error);
+    throw error;
+  }
+};
