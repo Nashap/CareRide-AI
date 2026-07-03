@@ -13,47 +13,126 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
 ![Railway](https://img.shields.io/badge/Railway-131415?style=flat&logo=railway&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
+![Coverage](https://img.shields.io/badge/Coverage-82%25-brightgreen)
+![Uptime](https://img.shields.io/badge/Uptime-100%25-brightgreen)
 ![License](https://img.shields.io/badge/License-Educational-blue.svg)
 
 ---
 
-## 📖 Project Description
+## Table of Contents
 
-CareRide AI is a modern, full-stack accessibility ride assistance platform. It intelligently bridges the gap between passengers with specific mobility needs and verified, capable helpers. Utilizing Google Gemini AI, CareRide streamlines the ride-matching process, assigning the right helper based on real-time availability, skill matching, and passenger requirements, ensuring a safe and reliable transportation experience.
+* [Problem Statement](#-problem-statement)
+* [Project Overview](#-project-overview)
+* [Live Deployment](#-live-deployment)
+* [Project Status](#-project-status)
+* [Features](#-features)
+* [Tech Stack](#️-tech-stack)
+* [Architecture](#️-architecture)
+* [AI Recommendation Workflow](#-ai-recommendation-workflow)
+* [Project Structure](#-project-structure)
+* [Installation](#-installation)
+* [Environment Variables](#-environment-variables)
+* [API Documentation & Testing](#-api-documentation--testing)
+* [Production Monitoring](#-production-monitoring)
+* [Screenshots](#-screenshots)
+* [Future Enhancements](#-future-enhancements)
+* [Contributing](#-contributing)
+* [Author](#-author)
+* [License](#-license)
 
 ---
 
-## 🎯 Problem Statement
+## 📖 Problem Statement
 
-Existing transportation services often fail to cater to the specialized needs of elderly individuals, persons with disabilities, and medical patients. They lack trained personnel, appropriate vehicle accessibility, and a system to effectively pair passengers with helpers who can provide necessary support.
+Elderly individuals, persons with disabilities, and patients often face challenges in accessing safe, reliable, and accessible transportation. Existing transportation services rarely provide specialized assistance or guarantee that helpers are trained to support users with mobility needs. CareRide AI addresses this problem by connecting passengers with verified helpers and using AI-powered recommendations to identify the most suitable helper based on travel requirements, skills, distance, urgency, ratings, and availability.
 
-CareRide AI solves this by introducing an intelligent matchmaking system. By analyzing the passenger's specific requirements (e.g., wheelchair assistance, medical condition) and the helper's qualifications, AI ensures the most competent and suitable helper is dispatched, elevating the safety and quality of the ride.
+## 📖 Project Overview
+
+CareRide AI is a modern, complete Full-Stack AI application. It intelligently bridges the gap between passengers with specific mobility needs and verified, capable helpers.
+
+CareRide AI consists of:
+* **React Frontend**
+* **Django REST Backend**
+* **Supabase PostgreSQL**
+* **Gemini AI**
+* **Railway Deployment**
+* **Vercel Frontend Deployment**
+
+---
+
+## 🚀 Live Deployment
+
+| Service | URL |
+| --- | --- |
+| **Frontend** | [https://careride-six.vercel.app/](https://careride-six.vercel.app/) |
+| **Backend** | [https://careride-ai-production.up.railway.app/](https://careride-ai-production.up.railway.app/) |
+| **Swagger** | [https://careride-ai-production.up.railway.app/api/schema/swagger-ui/](https://careride-ai-production.up.railway.app/api/schema/swagger-ui/) |
+| **Postman** | [https://documenter.getpostman.com/view/55567557/2sBXwvH81g](https://documenter.getpostman.com/view/55567557/2sBXwvH81g) |
+
+---
+
+## 📊 Project Status
+
+**React Frontend Completed**
+
+* ✅ User Authentication
+* ✅ Helper Management
+* ✅ Travel Request APIs
+* ✅ Supabase Integration
+* ✅ Gemini AI Integration
+* ✅ AI Recommendation Engine & Storage
+* ✅ AI Recommendation Workflow
+* ✅ Rider Dashboard
+* ✅ Helper Dashboard
+* ✅ Ride Assignment Workflow
+* ✅ Disability Certificate Upload
+* ✅ Swagger Documentation
+* ✅ MkDocs Documentation
+* ✅ Automated Test Suite — 82% Code Coverage
+* ✅ GitHub Actions CI Configured
+* ✅ Railway Deployment (Backend)
+* ✅ Vercel Deployment (Frontend)
+* ✅ UptimeRobot Monitoring Configured
 
 ---
 
 ## ✨ Features
 
 ### 🧑‍🦽 Rider Features
-* **Book Ride:** Easily schedule rides with specific requirements.
-* **AI Helper Recommendation:** Get matched with the best available helpers based on your needs.
-* **AI Assistant:** An intelligent chatbot to guide you through the process and answer queries.
-* **SOS:** Emergency alert system for immediate assistance.
-* **Ride History:** Track past rides and helper interactions.
-* **Disability Certificate Upload:** Securely upload and manage disability certificates for verification.
-* **Rider Dashboard:** Centralized hub for managing rides and profile.
+* Register & Login
+* Book Ride
+* AI Helper Recommendation
+* AI Assistant Chatbot
+* Ride Tracking
+* Ride History
+* SOS Support
+* Disability Certificate Upload
+* Profile Management
 
 ### 🤝 Helper Features
-* **Browse Requests:** View available ride requests in real-time.
-* **AI Priority Requests:** Receive exclusive, high-priority ride requests chosen by the AI.
-* **Accept Ride:** Seamlessly accept ride assignments.
-* **Complete Ride:** Update ride status and manage completed journeys.
-* **Assigned Ride Dashboard:** Keep track of all active and upcoming assignments.
+* Register & Login
+* Browse Requests
+* AI Priority Requests
+* Accept Ride
+* Assigned Ride Dashboard
+* Complete Ride
+* View Assigned Rider Contact
+* View Disability Certificate (Assigned rides only)
 
 ### 🧠 AI Features
-* **Gemini AI Recommendation:** Advanced helper ranking based on multi-factor analysis.
-* **AI Chat Assistant:** Context-aware chatbot for natural interactions.
-* **Intelligent Helper Ranking:** Scores and sorts helpers based on best fit.
-* **Smart Assignment Workflow:** Automated transition between AI exclusive matching and open dispatch.
+* Gemini AI Helper Recommendation
+* Intelligent Helper Ranking
+* AI Chat Assistant
+* Smart Ride Assignment Workflow
+
+### 🔒 Platform & Security
+* Secure Authentication using JWT
+* Rate Limiting with django-ratelimit
+* Custom Serializer Validation
+* CORS Security Configuration
+* OWASP Security Review
+* Performance Testing (50 Rapid API Requests)
 
 ---
 
@@ -63,13 +142,14 @@ CareRide AI solves this by introducing an intelligent matchmaking system. By ana
 | --- | --- |
 | **Frontend** | React.js, Tailwind CSS |
 | **Backend** | Django, Django REST Framework |
-| **Database** | PostgreSQL (Supabase) |
-| **Authentication** | JWT (JSON Web Tokens) |
-| **AI Integration** | Google Gemini API |
-| **API Documentation**| Swagger (drf-spectacular), MkDocs |
+| **Database** | Supabase PostgreSQL |
+| **Authentication** | JWT |
+| **AI** | Google Gemini API |
+| **API Documentation** | Swagger (drf-spectacular) |
+| **Project Documentation** | MkDocs |
 | **Testing** | Pytest, Pytest-Django, Pytest-Cov |
 | **CI/CD** | GitHub Actions |
-| **Deployment** | Railway |
+| **Deployment** | Railway (Backend), Vercel (Frontend) |
 
 ---
 
@@ -77,11 +157,10 @@ CareRide AI solves this by introducing an intelligent matchmaking system. By ana
 
 ```mermaid
 graph TD
-    A[Rider] -->|Interacts| B(React Frontend)
-    F[Helper] -->|Interacts| B
-    B -->|API Requests| C(Django REST API)
-    C -->|Prompts & Context| D{Gemini AI}
-    C -->|Reads/Writes| E[(Supabase PostgreSQL)]
+    A[React Frontend] --> B[Django REST API]
+    B --> C[Gemini AI]
+    B --> D[(Supabase PostgreSQL)]
+    B --> E[JWT Authentication]
 ```
 
 ---
@@ -92,9 +171,9 @@ graph TD
 graph TD
     A[Book Ride] --> B[Gemini ranks Top 3 Helpers]
     B --> C[Exclusive AI Window]
-    C -->|If Accepted| D[Assigned]
-    C -->|If Timeout| E[Open Dispatch]
-    E --> F[All Helpers Notified]
+    C -->|Accepted| D[Assigned]
+    C -->|Timeout| E[Open Dispatch]
+    E --> F[Priority + Browse Requests]
     F --> G[First Accept Wins]
     G --> H[Completed / Expired]
 ```
@@ -115,13 +194,13 @@ CareRide-AI/
 │   └── manage.py             # Django management script
 ├── frontend/                 # React application
 │   ├── src/                  # React components, pages, and context
-│   ├── public/               # Static assets
+│   ├── public/                # Static assets
 │   ├── package.json          # Node dependencies
 │   └── tailwind.config.js    # Tailwind CSS configuration
-├── docs/                     # Documentation images and resources
-├── .github/workflows/        # GitHub Actions CI/CD pipelines
-├── mkdocs.yml                # MkDocs configuration
-└── README.md                 # Project documentation
+├── docs/                      # Documentation images and resources
+├── .github/workflows/         # GitHub Actions CI/CD pipelines
+├── mkdocs.yml                 # MkDocs configuration
+└── README.md                  # Project documentation
 ```
 
 ---
@@ -157,7 +236,7 @@ cd CareRide-AI
    ```
 
 3. **Configure Environment Variables**
-   Create a `.env` file inside the `backend` directory (see the [Environment Variables](#-environment-variables) section below).
+   Create a `.env` file inside the `backend` directory (see [Environment Variables](#-environment-variables) below).
 
 4. **Run Database Migrations**
    ```bash
@@ -196,72 +275,124 @@ Create a `.env` file in the `backend` directory with the following variables:
 | `DEBUG` | Enable/Disable Debug Mode | `True` |
 | `SUPABASE_URL` | Supabase Project URL | `https://your-project.supabase.co` |
 | `SUPABASE_KEY` | Supabase API Key | `your_supabase_key` |
-| `GEMINI_API_KEY`| Google Gemini API Key | `your_gemini_api_key` |
+| `GEMINI_API_KEY` | Google Gemini API Key | `your_gemini_api_key` |
 
 ---
 
-## 📚 API Documentation
+## 📚 API Documentation & Testing
 
-* **Swagger UI:** [https://careride-ai-production.up.railway.app/api/schema/swagger-ui/](https://careride-ai-production.up.railway.app/api/schema/swagger-ui/)
+* **Swagger UI:** [View Swagger Docs](https://careride-ai-production.up.railway.app/api/schema/swagger-ui/)
+* **OpenAPI Schema:** `http://127.0.0.1:8000/api/schema/`
 * **Postman Collection:** [View API Collection](https://documenter.getpostman.com/view/55567557/2sBXwvH81g)
 * **MkDocs Documentation:** Run `mkdocs serve` and visit `http://127.0.0.1:8001/`
 
----
+### Available Postman Collections
+* Authentication APIs
+* Helper APIs
+* Travel Request APIs
+* AI Recommendation APIs
 
-## 🧪 Testing
+### Testing
 
-CareRide AI uses robust testing practices to ensure reliability.
+CareRide AI uses **Pytest**, **Pytest-Django**, and **Pytest-Cov** for automated testing.
 
-* **Pytest:** Used for all unit and integration tests.
-* **Coverage:** Pytest-Cov tracks test coverage, aiming for high reliability.
-* **GitHub Actions:** CI pipeline runs all tests automatically.
-* **Mocked AI Tests:** External AI services (Gemini) are fully mocked during testing to prevent real network requests and ensure predictable test outcomes.
+* Serializer Unit Tests
+* View Unit Tests
+* Authentication Flow Tests
+* AI Recommendation Integration Test (Mocked Gemini API — external AI calls are fully mocked to prevent real network requests and ensure predictable test outcomes)
+* GitHub Actions CI Testing
 
-**Run tests with coverage:**
+**Current coverage: 82%** — 11 tests passed, 0 failed.
+
 ```bash
-cd backend
+# Run tests
+pytest
+
+# Run tests with coverage
 pytest --cov=. --cov-report=term
+
+# Generate HTML coverage report
+pytest --cov=. --cov-report=html
 ```
 
+Generated report: `htmlcov/index.html`
+
+![Coverage Report](docs/images/coverage-report.png)
+
 ---
 
-## ☁️ Deployment
+## 📡 Production Monitoring
 
-* **Railway:** The Django REST backend and Swagger documentation are deployed on Railway.
-* **Frontend:** Deployed securely for user access (production setup pending).
-* **Production URL:** [https://careride-ai-production.up.railway.app/](https://careride-ai-production.up.railway.app/)
+The CareRide AI production deployment is continuously monitored using **UptimeRobot** to ensure service availability and uptime tracking.
+
+| Detail | Value |
+| --- | --- |
+| Monitoring Type | HTTP(s) |
+| Monitoring Interval | 5 Minutes |
+| Current Status | Operational |
+| Uptime | 100% |
+
+![UptimeRobot Status](docs/images/uptimerobot.png)
 
 ---
 
 ## 📸 Screenshots
 
-*(Add your images to the `docs/images/` folder to display them here)*
+*(Add your images to the `docs/images/` folder using the filenames below, or update the paths to match your own.)*
 
-* **Home Page:** 
-  `![Home Page](docs/images/placeholder_home.png)`
-* **Rider Dashboard:** 
-  `![Rider Dashboard](docs/images/placeholder_rider_dashboard.png)`
-* **Helper Dashboard:** 
-  `![Helper Dashboard](docs/images/placeholder_helper_dashboard.png)`
-* **AI Recommendation:** 
-  `![AI Recommendation](docs/images/placeholder_ai_rec.png)`
-* **AI Assistant:** 
-  `![AI Assistant](docs/images/placeholder_ai_assistant.png)`
-* **Profile:** 
-  `![Profile](docs/images/placeholder_profile.png)`
-* **Swagger API Docs:** 
-  `![Swagger](docs/images/swagger.png)`
+### 🧑‍🦽 Rider Experience
+| Screen | Preview |
+| --- | --- |
+| Login / Register | ![Login](docs/images/rider-login.png) |
+| Book Ride | ![Book Ride](docs/images/book-ride.png) |
+| AI Helper Recommendation (Top 3 Ranking) | ![AI Recommendation](docs/images/ai-recommendation.png) |
+| AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
+| Ride Tracking | ![Ride Tracking](docs/images/ride-tracking.png) |
+| Ride History | ![Ride History](docs/images/ride-history.png) |
+| SOS Support | ![SOS Support](docs/images/sos-support.png) |
+| Disability Certificate Upload | ![Certificate Upload](docs/images/certificate-upload.png) |
+| Rider Profile | ![Rider Profile](docs/images/rider-profile.png) |
+
+### 🤝 Helper Experience
+| Screen | Preview |
+| --- | --- |
+| Login / Register | ![Helper Login](docs/images/helper-login.png) |
+| Browse Requests | ![Browse Requests](docs/images/browse-requests.png) |
+| AI Priority Requests | ![Priority Requests](docs/images/priority-requests.png) |
+| Assigned Ride Dashboard | ![Helper Dashboard](docs/images/helper-dashboard.png) |
+| View Assigned Rider Contact | ![Rider Contact](docs/images/rider-contact.png) |
+| View Disability Certificate (Assigned only) | ![View Certificate](docs/images/view-certificate.png) |
+| Complete Ride | ![Complete Ride](docs/images/complete-ride.png) |
+
+### ⚙️ Platform & Ops
+| Screen | Preview |
+| --- | --- |
+| Swagger Documentation | ![Swagger](docs/images/swagger.png) |
+| MkDocs Documentation | ![MkDocs](docs/images/mkdocs.png) |
+| Test Coverage Report | ![Coverage](docs/images/coverage-report.png) |
+| UptimeRobot Monitoring | ![Uptime](docs/images/uptimerobot.png) |
+
+### 📱 Mobile View
+| Screen | Preview |
+| --- | --- |
+| Responsive Rider Dashboard | ![Mobile View](docs/images/mobile-view.png) |
 
 ---
 
 ## 🚀 Future Enhancements
 
-* Real-time GPS Tracking
+* Live GPS Tracking
 * AI Route Optimization
 * OCR Processing for Disability Certificates
-* Mobile Application
+* Mobile App
 * Push Notifications
 * Voice Assistant
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome and appreciated. Please read the `CONTRIBUTING.md` file before creating issues or submitting pull requests.
 
 ---
 
