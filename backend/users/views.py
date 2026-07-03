@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -227,6 +227,24 @@ def my_profile(request):
 
         return Response(data)
 
+    # DOB Validation
+    dob_str = request.data.get("date_of_birth")
+    if dob_str:
+        from datetime import datetime, date
+        try:
+            dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+            today = date.today()
+            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+            
+            if dob >= today:
+                return Response({"error": "Date of birth cannot be today or in the future."}, status=400)
+            if age < 18:
+                return Response({"error": "You must be at least 18 years old."}, status=400)
+            if age > 120:
+                return Response({"error": "Invalid date of birth. Age exceeds 120 years."}, status=400)
+        except ValueError:
+            return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
+
     serializer = UserProfileSerializer(
         profile,
         data=request.data,
@@ -254,6 +272,38 @@ def my_profile(request):
         "profile": data
     })
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def my_certificate(request):
+    try:
+        profile = UserProfile.objects.get(auth_user_id=request.user.auth_user_id)
+    except UserProfile.DoesNotExist:
+        return Response({"error": "User not found"}, status=404)
+
+    cert = profile.certificates.order_by("-uploaded_at").first()
+    if not cert:
+        return Response({"has_certificate": False})
+
+    try:
+        supabase = get_supabase()
+        res = supabase.storage.from_("disability-certificates").create_signed_url(
+            cert.file_url, 
+            3600,
+            options={"download": cert.file_name}
+        )
+        signed_url = res.get("signedURL") or res.get("signedUrl") if isinstance(res, dict) else res
+        
+        return Response({
+            "has_certificate": True,
+            "uploaded_at": cert.uploaded_at,
+            "url": signed_url
+        })
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Error fetching signed URL: {str(e)}")
+        return Response({"error": "Failed to retrieve certificate URL"}, status=500)
+
+
 
 # =========================
 # UPLOAD CERTIFICATE
@@ -270,7 +320,6 @@ class UploadCertificateView(APIView):
     def post(self, request):
 
         uploaded_file = request.FILES.get("file")
-        email = request.data.get("email")
 
         if not uploaded_file:
             return Response(
@@ -278,17 +327,20 @@ class UploadCertificateView(APIView):
                 status=400
             )
 
-        if not email:
-            return Response(
-                {"error": "Email is required"},
-                status=400
-            )
+        # 5MB size limit
+        if uploaded_file.size > 5 * 1024 * 1024:
+            return Response({"error": "File size exceeds 5MB limit"}, status=400)
 
-        file_path = f"certificates/{uploaded_file.name}"
+        allowed_extensions = ["pdf", "jpg", "jpeg", "png"]
+        ext = uploaded_file.name.split(".")[-1].lower()
+        if ext not in allowed_extensions:
+            return Response({"error": "Unsupported file format. Use PDF, JPG, or PNG"}, status=400)
+
+        file_path = f"certificates/{request.user.auth_user_id}_{uploaded_file.name}"
 
         try:
 
-            profile = UserProfile.objects.get(email__iexact=email)
+            profile = UserProfile.objects.get(auth_user_id=request.user.auth_user_id)
 
             supabase = get_supabase()
 
@@ -298,29 +350,50 @@ class UploadCertificateView(APIView):
                     status=500
                 )
 
-            supabase.storage.from_(
-                "disability-certificates"
-            ).upload(
-                file_path,
-                uploaded_file.read()
-            )
+            # Read file once
+            file_data = uploaded_file.read()
 
-            file_url = (
-                supabase.storage
-                .from_("disability-certificates")
-                .get_public_url(file_path)
-            )
+            try:
+                # Try to upload with content-type
+                supabase.storage.from_("disability-certificates").upload(
+                    file_path,
+                    file_data,
+                    file_options={"upsert": "true", "content-type": uploaded_file.content_type}
+                )
+            except Exception as e:
+                # Fallback to update if file exists
+                try:
+                    supabase.storage.from_("disability-certificates").update(
+                        file_path,
+                        file_data,
+                        file_options={"upsert": "true", "content-type": uploaded_file.content_type}
+                    )
+                except Exception as update_e:
+                    import logging
+                    logging.getLogger(__name__).error(f"Upload failed: {str(update_e)}")
+                    raise
 
-            certificate = DisabilityCertificate.objects.create(
-                user=profile,
-                file_name=uploaded_file.name,
-                file_url=file_url
-            )
+            # Instead of public URL, we just store the file_path
+            # The signed URL will be generated on demand.
+            # Update existing certificate or create a new one
+            certificate = DisabilityCertificate.objects.filter(user=profile).first()
+            if certificate:
+                certificate.file_name = uploaded_file.name
+                certificate.file_url = file_path
+                from django.utils import timezone
+                certificate.uploaded_at = timezone.now()
+                certificate.save()
+            else:
+                certificate = DisabilityCertificate.objects.create(
+                    user=profile,
+                    file_name=uploaded_file.name,
+                    file_url=file_path
+                )
 
             return Response({
                 "message": "Certificate uploaded successfully",
                 "certificate_id": certificate.id,
-                "file_url": file_url
+                "uploaded_at": certificate.uploaded_at
             })
 
         except UserProfile.DoesNotExist:

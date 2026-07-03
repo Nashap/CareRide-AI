@@ -42,10 +42,12 @@ class Command(BaseCommand):
             status__in=[
                 "AI Recommended", 
                 "Waiting for Helper Response", 
-                "Searching for Another Helper", 
-                "Waiting for available helper",
+                "Searching for another helper", 
+                "Waiting for another available helper",
                 "Pending",
-                "Urgent AI Recommended"
+                "Urgent AI Recommended",
+                "Open Dispatch",
+                "Assigned"
             ]
         )
         

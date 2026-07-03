@@ -246,8 +246,43 @@ class TravelRequestViewSet(viewsets.ModelViewSet):
         if travel_request.assigned_helper != helper:
             return Response({"error": "Forbidden. You are not assigned to this ride."}, status=403)
             
+        from .utils import process_recommendation_timeouts
+        process_recommendation_timeouts(travel_request)
+        travel_request.refresh_from_db()
+        
+        if travel_request.status == "Expired":
+            return Response({"error": "This ride has already expired."}, status=400)
+            
         travel_request.status = "Completed"
         travel_request.save()
         
         serializer = self.get_serializer(travel_request)
         return Response(serializer.data, status=200)
+
+    @action(detail=True, methods=["get"], url_path="certificate")
+    def certificate(self, request, pk=None):
+        travel_request = self.get_object()
+        user_auth_id = str(request.user.auth_user_id)
+        
+        is_rider = str(travel_request.rider.auth_user_id) == user_auth_id
+        is_assigned_helper = (travel_request.assigned_helper and str(travel_request.assigned_helper.auth_user_id) == user_auth_id)
+        
+        if not (is_rider or is_assigned_helper):
+            return Response({"error": "Forbidden"}, status=403)
+            
+        certificate = travel_request.rider.certificates.order_by("-uploaded_at").first()
+        if not certificate:
+            return Response({"error": "No certificate found"}, status=404)
+            
+        try:
+            from care_ride.supabase_client import get_supabase
+            supabase = get_supabase()
+            res = supabase.storage.from_("disability-certificates").create_signed_url(
+                certificate.file_url, 
+                3600,
+                options={"download": certificate.file_name}
+            )
+            signed_url = res.get("signedURL") or res.get("signedUrl") if isinstance(res, dict) else res
+            return Response({"url": signed_url})
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

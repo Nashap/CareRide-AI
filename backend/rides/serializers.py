@@ -13,7 +13,7 @@ class TravelRequestSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_assigned_helper(self, obj):
-        if obj.assigned_helper and obj.status in ["AI Recommended", "Waiting for Helper Response", "Searching for Another Helper", "Assigned", "Completed"]:
+        if obj.assigned_helper and obj.status in ["AI Recommended", "Waiting for Helper Response", "Searching for another helper", "Assigned", "Completed"]:
             # Grab AI matching context if it exists
             recommendation = obj.recommendations.filter(helper=obj.assigned_helper).first()
             

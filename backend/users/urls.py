@@ -4,7 +4,8 @@ from .views import (
     RegisterAPIView,
     login,
     UploadCertificateView,
-    my_profile
+    my_profile,
+    my_certificate
 )
 
 urlpatterns = [
@@ -27,5 +28,11 @@ urlpatterns = [
         "upload-certificate/",
         UploadCertificateView.as_view(),
         name="upload-certificate"
+    ),
+
+    path(
+        "profile/certificate/",
+        my_certificate,
+        name="my-certificate"
     ),
 ]

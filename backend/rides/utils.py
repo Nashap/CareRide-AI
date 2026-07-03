@@ -13,11 +13,12 @@ def process_recommendation_timeouts(travel_request):
     if travel_request.status not in [
         "AI Recommended", 
         "Waiting for Helper Response", 
-        "Searching for Another Helper", 
-        "Waiting for available helper",
+        "Searching for another helper", 
+        "Waiting for another available helper",
         "Pending",
         "Urgent AI Recommended",
-        "Open Dispatch"
+        "Open Dispatch",
+        "Assigned"
     ]:
         return
 
@@ -37,9 +38,17 @@ def process_recommendation_timeouts(travel_request):
     # Check if the ride has completely expired
     if ride_datetime and now >= ride_datetime:
         travel_request.status = "Expired"
-        travel_request.assigned_helper = None
+        # Only unassign if it's not completed
+        if travel_request.status != "Completed":
+            travel_request.assigned_helper = None
         travel_request.save()
-        travel_request.recommendations.filter(status__in=["Pending", "Active"]).update(status="Expired")
+        travel_request.recommendations.filter(status__in=["Pending", "Active", "Accepted"]).update(status="Expired")
+        logger.info(f"Ride #{travel_request.id} expired automatically at {now.strftime('%Y-%m-%d %H:%M')}.")
+        return
+
+    # If it is assigned, we only cared about expiring it if time passed.
+    # Otherwise, it doesn't need sequential/urgent matching.
+    if travel_request.status == "Assigned":
         return
 
     # Calculate time remaining
