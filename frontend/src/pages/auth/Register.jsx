@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Accessibility, HandHeart } from "lucide-react";
 import { registerUser } from "../../services/authService";
+import PasswordInput from "../../components/common/PasswordInput";
 
 function Register() {
   const navigate = useNavigate();
@@ -240,13 +241,11 @@ function Register() {
 
               </label>
 
-              <input
-                type="password"
+              <PasswordInput
                 name="password"
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
 
             </div>

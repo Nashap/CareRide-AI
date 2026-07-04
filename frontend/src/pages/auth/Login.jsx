@@ -4,6 +4,7 @@ import { Accessibility } from "lucide-react";
 
 import { loginUser } from "../../services/authService";
 import Toast from "../../components/common/Toast";
+import PasswordInput from "../../components/common/PasswordInput";
 
 function Login() {
 
@@ -179,13 +180,11 @@ function Login() {
 
               </label>
 
-              <input
-                type="password"
+              <PasswordInput
                 name="password"
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
 
             </div>
