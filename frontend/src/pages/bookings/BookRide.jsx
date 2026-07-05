@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
+import { motion } from "framer-motion";
+import CustomSelect from "../../components/common/CustomSelect";
 
 import { createTravelRequest } from "../../services/travelService";
 import { getCurrentUser } from "../../services/authService";
@@ -12,22 +14,18 @@ import { getProfile } from "../../services/profileService";
 export default function BookRide() {
 
   const navigate = useNavigate();
-
   const user = getCurrentUser();
-
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [profileCompleted, setProfileCompleted] = useState(true);
 
-
-  
   useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     const checkProfile = async () => {
       try {
         const profile = await getProfile(user.email);
@@ -36,11 +34,11 @@ export default function BookRide() {
         console.error("Error checking profile status", err);
       }
     };
-    if (user) checkProfile();
-  }, [user]);
+    checkProfile();
+  }, [user, navigate]);
 
   const [formData, setFormData] = useState({
-    rider: user.id,
+    rider: user?.id || "",
     pickup_location: "",
     destination: "",
     travel_date: "",
@@ -143,12 +141,15 @@ export default function BookRide() {
       setLoading(false);
     }
   };
+
+  if (!user) return null;
+
     return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
 
       <RiderNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
 
         <div className="flex gap-8">
 
@@ -157,14 +158,14 @@ export default function BookRide() {
           <main className="flex-1">
           
             {!profileCompleted ? (
-              <div className="bg-white rounded-xl shadow border border-gray-200 p-12 text-center max-w-2xl mx-auto mt-10">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Incomplete</h2>
-                <p className="text-gray-500 mb-8">
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-12 text-center border border-cr-border max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold text-cr-primary mb-4">Profile Incomplete</h2>
+                <p className="text-cr-accent mb-8">
                   Please complete your profile before booking your first ride.
                 </p>
                 <button
                   onClick={() => navigate("/profile")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition inline-block"
+                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 inline-block"
                 >
                   Complete Profile
                 </button>
@@ -175,11 +176,11 @@ export default function BookRide() {
 
             <div className="mb-6">
 
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-cr-primary">
                 Book a Ride
               </h1>
 
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-cr-accent text-sm mt-1">
                 Fill in your travel details to request a CareRide helper.
               </p>
 
@@ -197,105 +198,94 @@ export default function BookRide() {
               </div>
             )}
 
-            <form
+            <motion.form
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
               onSubmit={handleSubmit}
-              className="space-y-6"
+              className="space-y-10"
             >
 
               {/* ===================== */}
               {/* Trip Details Card */}
               {/* ===================== */}
 
-              <div className="bg-white rounded-xl shadow p-8">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
 
-                <h2 className="text-xl font-semibold text-gray-800 mb-6">
+                <h2 className="text-xl font-bold text-cr-primary mb-8">
                   Trip Details
                 </h2>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Pickup Location
                     </label>
-
                     <input
                       type="text"
                       name="pickup_location"
                       value={formData.pickup_location}
                       onChange={handleChange}
                       placeholder="Enter pickup location"
-                      className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       required
                     />
-
                   </div>
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Destination
                     </label>
-
                     <input
                       type="text"
                       name="destination"
                       value={formData.destination}
                       onChange={handleChange}
                       placeholder="Enter destination"
-                      className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       required
                     />
-
                   </div>
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Travel Date
                     </label>
-
                     <input
                       type="date"
                       name="travel_date"
                       value={formData.travel_date}
                       onChange={handleChange}
                       min={new Date().toISOString().split("T")[0]}
-                      className="w-full border rounded-lg p-3"
+                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       required
                     />
-
                   </div>
                   
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Travel Time
                     </label>
-
                     <input
                       type="time"
                       name="travel_time"
                       value={formData.travel_time}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-3"
+                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       required
                     />
-
                   </div>
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Service Type
                     </label>
-
-                    <select
+                    <CustomSelect
                       name="service_type"
                       value={formData.service_type}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-3"
+                      placeholder="Select Service"
                     >
                       <option value="Hospital visit">Hospital Visit</option>
                       <option value="Govt. office">Govt. Office</option>
@@ -303,39 +293,35 @@ export default function BookRide() {
                       <option value="School / Work">School / Work</option>
                       <option value="Religious place">Religious Place</option>
                       <option value="Other">Other</option>
-                    </select>
-
+                    </CustomSelect>
                   </div>
 
                 </div>
 
               </div>
-                            {/* ===================== */}
+              
+              {/* ===================== */}
               {/* Assistance Details */}
               {/* ===================== */}
 
-              <div className="bg-white rounded-xl shadow p-8">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
 
-                <h2 className="text-xl font-semibold text-gray-800 mb-6">
+                <h2 className="text-xl font-bold text-cr-primary mb-8">
                   Assistance Details
                 </h2>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Assistance Type
                     </label>
-
-                    <select
+                    <CustomSelect
                       name="assistance_type"
                       value={formData.assistance_type}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-3"
-                      required
+                      placeholder="Select Assistance"
                     >
-                      <option value="">Select Assistance</option>
                       <option value="Wheelchair assistance">Wheelchair assistance</option>
                       <option value="Walker support">Walker support</option>
                       <option value="Crutches support">Crutches support</option>
@@ -348,47 +334,38 @@ export default function BookRide() {
                       <option value="Visually impaired">Visually impaired</option>
                       <option value="Hearing impaired">Hearing impaired</option>
                       <option value="Post-surgery">Post-surgery</option>
-
-                    </select>
-
+                    </CustomSelect>
                   </div>
 
                   <div>
-
-                    <label className="block mb-2 font-medium">
+                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
                       Assistance Level
                     </label>
-
-                    <select
+                    <CustomSelect
                       name="assistance_level"
                       value={formData.assistance_level}
                       onChange={handleChange}
-                      className="w-full border rounded-lg p-3"
+                      placeholder="Select Level"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
                       <option value="High">High</option>
-                    </select>
-
+                    </CustomSelect>
                   </div>
 
                 </div>
 
-                <div className="mt-6">
-
-                  <label className="block mb-2 font-medium">
+                <div className="mt-6 md:mt-8">
+                  <label className="block mb-2 font-medium text-sm text-cr-secondary">
                     Additional Notes
                   </label>
-
                   <textarea
-                    rows="4"
                     name="additional_note"
                     value={formData.additional_note}
                     onChange={handleChange}
                     placeholder="Enter additional information..."
-                    className="w-full border rounded-lg p-3 resize-none"
+                    className="w-full min-h-[140px] bg-cr-bg border border-cr-border rounded-[14px] p-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400 resize-none"
                   />
-
                 </div>
 
               </div>
@@ -398,14 +375,21 @@ export default function BookRide() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+                  className="w-full bg-cr-primary hover:bg-cr-primary-hover text-white py-4 rounded-xl font-bold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  {loading ? "Booking..." : "Book Ride"}
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Booking Ride...
+                    </>
+                  ) : (
+                    "Book Ride"
+                  )}
                 </button>
 
               </div>
 
-            </form>
+            </motion.form>
             </>
             )}
 

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, MapPin, Activity, Search, ShieldCheck, Star, XCircle } from "lucide-react";
+import { Calendar, MapPin, Activity, Search, ShieldCheck, Star, XCircle, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
+import LoadingScreen from "../../components/common/LoadingScreen";
 
 import { getTravelRequests, acceptRide, declineHelper } from "../../services/travelService";
 import { getHelpers } from "../../services/helperService";
@@ -22,33 +24,8 @@ export default function BrowseRequests() {
   const [errorMsg, setErrorMsg] = useState("");
   const [profileCompleted, setProfileCompleted] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
-    
-    const checkProfile = async () => {
-      try {
-        const profile = await getProfile(user.email);
-        setProfileCompleted(profile.profile_completed);
-      } catch (err) {
-        console.error("Error checking profile status", err);
-      }
-    };
-    checkProfile();
-    
-    loadData();
-
-    // Auto-refresh the UI every 10 seconds
-    const interval = setInterval(() => {
-      loadData(false);
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const loadData = async (showLoading = true) => {
+    await Promise.resolve();
     try {
       if (showLoading) setLoading(true);
       const helpers = await getHelpers();
@@ -76,6 +53,33 @@ export default function BrowseRequests() {
       if (showLoading) setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    
+    const checkProfile = async () => {
+      try {
+        const profile = await getProfile(user.email);
+        setProfileCompleted(profile.profile_completed);
+      } catch (err) {
+        console.error("Error checking profile status", err);
+      }
+    };
+    checkProfile();
+    
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadData();
+
+    // Auto-refresh the UI every 10 seconds
+    const interval = setInterval(() => {
+      loadData(false);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleAcceptRide = async (rideId) => {
     if (!helperProfile) return;
@@ -112,34 +116,34 @@ export default function BrowseRequests() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F0E8] flex flex-col">
+      <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface flex flex-col">
         <HelperNavbar />
-        <div className="max-w-7xl mx-auto px-6 py-6 flex-1 flex items-center justify-center">
-          <p className="text-gray-500 font-medium">Loading requests...</p>
+        <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12 flex-1 flex items-center justify-center">
+          <LoadingScreen />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
       <HelperNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
         <div className="flex gap-8">
           <HelperSidebar />
 
           <main className="flex-1">
           
             {!profileCompleted ? (
-              <div className="bg-white rounded-xl shadow border border-gray-200 p-12 text-center max-w-2xl mx-auto mt-10">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Incomplete</h2>
-                <p className="text-gray-500 mb-8">
+              <div className="bg-cr-card rounded-[32px] shadow-xl border border-cr-border p-12 text-center max-w-2xl mx-auto mt-10">
+                <h2 className="text-2xl font-bold text-cr-primary mb-4">Profile Incomplete</h2>
+                <p className="text-cr-accent mb-8">
                   Please complete your profile before accepting ride requests.
                 </p>
                 <button
                   onClick={() => navigate("/profile")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition inline-block"
+                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 inline-block"
                 >
                   Complete Profile
                 </button>
@@ -155,11 +159,11 @@ export default function BrowseRequests() {
               </div>
             )}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Search className="text-teal-600" />
+              <h1 className="text-3xl font-bold text-cr-primary flex items-center gap-2">
+                <Search className="text-cr-secondary" />
                 Browse Requests
               </h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-cr-accent text-sm mt-1">
                 Browse available ride requests from riders requiring mobility and travel companionship.
               </p>
             </div>
@@ -167,40 +171,52 @@ export default function BrowseRequests() {
             {/* PRIORITY REQUESTS SECTION */}
             {priorityRides.length > 0 && (
               <div className="mb-10">
-                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-4">
+                <h2 className="text-2xl font-bold text-cr-primary flex items-center gap-2 mb-4">
                   <Star className="text-yellow-500 fill-yellow-500" />
                   Priority Requests (AI Recommended)
                 </h2>
-                <div className="space-y-6">
+                <motion.div 
+                  className="space-y-6"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+                  }}
+                >
                   {priorityRides.map((ride) => {
                     const aiRank = ride.my_recommendation?.ai_rank || 1;
                     const rankLabel = aiRank === 1 ? "🥇 Top Match" : aiRank === 2 ? "🥈 AI Recommended" : "🥉 AI Recommended";
                     
                     return (
-                    <div
+                    <motion.div
                       key={ride.id}
-                      className="bg-white rounded-xl shadow border-2 border-yellow-400 p-6 hover:shadow-lg transition relative overflow-hidden"
+                      variants={{
+                        hidden: { opacity: 0, y: 30 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                      }}
+                      className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(250,204,21,0.15)] hover:shadow-[0_12px_40px_rgba(250,204,21,0.25)] p-8 md:p-10 border-2 border-yellow-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                     >
                       <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg">
                         {rankLabel}
                       </div>
                       <div className="flex justify-between items-start mt-2">
                         <div>
-                          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                            <MapPin size={20} className="text-teal-600" />
+                          <h3 className="text-xl font-bold text-cr-primary flex items-center gap-2">
+                            <MapPin size={20} className="text-cr-secondary" />
                             {ride.pickup_location}
                             <span className="text-gray-400">→</span>
                             {ride.destination}
                           </h3>
-                          <p className="text-gray-500 text-xs mt-1">Ride ID #{ride.id}</p>
+                          <p className="text-cr-accent text-xs mt-1">Ride ID #{ride.id}</p>
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6 mt-6">
                         <div className="flex items-center gap-2">
-                          <Calendar size={18} className="text-teal-600" />
+                          <Calendar size={18} className="text-cr-secondary" />
                           <div>
-                            <p className="text-gray-500 text-xs">Travel Date</p>
+                            <p className="text-cr-accent text-xs">Travel Date</p>
                             <p className="font-semibold flex gap-2 items-center">
                               {ride.travel_date}
                               {ride.travel_time && (
@@ -214,20 +230,20 @@ export default function BrowseRequests() {
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <Activity size={18} className="text-teal-600" />
+                          <Activity size={18} className="text-cr-secondary" />
                           <div>
-                            <p className="text-gray-500 text-xs">Service Type</p>
+                            <p className="text-cr-accent text-xs">Service Type</p>
                             <p className="font-semibold">{ride.service_type}</p>
                           </div>
                         </div>
 
                         <div>
-                          <p className="text-gray-500 text-xs mb-1">Assistance Type</p>
+                          <p className="text-cr-accent text-xs mb-1">Assistance Type</p>
                           <p className="font-semibold">{ride.assistance_type}</p>
                         </div>
                         
                         <div>
-                          <p className="text-gray-500 text-xs mb-1">Match Score</p>
+                          <p className="text-cr-accent text-xs mb-1">Match Score</p>
                           <span className="inline-block px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
                             {ride.my_recommendation?.match_score || ride.assigned_helper?.match_score}% Match
                           </span>
@@ -236,59 +252,88 @@ export default function BrowseRequests() {
                       
                       {(ride.my_recommendation?.reason || ride.assigned_helper?.reason) && (
                         <div className="mt-6">
-                          <p className="text-gray-500 text-xs mb-1">AI Reason</p>
+                          <p className="text-cr-accent text-xs mb-1">AI Reason</p>
                           <div className="bg-blue-50 rounded-lg p-4 text-sm text-blue-800 border border-blue-100">
                             {ride.my_recommendation?.reason || ride.assigned_helper?.reason}
                           </div>
                         </div>
                       )}
-
                       <div className="flex justify-end gap-3 mt-6 border-t pt-4">
                         <button
                           onClick={() => handleDeclineRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-5 py-2 rounded-lg font-medium transition disabled:opacity-50"
+                          className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                          <XCircle size={18} />
-                          {actionLoading[ride.id] ? "Processing..." : "Decline"}
-                        </button>
+                        {actionLoading[ride.id] ? (
+                          <>
+                            <Loader2 size={18} className="animate-spin" />
+                            Declining...
+                          </>
+                        ) : (
+                          <>
+                            <XCircle size={18} />
+                            Decline
+                          </>
+                        )}
+                      </button>
                         <button
                           onClick={() => handleAcceptRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition disabled:bg-gray-300"
+                          className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                          <ShieldCheck size={18} />
-                          {actionLoading[ride.id] ? "Accepting..." : "Accept Ride"}
-                        </button>
+                        {actionLoading[ride.id] ? (
+                          <>
+                            <Loader2 size={18} className="animate-spin" />
+                            Accepting...
+                          </>
+                        ) : (
+                          <>
+                            <ShieldCheck size={18} />
+                            Accept Ride
+                          </>
+                        )}
+                      </button>
                       </div>
-                    </div>
+                    </motion.div>
                   )})}
-                </div>
+                </motion.div>
               </div>
             )}
 
             {/* NORMAL REQUESTS SECTION */}
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Available Requests</h2>
+            <h2 className="text-xl font-bold text-cr-primary mb-4">Available Requests</h2>
             {pendingRides.length === 0 ? (
-              <div className="bg-white rounded-xl shadow border border-gray-200 p-8 text-center">
-                <p className="text-gray-500 font-medium">No pending ride requests available right now.</p>
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border text-center">
+                <p className="text-cr-accent font-medium">No pending ride requests available right now.</p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <motion.div 
+                className="space-y-6"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+                }}
+              >
                 {pendingRides.map((ride) => (
-                  <div
+                  <motion.div
                     key={ride.id}
-                    className="bg-white rounded-xl shadow border border-gray-200 p-6 hover:shadow-lg transition"
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                    }}
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                          <MapPin size={20} className="text-teal-600" />
+                        <h3 className="text-xl font-bold text-cr-primary flex items-center gap-2">
+                          <MapPin size={20} className="text-cr-secondary" />
                           {ride.pickup_location}
                           <span className="text-gray-400">→</span>
                           {ride.destination}
                         </h3>
-                        <p className="text-gray-500 text-xs mt-1">Ride ID #{ride.id}</p>
+                        <p className="text-cr-accent text-xs mt-1">Ride ID #{ride.id}</p>
                       </div>
                       <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
                         {ride.status}
@@ -297,28 +342,28 @@ export default function BrowseRequests() {
 
                     <div className="grid md:grid-cols-2 gap-6 mt-6">
                       <div className="flex items-center gap-2">
-                        <Calendar size={18} className="text-teal-600" />
+                        <Calendar size={18} className="text-cr-secondary" />
                         <div>
-                          <p className="text-gray-500 text-xs">Travel Date</p>
+                          <p className="text-cr-accent text-xs">Travel Date</p>
                           <p className="font-semibold">{ride.travel_date}</p>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Activity size={18} className="text-teal-600" />
+                        <Activity size={18} className="text-cr-secondary" />
                         <div>
-                          <p className="text-gray-500 text-xs">Service Type</p>
+                          <p className="text-cr-accent text-xs">Service Type</p>
                           <p className="font-semibold">{ride.service_type}</p>
                         </div>
                       </div>
 
                       <div>
-                        <p className="text-gray-500 text-xs mb-1">Assistance Type</p>
+                        <p className="text-cr-accent text-xs mb-1">Assistance Type</p>
                         <p className="font-semibold">{ride.assistance_type}</p>
                       </div>
 
                       <div>
-                        <p className="text-gray-500 text-xs mb-1">Assistance Level</p>
+                        <p className="text-cr-accent text-xs mb-1">Assistance Level</p>
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-sm font-medium
                           ${
@@ -336,8 +381,8 @@ export default function BrowseRequests() {
 
                     {ride.additional_note && (
                       <div className="mt-6">
-                        <p className="text-gray-500 text-xs mb-1">Additional Notes</p>
-                        <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 border">
+                        <p className="text-cr-accent text-xs mb-1">Additional Notes</p>
+                        <div className="bg-cr-bg rounded-lg p-4 text-sm text-cr-secondary border">
                           {ride.additional_note}
                         </div>
                       </div>
@@ -347,15 +392,24 @@ export default function BrowseRequests() {
                       <button
                         onClick={() => handleAcceptRide(ride.id)}
                         disabled={actionLoading[ride.id]}
-                        className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition disabled:bg-gray-300"
+                        className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                       >
-                        <ShieldCheck size={18} />
-                        {actionLoading[ride.id] ? "Accepting..." : "Accept Ride"}
+                        {actionLoading[ride.id] ? (
+                          <>
+                            <Loader2 size={18} className="animate-spin" />
+                            Accepting...
+                          </>
+                        ) : (
+                          <>
+                            <ShieldCheck size={18} />
+                            Accept Ride
+                          </>
+                        )}
                       </button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             )}
             
             </>

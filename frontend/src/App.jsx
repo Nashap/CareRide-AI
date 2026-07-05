@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SmoothScroll from "./components/common/SmoothScroll";
 
 import Home from "./pages/Home";
 
@@ -21,7 +22,8 @@ import Profile from "./pages/profile/Profile";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+      <SmoothScroll>
+        <Routes>
 
         <Route
           path="/"
@@ -93,7 +95,8 @@ function App() {
           element={<Profile />}
         />
 
-      </Routes>
+        </Routes>
+      </SmoothScroll>
     </BrowserRouter>
   );
 }

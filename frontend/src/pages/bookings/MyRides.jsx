@@ -8,9 +8,11 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
+import LoadingScreen from "../../components/common/LoadingScreen";
 import EmptyState from "../../components/dashboard/EmptyState";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
 import Toast from "../../components/common/Toast";
@@ -95,7 +97,7 @@ export default function MyRides() {
   };
     return (
 
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
 
       {toast && (
         <Toast 
@@ -118,7 +120,7 @@ export default function MyRides() {
 
       <RiderNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
 
         <div className="flex gap-8">
 
@@ -132,11 +134,11 @@ export default function MyRides() {
 
               <div>
 
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-3xl font-bold text-cr-primary">
                   My Rides
                 </h1>
 
-                <p className="text-gray-500 text-sm mt-1">
+                <p className="text-cr-accent text-sm mt-1">
                   Track and manage all your CareRide bookings.
                 </p>
 
@@ -144,7 +146,7 @@ export default function MyRides() {
 
               <button
                 onClick={() => navigate("/book-ride")}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-lg font-medium transition"
+                className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
               >
 
                 <Plus size={18} />
@@ -156,27 +158,33 @@ export default function MyRides() {
             </div>
 
             {loading ? (
-
-              <div className="bg-white rounded-xl shadow p-8 text-center">
-
-                <p className="text-gray-500">
-                  Loading your rides...
-                </p>
-
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border flex items-center justify-center min-h-[400px]">
+                <LoadingScreen />
               </div>
-
             ) : rides.length === 0 ? (
 
               <EmptyState />
 
             ) : (
 
-              <div className="space-y-6">
+              <motion.div 
+                className="space-y-6"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+                }}
+              >
                 {rides.map((ride) => (
 
-                  <div
+                  <motion.div
                     key={ride.id}
-                    className="bg-white rounded-xl shadow border border-gray-200 p-6 hover:shadow-lg transition"
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                    }}
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
                   >
 
                     {/* Ride Header */}
@@ -185,11 +193,11 @@ export default function MyRides() {
 
                       <div>
 
-                        <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <h2 className="text-xl font-bold text-cr-primary flex items-center gap-2">
 
                           <MapPin
                             size={20}
-                            className="text-teal-600"
+                            className="text-cr-secondary"
                           />
 
                           {ride.pickup_location}
@@ -202,7 +210,7 @@ export default function MyRides() {
 
                         </h2>
 
-                        <p className="text-gray-500 text-sm mt-1">
+                        <p className="text-cr-accent text-sm mt-1">
                           Ride ID #{ride.id}
                         </p>
 
@@ -214,7 +222,7 @@ export default function MyRides() {
                           ride.status === "Pending"
                             ? "bg-yellow-100 text-yellow-700"
                             : ride.status === "Waiting for another available helper"
-                            ? "bg-gray-100 text-gray-700"
+                            ? "bg-cr-bg text-cr-secondary"
                             : ride.status === "Searching for another helper"
                             ? "bg-purple-100 text-purple-700"
                             : ride.status === "Waiting for Helper Response"
@@ -247,10 +255,10 @@ export default function MyRides() {
 
                           <Calendar
                             size={18}
-                            className="text-teal-600"
+                            className="text-cr-secondary"
                           />
 
-                          <p className="text-gray-500 text-sm">
+                          <p className="text-cr-accent text-sm">
                             Travel Date
                           </p>
 
@@ -274,10 +282,10 @@ export default function MyRides() {
 
                           <Activity
                             size={18}
-                            className="text-teal-600"
+                            className="text-cr-secondary"
                           />
 
-                          <p className="text-gray-500 text-sm">
+                          <p className="text-cr-accent text-sm">
                             Service Type
                           </p>
 
@@ -291,7 +299,7 @@ export default function MyRides() {
 
                       <div>
 
-                        <p className="text-gray-500 text-sm mb-1">
+                        <p className="text-cr-accent text-sm mb-1">
                           Assistance Type
                         </p>
 
@@ -303,7 +311,7 @@ export default function MyRides() {
 
                       <div>
 
-                        <p className="text-gray-500 text-sm mb-1">
+                        <p className="text-cr-accent text-sm mb-1">
                           Assistance Level
                         </p>
 
@@ -327,22 +335,22 @@ export default function MyRides() {
                     {/* Helper Contact Info */}
                     {(ride.status === "Assigned" || ride.status === "Completed") && ride.assigned_helper && (
                       <div className="mt-6">
-                        <p className="text-gray-500 text-sm mb-2">Assigned Helper Contact Details</p>
-                        <div className="bg-white border rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:gap-8 gap-2">
+                        <p className="text-cr-accent text-sm mb-2">Assigned Helper Contact Details</p>
+                        <div className="bg-cr-card border rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:gap-8 gap-2">
                           <div>
-                            <p className="text-gray-500 text-xs">Name</p>
-                            <p className="font-semibold text-gray-800">{ride.assigned_helper.name}</p>
+                            <p className="text-cr-accent text-xs">Name</p>
+                            <p className="font-semibold text-cr-primary">{ride.assigned_helper.name}</p>
                           </div>
                           {ride.assigned_helper.phone_number && (
                             <div>
-                              <p className="text-gray-500 text-xs">Phone Number</p>
-                              <p className="font-medium text-gray-800">{ride.assigned_helper.phone_number}</p>
+                              <p className="text-cr-accent text-xs">Phone Number</p>
+                              <p className="font-medium text-cr-primary">{ride.assigned_helper.phone_number}</p>
                             </div>
                           )}
                           {ride.assigned_helper.email && (
                             <div>
-                              <p className="text-gray-500 text-xs">Email</p>
-                              <p className="font-medium text-gray-800">{ride.assigned_helper.email}</p>
+                              <p className="text-cr-accent text-xs">Email</p>
+                              <p className="font-medium text-cr-primary">{ride.assigned_helper.email}</p>
                             </div>
                           )}
                         </div>
@@ -355,11 +363,11 @@ export default function MyRides() {
 
                       <div className="mt-6">
 
-                        <p className="text-gray-500 text-sm mb-2">
+                        <p className="text-cr-accent text-sm mb-2">
                           Additional Notes
                         </p>
 
-                        <div className="bg-gray-50 rounded-lg p-4 border">
+                        <div className="bg-cr-bg rounded-lg p-4 border">
 
                           {ride.additional_note}
 
@@ -377,19 +385,19 @@ export default function MyRides() {
                     )}
                     
                     {ride.status === "Waiting for another available helper" && (
-                      <div className="mt-4 p-4 bg-gray-50 text-gray-800 rounded-lg text-sm border border-gray-200">
-                        <p className="font-medium text-gray-900 mb-2">No AI helpers are currently available.</p>
-                        <p className="text-gray-600 mb-4">All AI recommended helpers have declined, or no helpers matched your criteria. You can manually browse our helper directory or cancel the ride.</p>
+                      <div className="mt-4 p-4 bg-cr-bg text-cr-primary rounded-lg text-sm border border-cr-surface">
+                        <p className="font-medium text-cr-primary mb-2">No AI helpers are currently available.</p>
+                        <p className="text-cr-secondary mb-4">All AI recommended helpers have declined, or no helpers matched your criteria. You can manually browse our helper directory or cancel the ride.</p>
                         <div className="flex gap-3">
                            <button 
                              onClick={() => navigate("/helpers")} 
-                             className="bg-teal-600 hover:bg-teal-700 transition text-white px-5 py-2 rounded-lg font-medium shadow-sm"
+                             className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
                            >
                              Browse Helpers
                            </button>
                            <button 
                              onClick={() => openDeleteDialog(ride.id)} 
-                             className="bg-white hover:bg-red-50 text-red-600 border border-red-200 px-5 py-2 rounded-lg font-medium transition"
+                             className="bg-cr-card border border-red-200 hover:border-red-500 hover:bg-red-50 text-red-600 px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
                            >
                              Cancel Ride
                            </button>
@@ -400,7 +408,7 @@ export default function MyRides() {
                     {/* Expired Ride Message */}
                     {ride.status === "Expired" && (
                       <div className="mt-6 flex justify-end">
-                        <span className="text-gray-500 font-medium italic">This ride has expired.</span>
+                        <span className="text-cr-accent font-medium italic">This ride has expired.</span>
                       </div>
                     )}
 
@@ -409,7 +417,7 @@ export default function MyRides() {
                       <div className="flex justify-end mt-6">
                         <button
                           onClick={() => openDeleteDialog(ride.id)}
-                          className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-5 py-2 rounded-lg transition font-medium"
+                          className="flex items-center gap-2 bg-cr-card border border-red-200 hover:border-red-500 hover:bg-red-50 text-red-600 px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
                         >
                           <Trash2 size={18} />
                           Cancel Ride
@@ -417,11 +425,11 @@ export default function MyRides() {
                       </div>
                     )}
 
-                  </div>
+                  </motion.div>
 
                 ))}
 
-              </div>
+              </motion.div>
 
             )}
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Calendar, MapPin, Activity, CheckCircle, Briefcase } from "lucide-react";
+import { Calendar, MapPin, Activity, CheckCircle, Briefcase, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
@@ -9,7 +10,7 @@ import { getTravelRequests, completeRide, getRideCertificate } from "../../servi
 import { getHelpers } from "../../services/helperService";
 import { getCurrentUser } from "../../services/authService";
 import Toast from "../../components/common/Toast";
-import { Loader2 } from "lucide-react";
+import LoadingScreen from "../../components/common/LoadingScreen";
 
 export default function AssignedRides() {
   const navigate = useNavigate();
@@ -90,17 +91,17 @@ export default function AssignedRides() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F0E8] flex flex-col">
+      <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface flex flex-col">
         <HelperNavbar />
-        <div className="max-w-7xl mx-auto px-6 py-6 flex-1 flex items-center justify-center">
-          <p className="text-gray-500 font-medium">Loading assigned rides...</p>
+        <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12 flex-1 flex items-center justify-center">
+          <LoadingScreen />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
       <HelperNavbar />
       
       {toastMessage && (
@@ -111,41 +112,53 @@ export default function AssignedRides() {
         />
       )}
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
         <div className="flex gap-8">
           <HelperSidebar />
 
           <main className="flex-1">
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Briefcase className="text-teal-600" />
+              <h1 className="text-3xl font-bold text-cr-primary flex items-center gap-2">
+                <Briefcase className="text-cr-secondary" />
                 Assigned Rides
               </h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-cr-accent text-sm mt-1">
                 View your active matches and complete rides to assist elderly riders.
               </p>
             </div>
 
             {rides.length === 0 ? (
-              <div className="bg-white rounded-xl shadow border border-gray-200 p-8 text-center">
-                <p className="text-gray-500 font-medium">No rides assigned to you yet.</p>
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border text-center">
+                <p className="text-cr-accent font-medium">No rides assigned to you yet.</p>
               </div>
             ) : (
-              <div className="space-y-6">
+              <motion.div 
+                className="space-y-6"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+                }}
+              >
                 {rides.map((ride) => (
-                  <div
+                  <motion.div
                     key={ride.id}
-                    className="bg-white rounded-xl shadow border border-gray-200 p-6 hover:shadow-lg transition"
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                    }}
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                          <MapPin size={20} className="text-teal-600" />
+                        <h2 className="text-xl font-bold text-cr-primary flex items-center gap-2">
+                          <MapPin size={20} className="text-cr-secondary" />
                           {ride.pickup_location}
                           <span className="text-gray-400">→</span>
                           {ride.destination}
                         </h2>
-                        <p className="text-gray-500 text-xs mt-1">Ride ID #{ride.id}</p>
+                        <p className="text-cr-accent text-xs mt-1">Ride ID #{ride.id}</p>
                       </div>
 
                       <span
@@ -166,9 +179,9 @@ export default function AssignedRides() {
 
                     <div className="grid md:grid-cols-2 gap-6 mt-6">
                       <div className="flex items-center gap-2">
-                        <Calendar size={18} className="text-teal-600" />
+                        <Calendar size={18} className="text-cr-secondary" />
                         <div>
-                          <p className="text-gray-500 text-xs">Travel Date</p>
+                          <p className="text-cr-accent text-xs">Travel Date</p>
                           <p className="font-semibold flex gap-2 items-center">
                             {ride.travel_date}
                             {ride.travel_time && (
@@ -182,20 +195,20 @@ export default function AssignedRides() {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Activity size={18} className="text-teal-600" />
+                        <Activity size={18} className="text-cr-secondary" />
                         <div>
-                          <p className="text-gray-500 text-xs">Service Type</p>
+                          <p className="text-cr-accent text-xs">Service Type</p>
                           <p className="font-semibold">{ride.service_type}</p>
                         </div>
                       </div>
 
                       <div>
-                        <p className="text-gray-500 text-xs mb-1">Assistance Type</p>
+                        <p className="text-cr-accent text-xs mb-1">Assistance Type</p>
                         <p className="font-semibold">{ride.assistance_type}</p>
                       </div>
 
                       <div>
-                        <p className="text-gray-500 text-xs mb-1">Assistance Level</p>
+                        <p className="text-cr-accent text-xs mb-1">Assistance Level</p>
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-sm font-medium
                           ${
@@ -214,22 +227,22 @@ export default function AssignedRides() {
                     {/* Rider Contact Info */}
                     {(ride.status === "Assigned" || ride.status === "Completed") && ride.rider_details && (
                       <div className="mt-6">
-                        <p className="text-gray-500 text-xs mb-2">Rider Contact Details</p>
-                        <div className="bg-white border rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:gap-8 gap-2">
+                        <p className="text-cr-accent text-xs mb-2">Rider Contact Details</p>
+                        <div className="bg-cr-card border rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:gap-8 gap-2">
                           <div>
-                            <p className="text-gray-500 text-xs">Name</p>
-                            <p className="font-semibold text-gray-800">{ride.rider_details.name}</p>
+                            <p className="text-cr-accent text-xs">Name</p>
+                            <p className="font-semibold text-cr-primary">{ride.rider_details.name}</p>
                           </div>
                           {ride.rider_details.phone_number && (
                             <div>
-                              <p className="text-gray-500 text-xs">Phone Number</p>
-                              <p className="font-medium text-gray-800">{ride.rider_details.phone_number}</p>
+                              <p className="text-cr-accent text-xs">Phone Number</p>
+                              <p className="font-medium text-cr-primary">{ride.rider_details.phone_number}</p>
                             </div>
                           )}
                           {ride.rider_details.email && (
                             <div>
-                              <p className="text-gray-500 text-xs">Email</p>
-                              <p className="font-medium text-gray-800">{ride.rider_details.email}</p>
+                              <p className="text-cr-accent text-xs">Email</p>
+                              <p className="font-medium text-cr-primary">{ride.rider_details.email}</p>
                             </div>
                           )}
                         </div>
@@ -239,20 +252,20 @@ export default function AssignedRides() {
                     {/* Disability Certificate Block */}
                     {(ride.status === "Assigned" || ride.status === "Completed") && ride.rider_details && (
                       <div className="mt-6 border-t pt-4">
-                        <p className="text-gray-500 text-xs mb-2">Disability Certificate</p>
-                        <div className="bg-white border rounded-lg p-4 shadow-sm flex items-center justify-between">
-                          <p className="text-sm text-gray-700">
+                        <p className="text-cr-accent text-xs mb-2">Disability Certificate</p>
+                        <div className="bg-cr-card border rounded-lg p-4 shadow-sm flex items-center justify-between">
+                          <p className="text-sm text-cr-secondary">
                             Securely view the rider's official disability certificate.
                           </p>
                           <button
                             onClick={() => handleViewCertificate(ride.id)}
                             disabled={certLoading[ride.id]}
-                            className="bg-teal-50 hover:bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium transition text-sm flex items-center gap-2"
+                            className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 text-sm flex items-center gap-2"
                           >
                             {certLoading[ride.id] ? (
                               <>
-                                <Loader2 className="animate-spin" size={16} />
-                                Loading...
+                              <Loader2 size={16} className="animate-spin" />
+                                View Certificate
                               </>
                             ) : (
                               "View Certificate"
@@ -264,8 +277,8 @@ export default function AssignedRides() {
 
                     {ride.additional_note && (
                       <div className="mt-6">
-                        <p className="text-gray-500 text-xs mb-1">Additional Notes</p>
-                        <div className="bg-gray-50 rounded-lg p-4 border text-sm text-gray-700">
+                        <p className="text-cr-accent text-xs mb-1">Additional Notes</p>
+                        <div className="bg-cr-bg rounded-lg p-4 border text-sm text-cr-secondary">
                           {ride.additional_note}
                         </div>
                       </div>
@@ -276,16 +289,16 @@ export default function AssignedRides() {
                         <button
                           onClick={() => handleCompleteRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition disabled:bg-gray-300"
+                          className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                           <CheckCircle size={18} />
                           {actionLoading[ride.id] ? "Completing..." : "Complete Ride"}
                         </button>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             )}
           </main>
         </div>

@@ -16,6 +16,7 @@ import {
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
+import LoadingScreen from "../../components/common/LoadingScreen";
 
 import { getHelpers } from "../../services/helperService";
 import { getRecommendation } from "../../services/aiService";
@@ -121,10 +122,10 @@ export default function Helpers() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
       <RiderNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
         <div className="flex gap-8">
           <RiderSidebar />
 
@@ -132,11 +133,11 @@ export default function Helpers() {
             {/* Header */}
             <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-                  <Users className="text-teal-600" />
+                <h1 className="text-3xl font-bold text-cr-primary flex items-center gap-2">
+                  <Users className="text-cr-secondary" />
                   Browse Helpers
                 </h1>
-                <p className="text-gray-500 text-sm mt-1">
+                <p className="text-cr-accent text-sm mt-1">
                   View, filter, and search professional CareRide helpers available for mobility support.
                 </p>
               </div>
@@ -150,10 +151,10 @@ export default function Helpers() {
                     placeholder="Search name or skill..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 w-60"
+                    className="pl-10 pr-4 py-2.5 bg-cr-card border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary w-60"
                   />
                 </div>
-                <label className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl border border-gray-300 cursor-pointer hover:bg-gray-50 transition text-sm select-none">
+                <label className="flex items-center gap-2 bg-cr-card px-4 py-2.5 rounded-xl border border-cr-surface cursor-pointer hover:bg-cr-bg transition text-sm select-none">
                   <input
                     type="checkbox"
                     checked={availableOnly}
@@ -180,48 +181,48 @@ export default function Helpers() {
             )}
 
             {loading ? (
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center">
-                <p className="text-gray-500">Loading helpers...</p>
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border flex items-center justify-center min-h-[400px]">
+                <LoadingScreen />
               </div>
             ) : (
               <div className="space-y-8">
                 {/* 1. AI Recommended Helper section (if exists) */}
                 {aiRecommendedHelper && (
-                  <div className="bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border-2 border-teal-500 rounded-2xl shadow-md p-6 overflow-hidden">
+                  <div className="bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border-2 border-cr-secondary rounded-[32px] shadow-xl p-8 md:p-10 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                     <div className="flex items-center justify-between mb-4 border-b border-teal-100 pb-3 flex-wrap gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="bg-teal-600 text-white text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                        <span className="bg-cr-secondary text-white text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full flex items-center gap-1">
                           <Sparkles size={12} />
                           ⭐ AI Recommended
                         </span>
-                        <span className="text-xs text-gray-500 font-medium">
+                        <span className="text-xs text-cr-accent font-medium">
                           Matched for travel request #{latestRequest?.id}
                         </span>
                       </div>
-                      <div className="bg-teal-600 text-white font-bold text-xs px-3 py-1 rounded-full">
+                      <div className="bg-cr-secondary text-white font-bold text-xs px-3 py-1 rounded-full">
                         {aiRecommendedHelper.match_score}% Match Score
                       </div>
                     </div>
 
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                       <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <h3 className="text-2xl font-bold text-cr-primary flex items-center gap-2">
                           {aiRecommendedHelper.name}
-                          <span className="flex items-center gap-1 text-amber-500 text-sm font-semibold bg-white px-2 py-0.5 rounded-lg shadow-sm border border-gray-100">
+                          <span className="flex items-center gap-1 text-amber-500 text-sm font-semibold bg-cr-card px-2 py-0.5 rounded-lg shadow-sm border border-cr-surface">
                             <Star size={14} fill="currentColor" />
                             {aiRecommendedHelper.rating.toFixed(1)}
                           </span>
                         </h3>
-                        <p className="text-sm text-gray-600 mt-2 font-medium">
+                        <p className="text-sm text-cr-secondary mt-2 font-medium">
                           Skills:{" "}
-                          <span className="text-gray-800">
+                          <span className="text-cr-primary">
                             {aiRecommendedHelper.skills}
                           </span>
                         </p>
                         {aiRecommendedHelper.reason && (
-                          <div className="mt-4 bg-white/70 border border-teal-100/50 rounded-xl p-4">
-                            <p className="text-xs font-bold text-teal-800 uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                              <ShieldCheck size={14} className="text-teal-600" />
+                          <div className="mt-4 bg-cr-card/70 border border-teal-100/50 rounded-xl p-4">
+                            <p className="text-xs font-bold text-cr-primary uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                              <ShieldCheck size={14} className="text-cr-secondary" />
                               AI Match Assessment:
                             </p>
                             <p className="text-sm text-teal-950 italic">
@@ -243,8 +244,8 @@ export default function Helpers() {
                           className={`font-semibold px-6 py-3 rounded-xl transition shadow-sm w-full md:w-48 text-center
                             ${
                               !aiRecommendedHelper.availability
-                                ? "bg-gray-100 text-gray-400 cursor-not-allowed border"
-                                : "bg-teal-600 hover:bg-teal-700 text-white"
+                                ? "bg-cr-bg text-gray-400 cursor-not-allowed border border-cr-border"
+                                : "group bg-cr-primary hover:bg-cr-primary-hover text-white shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"
                             }`}
                         >
                           {acceptingAiHelper ? "Matching..." : "Accept AI Recommended"}
@@ -253,7 +254,7 @@ export default function Helpers() {
                           onClick={() =>
                             navigate(`/ai-recommendation/${latestRequest?.id}`)
                           }
-                          className="bg-white hover:bg-gray-50 text-gray-700 font-semibold px-6 py-3 rounded-xl transition border text-center text-sm w-full md:w-48"
+                          className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md text-center text-sm w-full md:w-48"
                         >
                           View Matching Summary
                         </button>
@@ -264,27 +265,27 @@ export default function Helpers() {
 
                 {/* 2. All Helpers section */}
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-cr-primary mb-6 flex items-center gap-2">
                     All CareRide Helpers
-                    <span className="bg-gray-200 text-gray-700 font-semibold text-xs px-2 py-0.5 rounded-full">
+                    <span className="bg-gray-200 text-cr-secondary font-semibold text-xs px-2 py-0.5 rounded-full">
                       {filteredHelpers.length}
                     </span>
                   </h2>
 
                   {filteredHelpers.length === 0 ? (
-                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 text-center">
-                      <p className="text-gray-500">No helpers matched your filters.</p>
+                    <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border text-center">
+                      <p className="text-cr-accent font-medium">No helpers matched your filters.</p>
                     </div>
                   ) : (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {filteredHelpers.map((helper) => (
                         <div
                           key={helper.id}
-                          className="bg-white rounded-xl shadow border border-gray-200 p-6 flex flex-col justify-between hover:shadow-md transition"
+                          className="bg-cr-card rounded-[32px] shadow-xl p-8 border border-cr-border flex flex-col justify-between hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                         >
                           <div>
                             <div className="flex justify-between items-start mb-4">
-                              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                              <h3 className="text-lg font-bold text-cr-primary flex items-center gap-2">
                                 <User size={18} className="text-gray-400" />
                                 {helper.name}
                               </h3>
@@ -302,11 +303,11 @@ export default function Helpers() {
 
                             <div className="flex items-center gap-1 text-amber-500 mb-4">
                               <Star size={16} fill="currentColor" />
-                              <span className="text-sm font-semibold text-gray-700">
+                              <span className="text-sm font-semibold text-cr-secondary">
                                 {helper.rating.toFixed(1)}
                               </span>
                               <span className="text-gray-300 text-xs">|</span>
-                              <span className="text-xs text-gray-500">CareRide Verified</span>
+                              <span className="text-xs text-cr-accent">CareRide Verified</span>
                             </div>
 
                             <div className="mb-4">
@@ -317,7 +318,7 @@ export default function Helpers() {
                                 {helper.skills.split(",").map((skill, index) => (
                                   <span
                                     key={index}
-                                    className="bg-gray-50 text-gray-700 border text-xs px-2 py-0.5 rounded font-medium"
+                                    className="bg-cr-bg text-cr-secondary border text-xs px-2 py-0.5 rounded font-medium"
                                   >
                                     {skill.trim()}
                                   </span>
@@ -326,16 +327,16 @@ export default function Helpers() {
                             </div>
                           </div>
 
-                          <div className="border-t pt-4 mt-2 flex items-center justify-between text-sm text-gray-500">
+                          <div className="border-t pt-4 mt-2 flex items-center justify-between text-sm text-cr-accent">
                             <span className="flex items-center gap-1.5">
-                              <Phone size={14} className="text-teal-600" />
+                              <Phone size={14} className="text-cr-secondary" />
                               Contact via app
                             </span>
                             
                             {latestRequest && helper.availability && (
                               <button
                                 onClick={() => handleAcceptHelper(helper.id, "Manually selected from directory")}
-                                className="text-teal-600 hover:text-teal-700 font-semibold flex items-center gap-1"
+                                className="text-cr-primary hover:text-cr-primary-hover font-bold flex items-center gap-1 group-hover:gap-2 transition-all"
                               >
                                 Match Request
                                 <ArrowRight size={14} />

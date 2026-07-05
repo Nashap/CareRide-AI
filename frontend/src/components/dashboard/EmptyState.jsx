@@ -4,10 +4,10 @@ function EmptyState() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl min-h-[420px] flex flex-col items-center justify-center text-center px-6">
+    <div className="bg-cr-card border border-cr-surface rounded-2xl min-h-[420px] flex flex-col items-center justify-center text-center px-6">
 
       {/* Icon */}
-      <div className="w-16 h-16 rounded-full bg-teal-50 flex items-center justify-center mb-5">
+      <div className="w-16 h-16 rounded-full bg-cr-sage/20 flex items-center justify-center mb-5">
         <svg
           width="34"
           height="34"
@@ -26,12 +26,12 @@ function EmptyState() {
       </div>
 
       {/* Title */}
-      <h2 className="text-lg font-semibold text-gray-800 mb-2">
+      <h2 className="text-lg font-semibold text-cr-primary mb-2">
         No rides yet
       </h2>
 
       {/* Description */}
-      <p className="text-sm text-gray-500 mb-7 max-w-sm leading-relaxed">
+      <p className="text-sm text-cr-accent mb-7 max-w-sm leading-relaxed">
         Book your first ride and CareRide AI will match you with the best helper
         based on your location and needs.
       </p>
@@ -39,7 +39,7 @@ function EmptyState() {
       {/* Button */}
       <button
         onClick={() => navigate("/book-ride")}
-        className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition"
+        className="bg-cr-secondary hover:bg-cr-primary text-white text-sm font-medium px-6 py-2.5 rounded-lg transition"
       >
         Book a ride
       </button>

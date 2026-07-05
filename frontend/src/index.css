@@ -1,1 +1,122 @@
 @import "tailwindcss";
+
+@theme {
+  --color-cr-primary: var(--cr-primary);
+  --color-cr-primary-hover: var(--cr-primary-hover);
+  --color-cr-secondary: var(--cr-secondary);
+  --color-cr-sage: var(--cr-sage);
+  --color-cr-beige: var(--cr-beige);
+  --color-cr-cream: var(--cr-cream);
+  
+  --color-cr-text-dark: var(--cr-text-dark);
+  --color-cr-text-muted: var(--cr-text-muted);
+  --color-cr-text-primary: var(--cr-text-primary);
+  --color-cr-text-secondary: var(--cr-text-secondary);
+  
+  --color-cr-bg: var(--cr-bg);
+  --color-cr-surface: var(--cr-surface);
+  --color-cr-card: var(--cr-card);
+  --color-cr-border: var(--cr-border);
+  --color-cr-accent: var(--cr-accent);
+}
+
+@layer base {
+  :root {
+    --cr-primary: #1A3F75;
+    --cr-primary-hover: #5F82A8;
+    --cr-secondary: #5F82A8;
+    --cr-sage: #5F82A8;
+    --cr-beige: #DDEAF5;
+    --cr-cream: #FFFFFF;
+    --cr-text-dark: #00002A;
+    --cr-text-muted: #5D5D5D;
+    
+    --cr-text-primary: #00002A;
+    --cr-text-secondary: #5D5D5D;
+    
+    --cr-bg: #FFFFFF;
+    --cr-surface: #DDEAF5;
+    --cr-card: #FFFFFF;
+    --cr-border: #DDEAF5;
+    --cr-accent: #5F82A8;
+  }
+
+  html.dark {
+    --cr-primary: #5F82A8;
+    --cr-primary-hover: #5F82A8;
+    --cr-secondary: #A9C7E3;
+    --cr-sage: #A9C7E3;
+    --cr-beige: #1E1F1C;
+    --cr-cream: #242622;
+    --cr-text-dark: #FAFAF8;
+    --cr-text-muted: #A3A69F;
+    
+    --cr-text-primary: #FAFAF8;
+    --cr-text-secondary: #D2D4CF;
+    
+    --cr-bg: #151513;
+    --cr-surface: #1E1F1C;
+    --cr-card: #242622;
+    --cr-navbar: rgba(32,33,31,.75);
+    --cr-border: rgba(255,255,255,.08);
+    --cr-accent: #A9C7E3;
+  }
+
+  body {
+    background-color: var(--cr-bg);
+    color: var(--cr-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* Custom Badge Styles to ensure colors apply and bypass any Tailwind JIT caching issues */
+.cr-badge-custom {
+  background-color: #1A3F75 !important;
+  border: 1px solid #1A3F75 !important;
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  visibility: visible !important;
+}
+
+.cr-badge-custom:hover {
+  background-color: #00002A !important;
+  border-color: #00002A !important;
+  color: #FFFFFF !important;
+}
+
+.cr-badge-custom svg {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+.dark .cr-badge-custom {
+  background-color: rgba(169, 199, 227, 0.18) !important;
+  border-color: rgba(169, 199, 227, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+.dark .cr-badge-custom:hover {
+  background-color: rgba(169, 199, 227, 0.28) !important;
+  border-color: rgba(169, 199, 227, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+/* Service Card Premium Shadows */
+.cr-service-card {
+  box-shadow: 0 20px 40px rgba(26,63,117,0.12), 0 30px 80px rgba(95,130,168,0.22), 0 0 40px rgba(169,199,227,0.20) !important;
+  transition: box-shadow 350ms ease !important;
+}
+
+.cr-service-card:hover {
+  box-shadow: 0 30px 60px rgba(26,63,117,0.18), 0 50px 120px rgba(95,130,168,0.28), 0 0 60px rgba(169,199,227,0.30) !important;
+}
+
+.dark .cr-service-card {
+  box-shadow: 0 20px 50px rgba(95,130,168,0.22), 0 35px 90px rgba(95,130,168,0.30), 0 0 40px rgba(169,199,227,0.18) !important;
+}
+
+.dark .cr-service-card:hover {
+  box-shadow: 0 30px 60px rgba(95,130,168,0.28), 0 50px 120px rgba(95,130,168,0.40), 0 0 60px rgba(169,199,227,0.25) !important;
+}

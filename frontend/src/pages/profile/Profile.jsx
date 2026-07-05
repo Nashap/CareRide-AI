@@ -10,6 +10,7 @@ import {
   AlertCircle,
   Loader2
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
@@ -18,6 +19,8 @@ import HelperSidebar from "../../components/dashboard/HelperSidebar";
 
 import { getProfile, updateProfile, uploadCertificate, getMyCertificate } from "../../services/profileService";
 import { getCurrentUser } from "../../services/authService";
+import LoadingScreen from "../../components/common/LoadingScreen";
+import CustomSelect from "../../components/common/CustomSelect";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -197,21 +200,21 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
       {isHelper ? <HelperNavbar /> : <RiderNavbar />}
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
         <div className="flex gap-8">
           {isHelper ? <HelperSidebar /> : <RiderSidebar />}
 
           <main className="flex-1">
             {/* Page Header */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <UserCircle className="text-teal-600" />
+              <h1 className="text-3xl font-bold text-cr-primary flex items-center gap-2">
+                <UserCircle className="text-cr-secondary" />
                 My Profile
               </h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-cr-accent text-sm mt-1">
                 View and manage your personal details, emergency contacts, and mobility preferences.
               </p>
             </div>
@@ -231,78 +234,87 @@ export default function Profile() {
             )}
 
             {loading ? (
-              <div className="bg-white rounded-xl shadow p-12 text-center flex flex-col items-center justify-center">
-                <Loader2 className="animate-spin text-teal-600 mb-2" />
-                <p className="text-gray-500">Loading your profile details...</p>
+              <div className="bg-cr-card rounded-[32px] shadow-xl p-12 text-center flex flex-col items-center justify-center border border-cr-border min-h-[400px]">
+                <LoadingScreen />
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <motion.form 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                onSubmit={handleSubmit} 
+                className="space-y-10"
+              >
                 {/* Personal Information */}
-                <div className="bg-white rounded-xl shadow p-8 border border-gray-200">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                    <UserCircle size={20} className="text-teal-600" />
+                <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                  <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
+                    <UserCircle size={24} className="text-cr-secondary" />
                     Personal Details
                   </h2>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <p className="text-sm text-cr-secondary mt-1 mb-5">
+                    Update your personal information and address.
+                  </p>
+                  <hr className="border-cr-border mb-8" />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div>
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Full Name</label>
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Full Name</label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       />
                     </div>
 
                     <div>
                       <label className="block mb-2 font-medium text-sm text-gray-400">Email Address (Read-only)</label>
-                      <div className="w-full border rounded-lg p-3 bg-gray-50 text-gray-400 text-sm flex items-center gap-2">
-                        <Mail size={16} />
+                      <div className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-gray-400 flex items-center gap-2">
+                        <Mail size={18} />
                         {formData.email}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Phone Number</label>
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Phone Number</label>
                       <input
                         type="text"
                         name="phone_number"
                         value={formData.phone_number}
                         onChange={handleChange}
                         placeholder="Enter phone number"
-                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       />
                     </div>
 
                     <div>
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Date of Birth</label>
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Date of Birth</label>
                       <input
                         type="date"
                         name="date_of_birth"
                         value={formData.date_of_birth}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 text-sm"
+                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20"
                       />
                     </div>
 
                     <div>
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Gender</label>
-                      <select
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Gender</label>
+                      <CustomSelect
                         name="gender"
                         value={formData.gender}
                         onChange={handleChange}
-                        className="w-full border rounded-lg p-3 text-sm"
+                        placeholder="Select Gender"
                       >
-                        <option value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
-                      </select>
+                      </CustomSelect>
                     </div>
                     
                     <div className="md:col-span-2">
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Home Address</label>
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Home Address</label>
                       <input
                         type="text"
                         name="address"
@@ -310,27 +322,27 @@ export default function Profile() {
                         onChange={handleChange}
                         placeholder="Enter full address"
                         required
-                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       />
                     </div>
 
                     {!isHelper && (
                       <div>
-                        <label className="block mb-2 font-medium text-sm text-gray-700">Disability / Mobility Support Type</label>
+                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Disability / Mobility Support Type</label>
                         <input
                           type="text"
                           name="disability_type"
                           value={formData.disability_type}
                           onChange={handleChange}
                           placeholder="e.g. Wheelchair, Visually Impaired"
-                          className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                         />
                       </div>
                     )}
                     
                     {isHelper && (
                       <div className="md:col-span-2">
-                        <label className="block mb-2 font-medium text-sm text-gray-700">Skills / Assistance Provided</label>
+                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Skills / Assistance Provided</label>
                         <input
                           type="text"
                           name="skills"
@@ -338,22 +350,21 @@ export default function Profile() {
                           onChange={handleChange}
                           placeholder="e.g. CPR Certified, First Aid, Mobility and travel assistance"
                           required
-                          className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                         />
                       </div>
                     )}
                   </div>
 
                   {!isHelper && (
-                    <div className="mt-6">
-                      <label className="block mb-2 font-medium text-sm text-gray-700">Medical Notes / Special Instructions</label>
+                    <div className="mt-6 md:mt-8">
+                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Medical Notes / Special Instructions</label>
                       <textarea
-                        rows="4"
                         name="medical_notes"
                         value={formData.medical_notes}
                         onChange={handleChange}
                         placeholder="Add any specific health warnings or helpers instructions..."
-                        className="w-full border rounded-lg p-3 text-sm resize-none"
+                        className="w-full min-h-[140px] bg-cr-bg border border-cr-border rounded-[14px] p-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400 resize-none"
                       />
                     </div>
                   )}
@@ -361,33 +372,38 @@ export default function Profile() {
 
                 {/* Emergency Contact */}
                 {!isHelper && (
-                  <div className="bg-white rounded-xl shadow p-8 border border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                      <ShieldAlert size={20} className="text-red-500" />
+                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                    <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
+                      <ShieldAlert size={24} className="text-red-500" />
                       Emergency Contact
                     </h2>
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <p className="text-sm text-cr-secondary mt-1 mb-5">
+                      Who should we contact in an emergency?
+                    </p>
+                    <hr className="border-cr-border mb-8" />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                       <div>
-                        <label className="block mb-2 font-medium text-sm text-gray-700">Contact Name</label>
+                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Contact Name</label>
                         <input
                           type="text"
                           name="emergency_contact_name"
                           value={formData.emergency_contact_name}
                           onChange={handleChange}
                           placeholder="Emergency contact full name"
-                          className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                         />
                       </div>
 
                       <div>
-                        <label className="block mb-2 font-medium text-sm text-gray-700">Contact Phone Number</label>
+                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Contact Phone Number</label>
                         <input
                           type="text"
                           name="emergency_contact_phone"
                           value={formData.emergency_contact_phone}
                           onChange={handleChange}
                           placeholder="Emergency contact phone number"
-                          className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                         />
                       </div>
                     </div>
@@ -396,28 +412,28 @@ export default function Profile() {
 
                 {/* Disability Certificate */}
                 {!isHelper && (
-                  <div className="bg-white rounded-xl shadow p-8 border border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                      <ShieldAlert size={20} className="text-teal-600" />
+                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                    <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
+                      <ShieldAlert size={24} className="text-cr-secondary" />
                       Disability Certificate
                     </h2>
-                    <div className="mb-4 text-sm text-gray-600">
-                      Upload your official disability certificate to help helpers understand your needs better. 
-                      This is securely stored and only visible to the helper assigned to your ride.
-                    </div>
+                    <p className="text-sm text-cr-secondary mt-1 mb-5">
+                      Upload your official disability certificate to help helpers understand your needs better. This is securely stored and only visible to the helper assigned to your ride.
+                    </p>
+                    <hr className="border-cr-border mb-8" />
                     
                     {certificateData ? (
-                      <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200 flex items-center justify-between">
+                      <div className="mb-8 p-6 bg-[#EEF5FF] rounded-[14px] border border-[#A9C7E3] flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                          <p className="font-semibold text-green-800 flex items-center gap-2">
-                            <CheckCircle size={18} />
+                          <p className="font-bold text-[#00002A] flex items-center gap-2">
+                            <CheckCircle size={20} className="text-[#1A3F75]" />
                             Certificate Uploaded
                           </p>
-                          <p className="text-green-600 text-sm mt-1">
+                          <p className="text-[#5F82A8] text-sm mt-1">
                             Uploaded on: {new Date(certificateData.uploaded_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                           </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center">
                           <button
                             type="button"
                             onClick={async () => {
@@ -431,40 +447,41 @@ export default function Profile() {
                                 setError("Failed to open certificate.");
                               }
                             }}
-                            className="text-teal-600 hover:text-teal-700 font-medium text-sm underline focus:outline-none"
+                            className="bg-white border border-[#1A3F75] hover:bg-[#1A3F75] hover:text-white text-[#1A3F75] h-[48px] px-6 rounded-[14px] font-semibold shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap"
                           >
                             View Certificate
                           </button>
                         </div>
                       </div>
                     ) : (
-                      <div className="mb-6 p-4 bg-gray-50 rounded-lg border text-sm text-gray-500">
-                        No certificate uploaded.
+                      <div className="mb-8 p-5 bg-cr-bg rounded-[14px] border border-cr-border text-sm text-cr-accent flex items-center gap-3">
+                        <AlertCircle size={18} />
+                        No certificate uploaded yet.
                       </div>
                     )}
 
-                    <div className="flex flex-col gap-3 max-w-md">
-                      <label className="block font-medium text-sm text-gray-700">
-                        {certificateData ? "Replace / Update Certificate" : "Upload Certificate"}
+                    <div className="flex flex-col gap-4 max-w-xl p-6 bg-cr-bg rounded-[14px] border border-cr-border">
+                      <label className="block font-semibold text-sm text-cr-primary">
+                        {certificateData ? "Replace / Update Certificate" : "Upload New Certificate"}
                       </label>
                       <input
                         type="file"
                         accept=".pdf,.jpg,.jpeg,.png"
                         onChange={handleFileChange}
-                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+                        className="text-sm text-cr-secondary file:cursor-pointer file:mr-4 file:py-3 file:px-6 file:rounded-[10px] file:border-0 file:text-sm file:font-semibold file:bg-cr-sage/20 file:text-cr-secondary hover:file:bg-cr-sage/40 transition-colors"
                       />
-                      <p className="text-xs text-gray-400">Supported formats: PDF, JPG, PNG. Max size: 5 MB.</p>
+                      <p className="text-xs text-gray-500">Supported formats: PDF, JPG, PNG. Max size: 5 MB.</p>
                       
                       {certFile && (
                         <button
                           type="button"
                           onClick={handleUploadCert}
                           disabled={uploadingCert}
-                          className="mt-2 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg font-medium transition disabled:bg-gray-400 self-start text-sm flex items-center gap-2"
+                          className="mt-4 bg-[#1A3F75] hover:bg-cr-primary text-white h-[52px] px-8 rounded-[14px] font-bold shadow-[0_4px_15px_rgba(26,63,117,0.15)] hover:shadow-[0_8px_20px_rgba(26,63,117,0.25)] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none w-fit"
                         >
                           {uploadingCert ? (
                             <>
-                              <Loader2 className="animate-spin" size={16} />
+                              <Loader2 size={18} className="animate-spin" />
                               Uploading...
                             </>
                           ) : (
@@ -477,26 +494,26 @@ export default function Profile() {
                 )}
 
                 {/* Actions */}
-                <div className="flex justify-end">
+                <div className="flex justify-end pt-4">
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+                    className="group bg-cr-primary hover:bg-[#1A3F75] text-white px-10 h-[56px] rounded-[14px] font-bold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-lg"
                   >
                     {saving ? (
                       <>
-                        <Loader2 className="animate-spin" size={18} />
-                        Saving...
+                        <Loader2 size={20} className="animate-spin" />
+                        Saving Profile...
                       </>
                     ) : (
                       <>
-                        <Save size={18} />
+                        <Save size={20} className="group-hover:scale-110 transition-transform" />
                         Save Changes
                       </>
                     )}
                   </button>
                 </div>
-              </form>
+              </motion.form>
             )}
           </main>
         </div>

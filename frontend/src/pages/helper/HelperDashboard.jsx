@@ -104,8 +104,8 @@ export default function HelperDashboard() {
     return (
       <div className="min-h-screen bg-[#F5F0E8] flex flex-col">
         <HelperNavbar />
-        <div className="max-w-7xl mx-auto px-6 py-6 flex-1 flex items-center justify-center">
-          <p className="text-gray-500 font-medium">Loading Helper Dashboard...</p>
+        <div className="w-full max-w-full mx-auto px-6 py-6 flex-1 flex items-center justify-center">
+          <p className="text-cr-accent font-medium">Loading Helper Dashboard...</p>
         </div>
       </div>
     );
@@ -115,7 +115,7 @@ export default function HelperDashboard() {
     <div className="min-h-screen bg-[#F5F0E8]">
       <HelperNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-full mx-auto px-6 py-6">
         <div className="flex gap-8">
           <HelperSidebar />
 
@@ -131,23 +131,23 @@ export default function HelperDashboard() {
             {/* Statistics */}
             <div className="grid md:grid-cols-4 gap-6 mb-8">
               {/* Assigned Rides */}
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-xl shadow p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm">Assigned Rides</p>
+                    <p className="text-cr-accent text-sm">Assigned Rides</p>
                     <h2 className="text-3xl font-bold mt-2">{stats.assigned}</h2>
                   </div>
-                  <div className="bg-teal-100 p-4 rounded-full">
-                    <Briefcase size={28} className="text-teal-600" />
+                  <div className="bg-cr-sage/40 p-4 rounded-full">
+                    <Briefcase size={28} className="text-cr-secondary" />
                   </div>
                 </div>
               </div>
 
               {/* Pending Requests */}
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-xl shadow p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm">Pending Requests</p>
+                    <p className="text-cr-accent text-sm">Pending Requests</p>
                     <h2 className="text-3xl font-bold mt-2">{stats.pending}</h2>
                   </div>
                   <div className="bg-yellow-100 p-4 rounded-full">
@@ -157,10 +157,10 @@ export default function HelperDashboard() {
               </div>
 
               {/* Completed Rides */}
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-xl shadow p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm">Completed Rides</p>
+                    <p className="text-cr-accent text-sm">Completed Rides</p>
                     <h2 className="text-3xl font-bold mt-2">{stats.completed}</h2>
                   </div>
                   <div className="bg-green-100 p-4 rounded-full">
@@ -170,10 +170,10 @@ export default function HelperDashboard() {
               </div>
 
               {/* Average Rating */}
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-xl shadow p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm">Average Rating</p>
+                    <p className="text-cr-accent text-sm">Average Rating</p>
                     <h2 className="text-3xl font-bold mt-2">{stats.rating.toFixed(1)}</h2>
                   </div>
                   <div className="bg-purple-100 p-4 rounded-full">
@@ -184,12 +184,12 @@ export default function HelperDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow p-8 mb-8">
+            <div className="bg-cr-card rounded-xl shadow p-8 mb-8">
               <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
               <div className="grid md:grid-cols-4 gap-6">
                 <button
                   onClick={() => navigate("/helper/assigned-rides")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
+                  className="bg-cr-secondary hover:bg-cr-primary text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
                   <Briefcase size={24} />
                   <span className="font-semibold text-sm">View Assigned Rides</span>
@@ -197,7 +197,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/helper/browse-requests")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
+                  className="bg-cr-secondary hover:bg-cr-primary text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
                   <Search size={24} />
                   <span className="font-semibold text-sm">Browse Ride Requests</span>
@@ -205,7 +205,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/helper/availability")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
+                  className="bg-cr-secondary hover:bg-cr-primary text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
                   <Clock size={24} />
                   <span className="font-semibold text-sm">Update Availability</span>
@@ -213,7 +213,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/profile")}
-                  className="bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
+                  className="bg-cr-secondary hover:bg-cr-primary text-white rounded-xl p-6 transition flex flex-col justify-between h-32 text-left"
                 >
                   <Star size={24} />
                   <span className="font-semibold text-sm">View Profile</span>
@@ -222,20 +222,20 @@ export default function HelperDashboard() {
             </div>
 
             {/* Recent Assigned Ride */}
-            <div className="bg-white rounded-xl shadow p-8">
+            <div className="bg-cr-card rounded-xl shadow p-8">
               <h2 className="text-xl font-bold mb-6">Recent Assigned Ride</h2>
 
               {recentRide ? (
                 <div className="border rounded-xl p-6 hover:shadow-md transition">
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        <MapPin size={18} className="text-teal-600" />
+                      <h3 className="text-lg font-bold text-cr-primary flex items-center gap-2">
+                        <MapPin size={18} className="text-cr-secondary" />
                         {recentRide.pickup_location}
                         <span className="text-gray-400">→</span>
                         {recentRide.destination}
                       </h3>
-                      <p className="text-gray-500 text-xs mt-1">Ride ID #{recentRide.id}</p>
+                      <p className="text-cr-accent text-xs mt-1">Ride ID #{recentRide.id}</p>
                     </div>
                     <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                       {recentRide.status}
@@ -244,23 +244,23 @@ export default function HelperDashboard() {
 
                   <div className="grid md:grid-cols-2 gap-4 text-sm mb-6">
                     <div className="flex items-center gap-2">
-                      <Calendar size={16} className="text-teal-600" />
+                      <Calendar size={16} className="text-cr-secondary" />
                       <div>
-                        <p className="text-gray-500 text-xs">Travel Date</p>
+                        <p className="text-cr-accent text-xs">Travel Date</p>
                         <p className="font-semibold">{recentRide.travel_date}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Activity size={16} className="text-teal-600" />
+                      <Activity size={16} className="text-cr-secondary" />
                       <div>
-                        <p className="text-gray-500 text-xs">Service Type</p>
+                        <p className="text-cr-accent text-xs">Service Type</p>
                         <p className="font-semibold">{recentRide.service_type}</p>
                       </div>
                     </div>
 
                     <div>
-                      <p className="text-gray-500 text-xs">Assistance Type</p>
+                      <p className="text-cr-accent text-xs">Assistance Type</p>
                       <p className="font-semibold">{recentRide.assistance_type}</p>
                     </div>
                   </div>
@@ -268,7 +268,7 @@ export default function HelperDashboard() {
                   <div className="flex justify-end">
                     <button
                       onClick={() => navigate("/helper/assigned-rides")}
-                      className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition"
+                      className="flex items-center gap-2 bg-cr-secondary hover:bg-cr-primary text-white px-5 py-2 rounded-lg font-medium transition"
                     >
                       View Details
                       <ArrowRight size={16} />
@@ -276,9 +276,9 @@ export default function HelperDashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="border rounded-xl p-8 text-center bg-gray-50">
+                <div className="border rounded-xl p-8 text-center bg-cr-bg">
                   <HeartHandshake className="mx-auto text-gray-400 mb-2" size={40} />
-                  <p className="text-gray-500 text-sm">No active assigned rides found.</p>
+                  <p className="text-cr-accent text-sm">No active assigned rides found.</p>
                 </div>
               )}
             </div>

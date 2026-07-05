@@ -69,11 +69,11 @@ export default function RiderDashboard() {
   };
     return (
 
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
 
       <RiderNavbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
 
         <div className="flex gap-8">
 
@@ -83,7 +83,9 @@ export default function RiderDashboard() {
 
             {/* Welcome Section */}
 
-            <div className="bg-gradient-to-r from-teal-600 to-teal-500 rounded-2xl text-white p-8 mb-8">
+            <div className="bg-cr-primary rounded-[32px] text-white p-8 md:p-12 mb-10 shadow-[0_20px_50px_rgba(26,63,117,0.15)] relative overflow-hidden">
+              {/* Decorative element to mimic Landing page aesthetic */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
 
               <h1 className="text-3xl font-bold">
                 Welcome back, {user?.name || "Rider"}! 👋
@@ -99,15 +101,15 @@ export default function RiderDashboard() {
 
             {/* Statistics */}
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-10">
 
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
                   <div>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-cr-accent text-sm">
                       Total Rides
                     </p>
 
@@ -117,11 +119,11 @@ export default function RiderDashboard() {
 
                   </div>
 
-                  <div className="bg-teal-100 p-4 rounded-full">
+                  <div className="bg-cr-sage/40 p-4 rounded-full">
 
                     <Car
                       size={28}
-                      className="text-teal-600"
+                      className="text-cr-secondary"
                     />
 
                   </div>
@@ -130,13 +132,13 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
                   <div>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-cr-accent text-sm">
                       Pending
                     </p>
 
@@ -159,13 +161,13 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-white rounded-xl shadow p-6">
+              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
                   <div>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-cr-accent text-sm">
                       Completed
                     </p>
 
@@ -192,7 +194,7 @@ export default function RiderDashboard() {
 
             {/* Quick Actions */}
 
-            <div className="bg-white rounded-xl shadow p-8 mb-8">
+            <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 mb-8 border border-cr-border">
 
               <h2 className="text-xl font-bold mb-6">
                 Quick Actions
@@ -202,7 +204,7 @@ export default function RiderDashboard() {
 
                 <button
                   onClick={() => navigate("/book-ride")}
-                  className="flex items-center justify-between bg-teal-600 hover:bg-teal-700 text-white rounded-xl p-6 transition"
+                  className="group flex items-center justify-between bg-cr-primary hover:bg-cr-primary-hover text-white rounded-[24px] p-6 md:p-8 shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 text-left w-full"
                 >
 
                   <div>
@@ -223,7 +225,7 @@ export default function RiderDashboard() {
 
                 <button
                   onClick={() => navigate("/my-rides")}
-                  className="flex items-center justify-between bg-gray-100 hover:bg-gray-200 rounded-xl p-6 transition"
+                  className="group flex items-center justify-between bg-cr-bg border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full"
                 >
 
                   <div>
@@ -232,7 +234,7 @@ export default function RiderDashboard() {
                       My Rides
                     </h3>
 
-                    <p className="text-gray-500 text-sm mt-1">
+                    <p className="text-cr-accent text-sm mt-1">
                       View and manage your bookings.
                     </p>
 

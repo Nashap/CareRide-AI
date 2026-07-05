@@ -10,6 +10,7 @@ import {
 
 import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
+import LoadingScreen from "../../components/common/LoadingScreen";
 import HelperNavbar from "../../components/dashboard/HelperNavbar";
 import HelperSidebar from "../../components/dashboard/HelperSidebar";
 import api from "../../services/api";
@@ -72,29 +73,29 @@ export default function AIAssistant() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F0E8]">
+    <div className="min-h-screen bg-gradient-to-b from-cr-bg to-cr-surface">
       {isHelper ? <HelperNavbar /> : <RiderNavbar />}
 
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-12">
         <div className="flex gap-8">
           {isHelper ? <HelperSidebar /> : <RiderSidebar />}
 
           <main className="flex-1 flex flex-col h-[calc(100vh-140px)] max-h-[800px]">
             {/* Header */}
             <div className="mb-4">
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Bot className="text-teal-600" />
+              <h1 className="text-3xl font-bold text-cr-primary flex items-center gap-2">
+                <Bot className="text-cr-secondary" />
                 CareRide AI Assistant
               </h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-cr-accent text-sm mt-1">
                 Chat with CareRide AI to find helpers, check availability, or resolve inquiries.
               </p>
             </div>
 
             {/* Chat Container */}
-            <div className="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
+            <div className="flex-1 bg-cr-card rounded-[32px] border border-cr-border shadow-xl flex flex-col overflow-hidden">
               {/* Messages Box */}
-              <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-gray-50/50">
+              <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-cr-bg/50">
                 {messages.map((msg, index) => (
                   <div
                     key={index}
@@ -107,10 +108,10 @@ export default function AIAssistant() {
                       className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm
                       ${
                         msg.sender === "user"
-                          ? "bg-teal-600 text-white"
+                          ? "bg-cr-secondary text-white"
                           : msg.isError
                           ? "bg-red-100 text-red-600 border border-red-200"
-                          : "bg-white border text-teal-600"
+                          : "bg-cr-card border text-cr-secondary"
                       }`}
                     >
                       {msg.sender === "user" ? <User size={15} /> : <Bot size={15} />}
@@ -121,10 +122,10 @@ export default function AIAssistant() {
                       className={`p-4 rounded-2xl shadow-sm text-sm border leading-relaxed
                       ${
                         msg.sender === "user"
-                          ? "bg-teal-600 text-white border-teal-600 rounded-tr-none"
+                          ? "bg-cr-secondary text-white border-cr-secondary rounded-tr-none"
                           : msg.isError
                           ? "bg-red-50 text-red-800 border-red-200 rounded-tl-none"
-                          : "bg-white text-gray-800 border-gray-150 rounded-tl-none"
+                          : "bg-cr-card text-cr-primary border-gray-150 rounded-tl-none"
                       }`}
                     >
                       <p>{msg.text}</p>
@@ -135,12 +136,11 @@ export default function AIAssistant() {
                 {/* Loading state */}
                 {loading && (
                   <div className="flex gap-3 max-w-[80%] mr-auto items-center">
-                    <div className="w-8 h-8 rounded-full bg-white border text-teal-600 flex items-center justify-center shadow-sm">
+                    <div className="w-8 h-8 rounded-full bg-cr-card border text-cr-secondary flex items-center justify-center shadow-sm">
                       <Bot size={15} />
                     </div>
-                    <div className="bg-white text-gray-500 border border-gray-150 px-4 py-3 rounded-2xl rounded-tl-none text-sm flex items-center gap-2">
-                      <Loader2 className="animate-spin text-teal-600" size={16} />
-                      Thinking...
+                    <div className="bg-cr-card text-cr-accent border border-gray-150 rounded-2xl rounded-tl-none flex items-center justify-center overflow-hidden">
+                      <LoadingScreen />
                     </div>
                   </div>
                 )}
@@ -149,23 +149,23 @@ export default function AIAssistant() {
               </div>
 
               {/* Input Form */}
-              <form onSubmit={handleSendMessage} className="border-t p-4 bg-white flex gap-3">
+              <form onSubmit={handleSendMessage} className="border-t p-4 bg-cr-card flex gap-3">
                 <input
                   type="text"
                   placeholder="Ask CareRide AI (e.g. 'Who is the best helper for walking assistance?')"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   disabled={loading}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="flex-1 px-4 py-3 border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary"
                 />
                 <button
                   type="submit"
                   disabled={loading || !inputText.trim()}
-                  className={`px-5 py-3 rounded-xl font-medium transition flex items-center gap-1.5 shadow-sm
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2
                     ${
                       loading || !inputText.trim()
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed border"
-                        : "bg-teal-600 hover:bg-teal-700 text-white"
+                        ? "bg-cr-bg text-gray-400 cursor-not-allowed border border-cr-border"
+                        : "group bg-cr-primary hover:bg-cr-primary-hover text-white shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"
                     }`}
                 >
                   <Send size={16} />
