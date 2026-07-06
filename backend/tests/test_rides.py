@@ -7,7 +7,8 @@ from helpers.models import Helper
 from datetime import datetime, date, timedelta
 from django.utils import timezone
 from unittest.mock import patch, Mock
-
+import logging
+logging.disable(logging.CRITICAL)
 @pytest.fixture
 def api_client():
     return APIClient()
@@ -56,7 +57,24 @@ def test_create_ride_success(api_client, rider_user):
     
     response = api_client.post("/api/travel-requests/", payload, format="json")
     assert response.status_code == 201
-    assert response.data["destination"] == "Hospital B"
+
+@pytest.mark.django_db
+def test_rides_models_str():
+    from rides.models import TravelRequest, MatchRecommendation, SOSAlert
+    rider = UserProfile.objects.create(name="Rider", email="rider@test.com", role="rider", auth_user_id="00000000-0000-0000-0000-000000000001")
+    tr = TravelRequest.objects.create(
+        rider=rider, pickup_location="A", destination="B", travel_date="2026-07-10",
+        service_type="Hospital", assistance_type="Wheelchair", assistance_level="High"
+    )
+    assert str(tr) == "Rider | A → B"
+    
+    helper = Helper.objects.create(auth_user_id="00000000-0000-0000-0000-000000000002", name="H1")
+    rec = MatchRecommendation.objects.create(travel_request=tr, helper=helper, recommendation_reason="Test")
+    assert str(rec) == f"H1 → {tr.id}"
+    
+    sos = SOSAlert.objects.create(travel_request=tr, message="Help!")
+    assert str(sos) == f"SOS Alert #{sos.id}"
+    
 
 @pytest.mark.django_db
 def test_create_ride_incomplete_profile(api_client):

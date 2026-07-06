@@ -133,3 +133,61 @@ def test_activate_next_helper_sequential(base_data):
     assert tr.assigned_helper == helper1
     assert MatchRecommendation.objects.get(helper=helper1).status == "Active"
     assert MatchRecommendation.objects.get(helper=helper2).status == "Pending"
+
+@pytest.mark.django_db
+def test_utils_edge_cases(base_data):
+    from rides.utils import process_recommendation_timeouts, activate_open_dispatch, activate_urgent_helpers, activate_next_helper_sequential
+    profile, helper1, helper2 = base_data
+    tr = TravelRequest.objects.create(rider=profile, travel_date=date.today() + timedelta(days=3), status="Completed")
+    
+    # 1. status not in allowed -> early return (line 23)
+    process_recommendation_timeouts(tr) # no-op, shouldn't error or change anything
+    
+    # 2. Open Dispatch urgent check -> early return (line 64)
+    tr.status = "Open Dispatch"
+    tr.save()
+    future = timezone.now() + timedelta(hours=1)
+    tr.travel_date = future.date()
+    tr.travel_time = future.time()
+    tr.save()
+    process_recommendation_timeouts(tr)
+    
+    # 3. active_rec.activated_at fallback logic (line 75-83)
+    tr.status = "AI Recommended"
+    tr.travel_date = date.today() + timedelta(days=3)
+    tr.save()
+    
+    rec = MatchRecommendation.objects.create(
+        travel_request=tr, helper=helper1, status="Active", 
+        activated_at=timezone.now() - timedelta(minutes=130) # expired
+    )
+    process_recommendation_timeouts(tr)
+    rec.refresh_from_db()
+    assert rec.status == "Expired"
+    
+    # 4. activate_open_dispatch without pending recs (line 105-107)
+    tr.status = "Pending"
+    activate_open_dispatch(tr, timezone.now())
+    tr.refresh_from_db()
+    assert tr.status == "Waiting for another available helper"
+    assert tr.assigned_helper is None
+    
+    # 5. activate_next_helper_sequential with declined recs (line 131)
+    MatchRecommendation.objects.create(travel_request=tr, helper=helper1, status="Declined")
+    MatchRecommendation.objects.create(travel_request=tr, helper=helper2, status="Pending", match_score=90)
+    activate_next_helper_sequential(tr, 30, timezone.now() + timedelta(days=3))
+    tr.refresh_from_db()
+    assert tr.status == "Searching for another helper"
+    
+    # 6. activate_next_helper_sequential with no next rec (line 137-139)
+    tr.recommendations.all().delete()
+    activate_next_helper_sequential(tr, 30, timezone.now() + timedelta(days=3))
+    tr.refresh_from_db()
+    assert tr.status == "Waiting for another available helper"
+    assert tr.assigned_helper is None
+    
+    # 7. activate_urgent_helpers with no pending recs (line 157-159)
+    activate_urgent_helpers(tr, timezone.now() + timedelta(days=3))
+    tr.refresh_from_db()
+    assert tr.status == "Waiting for another available helper"
+    assert tr.assigned_helper is None
