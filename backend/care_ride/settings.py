@@ -230,6 +230,10 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[
     "https://careride-six.vercel.app",
 ])
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
+
 # Railway Production Settings
 
 SECURE_PROXY_SSL_HEADER = (
