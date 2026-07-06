@@ -1,5 +1,5 @@
 import json
-from google import genai
+import google.generativeai as genai
 from django.conf import settings
 
 from .tools import (
@@ -7,6 +7,10 @@ from .tools import (
     highest_rated_helper,
     count_available_helpers,
 )
+
+genai.configure(api_key=settings.GEMINI_API_KEY)
+
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 # -----------------------------------------------------
@@ -149,19 +153,12 @@ def clean_reply(text):
 
 def ai_chat(message):
 
-    if not settings.GEMINI_API_KEY:
-        return {
-            "tool_used": None,
-            "reply": "AI service is currently disabled."
-        }
-
-    client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
     try:
 
-        router_response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=TOOL_ROUTER_PROMPT + "\n\nUser:\n" + message
+        router_response = model.generate_content(
+            TOOL_ROUTER_PROMPT +
+            "\n\nUser:\n" +
+            message
         )
 
         router_text = (
@@ -178,7 +175,6 @@ def ai_chat(message):
         decision = {
             "tool": "none"
         }
-
 
 
     tool = decision.get("tool")
@@ -210,9 +206,10 @@ def ai_chat(message):
 
     if tool == "none":
 
-        answer = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=ANSWER_PROMPT + "\n\nUser:\n" + message
+        answer = model.generate_content(
+            ANSWER_PROMPT +
+            "\n\nUser:\n" +
+            message
         )
 
         return {
@@ -252,9 +249,8 @@ Never say "database" or "tool".
 
     try:
 
-        answer = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=explanation_prompt
+        answer = model.generate_content(
+            explanation_prompt
         )
 
         return {
