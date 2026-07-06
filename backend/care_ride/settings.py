@@ -111,11 +111,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'care_ride.wsgi.application'
 
-# Database
-import sys
-import dj_database_url
+# ==========================================================
+# Database Configuration
+# ==========================================================
 
-IS_TESTING = 'test' in sys.argv or any('pytest' in arg for arg in sys.argv)
+import sys
+
+IS_TESTING = (
+    "test" in sys.argv
+    or any("pytest" in arg for arg in sys.argv)
+)
 
 if IS_TESTING:
     DATABASES = {
@@ -125,26 +130,19 @@ if IS_TESTING:
         }
     }
 else:
-    # Use DATABASE_URL if it exists (Railway/Production), otherwise fallback to individual variables
-    if env("DATABASE_URL", default=None):
-        DATABASES = {
-            "default": dj_database_url.config(
-                default=env("DATABASE_URL"),
-                conn_max_age=600,
-                ssl_require=False,
-            )
+    DATABASES = {
+        "default": {
+            "ENGINE": env(
+                "DB_ENGINE",
+                default="django.db.backends.postgresql",
+            ),
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": env("DB_PORT"),
         }
-    else:
-        DATABASES = {
-            "default": {
-                "ENGINE": env("DB_ENGINE"),
-                "NAME": env("DB_NAME"),
-                "USER": env("DB_USER", default=""),
-                "PASSWORD": env("DB_PASSWORD", default=""),
-                "HOST": env("DB_HOST", default=""),
-                "PORT": env("DB_PORT", default=""),
-            }
-        }
+    }
 
 # Password validation
 
