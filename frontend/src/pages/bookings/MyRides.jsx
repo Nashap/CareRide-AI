@@ -146,7 +146,7 @@ export default function MyRides() {
 
               <button
                 onClick={() => navigate("/book-ride")}
-                className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
+                className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
               >
 
                 <Plus size={18} />
@@ -184,7 +184,7 @@ export default function MyRides() {
                       hidden: { opacity: 0, y: 30 },
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                     }}
-                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-6 md:p-10 border border-cr-border md:hover:-translate-y-1 transition-all duration-300"
                   >
 
                     {/* Ride Header */}
@@ -388,16 +388,16 @@ export default function MyRides() {
                       <div className="mt-4 p-4 bg-cr-bg text-cr-primary rounded-lg text-sm border border-cr-surface">
                         <p className="font-medium text-cr-primary mb-2">No AI helpers are currently available.</p>
                         <p className="text-cr-secondary mb-4">All AI recommended helpers have declined, or no helpers matched your criteria. You can manually browse our helper directory or cancel the ride.</p>
-                        <div className="flex gap-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                            <button 
                              onClick={() => navigate("/helpers")} 
-                             className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
+                             className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2"
                            >
                              Browse Helpers
                            </button>
                            <button 
                              onClick={() => openDeleteDialog(ride.id)} 
-                             className="bg-cr-card border border-red-200 hover:border-red-500 hover:bg-red-50 text-red-600 px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+                             className="bg-cr-card border border-red-200 md:hover:border-red-500 md:hover:bg-red-50 text-red-600 w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2"
                            >
                              Cancel Ride
                            </button>
@@ -417,7 +417,7 @@ export default function MyRides() {
                       <div className="flex justify-end mt-6">
                         <button
                           onClick={() => openDeleteDialog(ride.id)}
-                          className="flex items-center gap-2 bg-cr-card border border-red-200 hover:border-red-500 hover:bg-red-50 text-red-600 px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                          className="flex items-center justify-center gap-2 bg-cr-card border border-red-200 md:hover:border-red-500 md:hover:bg-red-50 text-red-600 w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
                         >
                           <Trash2 size={18} />
                           Cancel Ride

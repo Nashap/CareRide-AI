@@ -143,23 +143,23 @@ export default function Helpers() {
               </div>
 
               {/* Search & Toggle Filters */}
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                <div className="relative w-full sm:w-auto">
                   <Search size={18} className="absolute left-3 top-3.5 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search name or skill..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2.5 bg-cr-card border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary w-60"
+                    className="pl-10 pr-4 py-2.5 bg-cr-card border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary w-full sm:w-60"
                   />
                 </div>
-                <label className="flex items-center gap-2 bg-cr-card px-4 py-2.5 rounded-xl border border-cr-surface cursor-pointer hover:bg-cr-bg transition text-sm select-none">
+                <label className="flex items-center justify-center gap-2 bg-cr-card px-4 py-2.5 rounded-xl border border-cr-surface cursor-pointer hover:bg-cr-bg transition text-sm select-none w-full sm:w-auto min-h-[48px] sm:min-h-0">
                   <input
                     type="checkbox"
                     checked={availableOnly}
                     onChange={() => setAvailableOnly(!availableOnly)}
-                    className="accent-teal-600 rounded"
+                    className="accent-teal-600 rounded w-4 h-4"
                   />
                   <span>Available only</span>
                 </label>
@@ -188,7 +188,7 @@ export default function Helpers() {
               <div className="space-y-8">
                 {/* 1. AI Recommended Helper section (if exists) */}
                 {aiRecommendedHelper && (
-                  <div className="bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border-2 border-cr-secondary rounded-[32px] shadow-xl p-8 md:p-10 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                  <div className="bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border-2 border-cr-secondary rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 overflow-hidden md:hover:shadow-2xl md:hover:-translate-y-1 transition-all duration-300">
                     <div className="flex items-center justify-between mb-4 border-b border-teal-100 pb-3 flex-wrap gap-2">
                       <div className="flex items-center gap-2">
                         <span className="bg-cr-secondary text-white text-xs uppercase tracking-wider font-bold px-3 py-1 rounded-full flex items-center gap-1">
@@ -245,7 +245,7 @@ export default function Helpers() {
                             ${
                               !aiRecommendedHelper.availability
                                 ? "bg-cr-bg text-gray-400 cursor-not-allowed border border-cr-border"
-                                : "group bg-cr-primary hover:bg-cr-primary-hover text-white shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"
+                                : "group bg-cr-primary md:hover:bg-cr-primary-hover text-white shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"
                             }`}
                         >
                           {acceptingAiHelper ? "Matching..." : "Accept AI Recommended"}
@@ -254,7 +254,7 @@ export default function Helpers() {
                           onClick={() =>
                             navigate(`/ai-recommendation/${latestRequest?.id}`)
                           }
-                          className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md text-center text-sm w-full md:w-48"
+                          className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-sm md:hover:shadow-md text-center text-sm w-full md:w-48"
                         >
                           View Matching Summary
                         </button>
@@ -277,11 +277,11 @@ export default function Helpers() {
                       <p className="text-cr-accent font-medium">No helpers matched your filters.</p>
                     </div>
                   ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                       {filteredHelpers.map((helper) => (
                         <div
                           key={helper.id}
-                          className="bg-cr-card rounded-[32px] shadow-xl p-8 border border-cr-border flex flex-col justify-between hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                          className="bg-cr-card rounded-[32px] shadow-sm md:shadow-xl p-6 md:p-8 border border-cr-border flex flex-col justify-between md:hover:shadow-2xl md:hover:-translate-y-1 transition-all duration-300"
                         >
                           <div>
                             <div className="flex justify-between items-start mb-4">
@@ -336,7 +336,7 @@ export default function Helpers() {
                             {latestRequest && helper.availability && (
                               <button
                                 onClick={() => handleAcceptHelper(helper.id, "Manually selected from directory")}
-                                className="text-cr-primary hover:text-cr-primary-hover font-bold flex items-center gap-1 group-hover:gap-2 transition-all"
+                                className="text-cr-primary md:hover:text-cr-primary-hover font-bold flex items-center gap-1 group-hover:gap-2 transition-all"
                               >
                                 Match Request
                                 <ArrowRight size={14} />

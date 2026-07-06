@@ -246,7 +246,7 @@ export default function Profile() {
                 className="space-y-10"
               >
                 {/* Personal Information */}
-                <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
                   <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
                     <UserCircle size={24} className="text-cr-secondary" />
                     Personal Details
@@ -372,7 +372,7 @@ export default function Profile() {
 
                 {/* Emergency Contact */}
                 {!isHelper && (
-                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
                     <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
                       <ShieldAlert size={24} className="text-red-500" />
                       Emergency Contact
@@ -412,7 +412,7 @@ export default function Profile() {
 
                 {/* Disability Certificate */}
                 {!isHelper && (
-                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+                  <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
                     <h2 className="text-xl font-bold text-cr-primary flex items-center gap-3">
                       <ShieldAlert size={24} className="text-cr-secondary" />
                       Disability Certificate
@@ -494,11 +494,11 @@ export default function Profile() {
                 )}
 
                 {/* Actions */}
-                <div className="flex justify-end pt-4">
+                <div className="flex justify-end pt-4 w-full">
                   <button
                     type="submit"
                     disabled={saving}
-                    className="group bg-cr-primary hover:bg-[#1A3F75] text-white px-10 h-[56px] rounded-[14px] font-bold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-lg"
+                    className="w-full md:w-auto group bg-cr-primary md:hover:bg-[#1A3F75] text-white px-10 h-[56px] rounded-[14px] font-bold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform md:hover:-translate-y-0.5 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-lg"
                   >
                     {saving ? (
                       <>

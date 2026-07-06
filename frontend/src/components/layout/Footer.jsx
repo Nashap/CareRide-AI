@@ -10,11 +10,7 @@ function Footer() {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
       }}
-      style={{
-        textAlign: "center",
-        padding: "20px",
-        marginTop: "40px",
-      }}
+      className="text-center py-6 md:py-10 mt-10"
     >
       <p className="text-cr-text-muted">CareRide AI © 2026</p>
     </motion.footer>

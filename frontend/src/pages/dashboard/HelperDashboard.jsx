@@ -150,9 +150,9 @@ export default function HelperDashboard() {
             </div>
 
             {/* Statistics */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
               {/* Assigned Rides */}
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Assigned Rides</p>
@@ -165,7 +165,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Pending Requests */}
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Pending Requests</p>
@@ -178,7 +178,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Completed Rides */}
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Completed Rides</p>
@@ -191,7 +191,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Average Rating */}
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Average Rating</p>
@@ -205,12 +205,12 @@ export default function HelperDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 mb-8 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 mb-8 border border-cr-border">
               <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <button
                   onClick={() => navigate("/helper/assigned-rides")}
-                  className="group flex items-center justify-between bg-cr-primary hover:bg-cr-primary-hover text-white rounded-[24px] p-6 md:p-8 shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-primary md:hover:bg-cr-primary-hover text-white rounded-[24px] p-6 md:p-8 shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 text-left w-full"
                 >
                   <div>
                     <h3 className="text-lg font-semibold">View Assigned Rides</h3>
@@ -221,7 +221,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/helper/browse-requests")}
-                  className="group flex items-center justify-between bg-cr-bg border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-bg border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm md:hover:shadow-md transition-all duration-300 text-left w-full"
                 >
                   <div>
                     <h3 className="text-lg font-semibold">Browse Requests</h3>
@@ -232,7 +232,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/helper/availability")}
-                  className="group flex items-center justify-between bg-cr-bg border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-bg border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm md:hover:shadow-md transition-all duration-300 text-left w-full"
                 >
                   <div>
                     <h3 className="text-lg font-semibold">Availability</h3>
@@ -243,7 +243,7 @@ export default function HelperDashboard() {
 
                 <button
                   onClick={() => navigate("/profile")}
-                  className="group flex items-center justify-between bg-cr-bg border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-bg border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm md:hover:shadow-md transition-all duration-300 text-left w-full"
                 >
                   <div>
                     <h3 className="text-lg font-semibold">Profile</h3>
@@ -255,11 +255,11 @@ export default function HelperDashboard() {
             </div>
 
             {/* Today's Assigned Ride */}
-            <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 border border-cr-border">
               <h2 className="text-xl font-bold mb-6">Today's Assigned Ride</h2>
 
               {recentRide ? (
-                <div className="border border-cr-border rounded-[24px] p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-cr-bg">
+                <div className="border border-cr-border rounded-[24px] p-6 md:p-8 md:hover:shadow-lg md:hover:-translate-y-1 transition-all duration-300 bg-cr-bg">
                   <div className="flex justify-between items-start">
                     <div>
                       <h2 className="text-xl font-bold text-cr-primary flex items-center gap-2">
@@ -315,10 +315,10 @@ export default function HelperDashboard() {
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                  <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 border-t pt-4">
                     <button
                       onClick={() => navigate("/helper/assigned-rides")}
-                      className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                      className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
                     >
                       View Details
                     </button>
@@ -326,7 +326,7 @@ export default function HelperDashboard() {
                       <button
                         onClick={() => handleCompleteRide(recentRide.id)}
                         disabled={actionLoading}
-                        className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                       >
                         {actionLoading ? "Completing..." : "Complete Ride"}
                       </button>

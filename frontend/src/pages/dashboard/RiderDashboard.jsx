@@ -101,9 +101,9 @@ export default function RiderDashboard() {
 
             {/* Statistics */}
 
-            <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-10">
 
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -132,7 +132,7 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -161,7 +161,7 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-cr-card rounded-[24px] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -194,17 +194,17 @@ export default function RiderDashboard() {
 
             {/* Quick Actions */}
 
-            <div className="bg-cr-card rounded-[32px] shadow-xl p-8 md:p-10 mb-8 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 mb-8 border border-cr-border">
 
               <h2 className="text-xl font-bold mb-6">
                 Quick Actions
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 
                 <button
                   onClick={() => navigate("/book-ride")}
-                  className="group flex items-center justify-between bg-cr-primary hover:bg-cr-primary-hover text-white rounded-[24px] p-6 md:p-8 shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-primary md:hover:bg-cr-primary-hover text-white rounded-[24px] p-6 md:p-8 shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 text-left w-full"
                 >
 
                   <div>
@@ -225,7 +225,7 @@ export default function RiderDashboard() {
 
                 <button
                   onClick={() => navigate("/my-rides")}
-                  className="group flex items-center justify-between bg-cr-bg border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full"
+                  className="group flex items-center justify-between bg-cr-bg border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary rounded-[24px] p-6 md:p-8 shadow-sm md:hover:shadow-md transition-all duration-300 text-left w-full"
                 >
 
                   <div>

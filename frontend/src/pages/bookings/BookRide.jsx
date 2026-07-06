@@ -210,7 +210,7 @@ export default function BookRide() {
               {/* Trip Details Card */}
               {/* ===================== */}
 
-              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
 
                 <h2 className="text-xl font-bold text-cr-primary mb-8">
                   Trip Details
@@ -304,7 +304,7 @@ export default function BookRide() {
               {/* Assistance Details */}
               {/* ===================== */}
 
-              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-8 md:p-10 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
 
                 <h2 className="text-xl font-bold text-cr-primary mb-8">
                   Assistance Details
@@ -375,7 +375,7 @@ export default function BookRide() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-cr-primary hover:bg-cr-primary-hover text-white py-4 rounded-xl font-bold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                  className="w-full bg-cr-primary md:hover:bg-cr-primary-hover text-white py-4 rounded-xl font-bold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {loading ? (
                     <>

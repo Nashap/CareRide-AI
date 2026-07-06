@@ -111,7 +111,7 @@ export default function Availability() {
                 </p>
                 <button
                   onClick={() => navigate("/profile")}
-                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 inline-block"
+                  className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 w-full sm:w-auto inline-block"
                 >
                   Complete Profile
                 </button>
@@ -132,7 +132,7 @@ export default function Availability() {
               initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 0.5 }} 
-              className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border max-w-xl transition-shadow"
+              className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-6 md:p-10 border border-cr-border max-w-xl transition-shadow"
             >
               {success && (
                 <div className="mb-6 rounded-lg bg-green-100 border border-green-300 text-green-700 p-4 flex items-center gap-2 text-sm">
@@ -169,7 +169,7 @@ export default function Availability() {
                 <button
                   onClick={handleUpdateAvailability}
                   disabled={saving}
-                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                  className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {saving ? (
                     <>

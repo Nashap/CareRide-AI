@@ -53,6 +53,14 @@ function Features() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const nextCard = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % features.length);
@@ -99,17 +107,17 @@ function Features() {
       boxShadow: "0 25px 50px -12px rgba(26,63,117,0.15)",
     },
     prev: {
-      scale: 0.85,
-      x: "-65%",
-      opacity: 0.4,
+      scale: isMobile ? 0.9 : 0.85,
+      x: isMobile ? "-35%" : "-65%",
+      opacity: isMobile ? 0.6 : 0.4,
       zIndex: 20,
       filter: "blur(2px)",
       boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
     },
     next: {
-      scale: 0.85,
-      x: "65%",
-      opacity: 0.4,
+      scale: isMobile ? 0.9 : 0.85,
+      x: isMobile ? "35%" : "65%",
+      opacity: isMobile ? 0.6 : 0.4,
       zIndex: 20,
       filter: "blur(2px)",
       boxShadow: "0 10px 15px -3px rgba(0,0,0,0.05)",
@@ -126,7 +134,7 @@ function Features() {
   return (
     <section
       id="features"
-      className="py-24 bg-cr-bg relative overflow-hidden"
+      className="pt-12 pb-16 md:py-24 bg-cr-bg relative overflow-hidden"
     >
       <motion.div 
         initial="hidden"
@@ -168,7 +176,7 @@ function Features() {
             </div>
           </motion.div>
 
-          {/* Right Side: Carousel */}
+          {/* Right Side: Features List (Mobile) / Carousel (Desktop) */}
           <motion.div 
             variants={{
               hidden: { opacity: 0, scale: 0.95, y: 40 },
@@ -176,18 +184,18 @@ function Features() {
             }}
             className="relative w-full flex flex-col items-center"
           >
-            
-            <div className="relative w-full h-[450px] flex items-center justify-center">
+            {/* 3D Carousel (Mobile & Desktop) */}
+            <div className="flex relative w-full h-[400px] md:h-[450px] items-center justify-center mt-8 md:mt-0">
               
               {/* Cards Container */}
-              <div className="relative w-full max-w-[420px] h-full flex items-center justify-center">
+              <div className="relative w-full max-w-[320px] md:max-w-[420px] h-[360px] md:h-full flex items-center justify-center">
                 {features.map((feature, index) => {
                   const position = getCardStyle(index);
                   
                   return (
                     <motion.div
                       key={index}
-                      className="absolute w-full bg-cr-card rounded-[32px] p-8 md:p-10 border border-cr-border flex flex-col items-start cursor-grab active:cursor-grabbing shadow-xl"
+                      className="absolute w-full bg-cr-card rounded-[32px] p-6 md:p-10 border border-cr-border flex flex-col items-start cursor-grab active:cursor-grabbing shadow-xl"
                       variants={variants}
                       initial="hidden"
                       animate={position}
@@ -197,17 +205,18 @@ function Features() {
                       dragElastic={0.2}
                       onDragEnd={handleDragEnd}
                       onClick={() => {
-                        if (position === "next") nextCard();
                         if (position === "prev") prevCard();
+                        else nextCard();
                       }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      <div className="w-16 h-16 rounded-2xl bg-cr-sage/30 text-cr-primary flex items-center justify-center mb-8">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-cr-sage/30 text-cr-primary flex items-center justify-center mb-6 md:mb-8">
                         {feature.icon}
                       </div>
-                      <h3 className="text-2xl font-bold text-cr-text-primary mb-4 leading-tight">
+                      <h3 className="text-xl md:text-2xl font-bold text-cr-text-primary mb-3 md:mb-4 leading-tight">
                         {feature.title}
                       </h3>
-                      <p className="text-cr-text-muted text-base leading-relaxed mb-8">
+                      <p className="text-cr-text-muted text-sm md:text-base leading-relaxed mb-6 md:mb-8">
                         {feature.description}
                       </p>
                       <button className="mt-auto text-cr-primary text-sm font-semibold hover:underline">
@@ -236,21 +245,7 @@ function Features() {
               
             </div>
 
-            {/* Pagination Dots */}
-            <div className="flex justify-center items-center mt-6 gap-3">
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToCard(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    index === currentIndex 
-                      ? "bg-cr-primary w-8" 
-                      : "bg-cr-sage hover:bg-cr-primary/50"
-                  }`}
-                  aria-label={`Go to feature ${index + 1}`}
-                />
-              ))}
-            </div>
+
 
           </motion.div>
 

@@ -115,7 +115,7 @@ function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-2 bg-[#00002A] hover:bg-[#1A3F75] active:bg-[#163764] text-white rounded-xl py-3.5 font-bold transition-all shadow-none transform hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+          className="w-full mt-2 bg-[#00002A] md:hover:bg-[#1A3F75] active:bg-[#163764] text-white rounded-xl py-3.5 font-bold transition-all shadow-none transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
         >
           {loading ? (
             <>
@@ -134,7 +134,7 @@ function Login() {
 
         <button
           type="button"
-          className="w-full border border-[#DDEAF5] rounded-xl py-3.5 flex items-center justify-center gap-3 hover:bg-gray-50 transition-all font-semibold text-gray-600"
+          className="w-full border border-[#DDEAF5] rounded-xl py-3.5 flex items-center justify-center gap-3 md:hover:bg-gray-50 transition-all font-semibold text-gray-600"
         >
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -147,7 +147,7 @@ function Login() {
       
       <p className="text-center text-gray-500 mt-8 font-medium">
         Don't have an account?{" "}
-        <Link to="/register" className="text-[#1A3F75] font-bold hover:text-[#00002A] hover:underline">
+        <Link to="/register" className="text-[#1A3F75] font-bold md:hover:text-[#00002A] md:hover:underline">
           Create Account
         </Link>
       </p>

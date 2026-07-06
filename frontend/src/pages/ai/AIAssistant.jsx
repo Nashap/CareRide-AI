@@ -149,19 +149,19 @@ export default function AIAssistant() {
               </div>
 
               {/* Input Form */}
-              <form onSubmit={handleSendMessage} className="border-t p-4 bg-cr-card flex gap-3">
+              <form onSubmit={handleSendMessage} className="border-t p-4 bg-cr-card flex flex-col sm:flex-row gap-3">
                 <input
                   type="text"
                   placeholder="Ask CareRide AI (e.g. 'Who is the best helper for walking assistance?')"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   disabled={loading}
-                  className="flex-1 px-4 py-3 border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary"
+                  className="w-full flex-1 px-4 py-3 min-h-[52px] border border-cr-surface rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cr-secondary"
                 />
                 <button
                   type="submit"
                   disabled={loading || !inputText.trim()}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2
+                  className={`w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2
                     ${
                       loading || !inputText.trim()
                         ? "bg-cr-bg text-gray-400 cursor-not-allowed border border-cr-border"

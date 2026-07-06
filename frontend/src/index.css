@@ -62,10 +62,40 @@
     --cr-accent: #A9C7E3;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--cr-bg);
     color: var(--cr-text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Prevent image/video stretching */
+  img, video {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* Ensure touch-friendly sizes on mobile */
+  @media (max-width: 768px) {
+    input:not([type="checkbox"]):not([type="radio"]), 
+    textarea, 
+    select {
+      min-height: 52px;
+    }
+    button, 
+    .btn, 
+    [role="button"] {
+      min-height: 48px;
+    }
+    
+    /* Disable hover effects on touch devices */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 }
 

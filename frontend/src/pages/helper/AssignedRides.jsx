@@ -148,7 +148,7 @@ export default function AssignedRides() {
                       hidden: { opacity: 0, y: 30 },
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                     }}
-                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-6 md:p-10 border border-cr-border md:hover:-translate-y-1 transition-all duration-300"
                   >
                     <div className="flex justify-between items-start">
                       <div>
@@ -253,14 +253,14 @@ export default function AssignedRides() {
                     {(ride.status === "Assigned" || ride.status === "Completed") && ride.rider_details && (
                       <div className="mt-6 border-t pt-4">
                         <p className="text-cr-accent text-xs mb-2">Disability Certificate</p>
-                        <div className="bg-cr-card border rounded-lg p-4 shadow-sm flex items-center justify-between">
+                        <div className="bg-cr-card border rounded-lg p-4 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                           <p className="text-sm text-cr-secondary">
                             Securely view the rider's official disability certificate.
                           </p>
                           <button
                             onClick={() => handleViewCertificate(ride.id)}
                             disabled={certLoading[ride.id]}
-                            className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 text-sm flex items-center gap-2"
+                            className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300 text-sm flex items-center justify-center gap-2"
                           >
                             {certLoading[ride.id] ? (
                               <>
@@ -284,12 +284,12 @@ export default function AssignedRides() {
                       </div>
                     )}
 
-                    <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                    <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 border-t pt-4">
                       {ride.status === "Assigned" && (
                         <button
                           onClick={() => handleCompleteRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                          className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                           <CheckCircle size={18} />
                           {actionLoading[ride.id] ? "Completing..." : "Complete Ride"}

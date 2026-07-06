@@ -257,9 +257,9 @@ export default function AIRecommendation() {
                               <button
                                 onClick={() => handleAcceptHelper(rh.helper_id, rh.reason)}
                                 disabled={(loadingHelperId !== null) || !rh.availability}
-                                className={`flex items-center gap-2 font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-sm
+                                className={`flex items-center justify-center gap-2 font-semibold w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl transition-all duration-300 shadow-sm
                                   ${!rh.availability || (loadingHelperId !== null && loadingHelperId !== rh.helper_id) ? "bg-cr-bg text-gray-400 cursor-not-allowed border border-cr-border" :
-                                    "group bg-cr-primary hover:bg-cr-primary-hover text-white shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"}`}
+                                    "group bg-cr-primary md:hover:bg-cr-primary-hover text-white md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)]"}`}
                               >
                                 {loadingHelperId === rh.helper_id ? "Confirming..." : "Accept Helper"}
                               </button>
@@ -297,16 +297,16 @@ export default function AIRecommendation() {
                     <p className="text-cr-accent text-sm mt-2 max-w-sm">
                       We couldn't generate matches. This can occur if there are no available helpers marked as active, or if your requested assistance level requires specialized skills.
                     </p>
-                    <div className="mt-6 flex gap-4">
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4 w-full justify-center">
                       <button
                         onClick={() => navigate("/helpers")}
-                        className="group bg-cr-primary hover:bg-cr-primary-hover text-white font-semibold px-6 py-3 rounded-xl shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300"
+                        className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white font-semibold w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300"
                       >
                         Browse All Helpers
                       </button>
                       <button
                         onClick={() => navigate("/dashboard/rider")}
-                        className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                        className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
                       >
                         Go to Dashboard
                       </button>
@@ -316,20 +316,20 @@ export default function AIRecommendation() {
 
                 {/* Footer Navigation */}
                 {recommendation?.recommended_helpers?.length > 0 && (
-                  <div className="mt-8 flex justify-between items-center bg-cr-card rounded-[32px] shadow-xl border border-cr-border p-8 md:p-10">
+                  <div className="mt-8 flex flex-col lg:flex-row justify-between items-center gap-6 bg-cr-card rounded-[32px] shadow-sm md:shadow-xl border border-cr-border p-6 md:p-10 text-center lg:text-left">
                     <span className="text-sm text-cr-accent">
                       Not satisfied with the AI recommendation?
                     </span>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                       <button
                         onClick={() => navigate("/helpers")}
-                        className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                        className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
                       >
                         Browse All Helpers
                       </button>
                       <button
                         onClick={() => navigate("/dashboard/rider")}
-                        className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+                        className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
                       >
                         Back to Dashboard
                       </button>

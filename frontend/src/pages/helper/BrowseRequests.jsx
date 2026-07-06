@@ -195,7 +195,7 @@ export default function BrowseRequests() {
                         hidden: { opacity: 0, y: 30 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                       }}
-                      className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(250,204,21,0.15)] hover:shadow-[0_12px_40px_rgba(250,204,21,0.25)] p-8 md:p-10 border-2 border-yellow-400 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                      className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(250,204,21,0.15)] md:hover:shadow-[0_12px_40px_rgba(250,204,21,0.25)] p-6 md:p-10 border-2 border-yellow-400 md:hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                     >
                       <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-bl-lg">
                         {rankLabel}
@@ -258,11 +258,11 @@ export default function BrowseRequests() {
                           </div>
                         </div>
                       )}
-                      <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                      <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 border-t pt-4">
                         <button
                           onClick={() => handleDeclineRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary text-cr-text-primary px-6 py-3 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                          className="bg-cr-card border border-cr-border md:hover:border-cr-primary md:hover:text-cr-primary text-cr-text-primary w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                         >
                         {actionLoading[ride.id] ? (
                           <>
@@ -279,7 +279,7 @@ export default function BrowseRequests() {
                         <button
                           onClick={() => handleAcceptRide(ride.id)}
                           disabled={actionLoading[ride.id]}
-                          className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                          className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                         >
                         {actionLoading[ride.id] ? (
                           <>
@@ -323,7 +323,7 @@ export default function BrowseRequests() {
                       hidden: { opacity: 0, y: 30 },
                       visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                     }}
-                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-8 md:p-10 border border-cr-border hover:-translate-y-1 transition-all duration-300"
+                    className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-6 md:p-10 border border-cr-border md:hover:-translate-y-1 transition-all duration-300"
                   >
                     <div className="flex justify-between items-start">
                       <div>
@@ -388,11 +388,11 @@ export default function BrowseRequests() {
                       </div>
                     )}
 
-                    <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                    <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 border-t pt-4">
                       <button
                         onClick={() => handleAcceptRide(ride.id)}
                         disabled={actionLoading[ride.id]}
-                        className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                        className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                       >
                         {actionLoading[ride.id] ? (
                           <>
