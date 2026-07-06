@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Bot,
   Send,
@@ -139,8 +140,32 @@ export default function AIAssistant() {
                     <div className="w-8 h-8 rounded-full bg-cr-card border text-cr-secondary flex items-center justify-center shadow-sm">
                       <Bot size={15} />
                     </div>
-                    <div className="bg-cr-card text-cr-accent border border-gray-150 rounded-2xl rounded-tl-none flex items-center justify-center overflow-hidden">
-                      <LoadingScreen />
+                    <div className="bg-cr-card p-4 border border-gray-150 rounded-2xl rounded-tl-none flex items-center justify-center">
+                      <motion.svg
+                        className="w-[32px] h-[32px] md:w-[44px] md:h-[44px] drop-shadow-sm blur-[0.2px]"
+                        viewBox="0 0 50 50"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 0.9, ease: "linear" }}
+                      >
+                        <circle
+                          cx="25"
+                          cy="25"
+                          r="20"
+                          fill="none"
+                          strokeWidth="2.5"
+                          className="stroke-[rgba(26,63,117,0.15)] dark:stroke-[rgba(221,234,245,0.18)]"
+                        />
+                        <circle
+                          cx="25"
+                          cy="25"
+                          r="20"
+                          fill="none"
+                          strokeWidth="4.5"
+                          strokeLinecap="round"
+                          strokeDasharray="35 150"
+                          className="stroke-[#1A3F75] dark:stroke-[#DDEAF5]"
+                        />
+                      </motion.svg>
                     </div>
                   </div>
                 )}

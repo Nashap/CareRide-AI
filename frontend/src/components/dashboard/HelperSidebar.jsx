@@ -66,7 +66,7 @@ function HelperSidebar() {
   }, [isOpen]);
 
   const SidebarContent = (
-    <div className="bg-cr-card md:rounded-[24px] border-r md:border border-cr-border md:shadow-lg overflow-y-auto h-full flex flex-col pt-4 md:pt-0">
+    <div className="bg-white md:rounded-[20px] md:border md:border-[rgba(26,63,117,0.08)] md:shadow-[0_12px_30px_rgba(26,63,117,0.08)] md:h-fit md:p-4 overflow-y-auto h-full flex flex-col pt-4 md:pt-0">
       <div className="md:hidden flex items-center justify-between p-6 mb-2">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-cr-primary flex items-center justify-center shadow-sm">
@@ -81,22 +81,22 @@ function HelperSidebar() {
           <X size={20} />
         </button>
       </div>
-      <div className="flex flex-col gap-2 px-4 md:px-0">
+      <div className="flex flex-col gap-2 md:gap-[6px] px-4 md:px-0">
         {menuItems.map(({ icon: Icon, label, path }) => (
           <NavLink
             key={path}
             to={path}
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
-              `flex items-center gap-4 px-5 py-3.5 min-h-[52px] text-[16px] md:text-[15px] transition-all rounded-[14px] md:rounded-none md:first:rounded-t-[24px] md:last:rounded-b-[24px]
+              `flex items-center gap-4 px-5 md:px-4 py-3.5 md:py-3 min-h-[52px] md:min-h-[44px] text-[16px] md:text-[15px] transition-all duration-[250ms] ease-in-out rounded-[14px] md:rounded-[12px]
               ${
                 isActive
-                  ? "bg-cr-primary text-white font-semibold shadow-md"
-                  : "text-cr-text-muted hover:text-cr-primary hover:bg-cr-surface"
+                  ? "bg-[#1A3F75] text-white font-semibold"
+                  : "text-[#4B5563] bg-transparent hover:text-[#1A3F75] hover:bg-[#F5F8FC]"
               }`
             }
           >
-            <Icon size={20} className="md:w-[17px] md:h-[17px]" />
+            <Icon size={20} className="md:w-[18px] md:h-[18px]" />
             {label}
           </NavLink>
         ))}
@@ -107,7 +107,7 @@ function HelperSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-60 flex-shrink-0">
+      <aside className="hidden md:block w-[220px] lg:w-[250px] flex-shrink-0">
         {SidebarContent}
       </aside>
 
