@@ -52,6 +52,11 @@ ALLOWED_HOSTS = [
     "careride-ai-production.up.railway.app",
 ]
 
+# Automatically allow Railway's injected public domain
+railway_domain = env("RAILWAY_PUBLIC_DOMAIN", default=None)
+if railway_domain:
+    ALLOWED_HOSTS.append(railway_domain)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,8 +137,8 @@ else:
     else:
         DATABASES = {
             "default": {
-                "ENGINE": env("DB_ENGINE", default="django.db.backends.sqlite3"),
-                "NAME": env("DB_NAME", default="db.sqlite3"),
+                "ENGINE": env("DB_ENGINE"),
+                "NAME": env("DB_NAME"),
                 "USER": env("DB_USER", default=""),
                 "PASSWORD": env("DB_PASSWORD", default=""),
                 "HOST": env("DB_HOST", default=""),
