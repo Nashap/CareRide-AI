@@ -1,9 +1,6 @@
 import json
-import google.generativeai as genai
+from google import genai
 from django.conf import settings
-
-# Configure Gemini
-genai.configure(api_key=settings.GEMINI_API_KEY)
 
 SYSTEM_PROMPT = """
 You are the CareRide AI Helper Recommendation Assistant.
@@ -54,17 +51,21 @@ def call_ai_recommendation(ai_input):
     Sends travel request and helper data to Gemini
     and returns ranked helper recommendations.
     """
-
     try:
+        if not settings.GEMINI_API_KEY:
+            return fallback_response("AI service disabled (No API key provided).")
 
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash"
-        )
-
-        response = model.generate_content(
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
+        
+        prompt = (
             f"{SYSTEM_PROMPT}\n\n"
             f"Travel Request and Helpers:\n"
             f"{json.dumps(ai_input, indent=2)}"
+        )
+
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
         )
 
         result_text = response.text.strip()

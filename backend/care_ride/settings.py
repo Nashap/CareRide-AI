@@ -132,8 +132,8 @@ else:
     else:
         DATABASES = {
             "default": {
-                "ENGINE": env("DB_ENGINE"),
-                "NAME": env("DB_NAME"),
+                "ENGINE": env("DB_ENGINE", default="django.db.backends.sqlite3"),
+                "NAME": env("DB_NAME", default="db.sqlite3"),
                 "USER": env("DB_USER", default=""),
                 "PASSWORD": env("DB_PASSWORD", default=""),
                 "HOST": env("DB_HOST", default=""),
