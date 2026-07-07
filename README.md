@@ -12,7 +12,7 @@
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
 ![Railway](https://img.shields.io/badge/Railway-131415?style=flat&logo=railway&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
-![Coverage](https://img.shields.io/badge/Coverage-82%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-99%25-brightgreen)
 ![Uptime](https://img.shields.io/badge/Uptime-100%25-brightgreen)
 ![License](https://img.shields.io/badge/License-Educational-blue.svg)
 
@@ -313,7 +313,8 @@ pytest --cov=. --cov-report=html
 
 Generated report: `htmlcov/index.html`
 
-![Coverage Report](docs/images/coverage-report.png)
+![Coverage Report]<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/fe65df98-e4aa-418d-b176-63c055a47453" />
+
 
 ---
 
