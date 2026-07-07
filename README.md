@@ -313,7 +313,7 @@ pytest --cov=. --cov-report=html
 
 Generated report: `htmlcov/index.html`
 
-![Coverage Report]<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/fe65df98-e4aa-418d-b176-63c055a47453" />
+<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/fe65df98-e4aa-418d-b176-63c055a47453" />
 
 
 ---
@@ -335,12 +335,11 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 
 ## 📸 Screenshots
 
-*(Add your images to the `docs/images/` folder using the filenames below, or update the paths to match your own.)*
 
 ### 🧑‍🦽 Rider Experience
 | Screen | Preview |
 | --- | --- |
-| Login / Register | ![Login](docs/images/rider-login.png) |
+| Login / Register | ![Login](<img width="800" height="7626" alt="careride-git-main-care-ride vercel app_" src="https://github.com/user-attachments/assets/9852521f-7545-4204-a4e3-5055208be5bf" />) |
 | Book Ride | ![Book Ride](docs/images/book-ride.png) |
 | AI Helper Recommendation (Top 3 Ranking) | ![AI Recommendation](docs/images/ai-recommendation.png) |
 | AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
