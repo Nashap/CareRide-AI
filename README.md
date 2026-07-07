@@ -352,8 +352,8 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Screen | Preview |
 | --- | --- |
 | Login / Register | <img width="953" height="560" alt="image" src="https://github.com/user-attachments/assets/ad7a9892-58ef-4b4d-b7aa-6dd470adbdad" /> |
-| Browse Requests | <img width="1237" height="556" alt="image" src="https://github.com/user-attachments/assets/da5b4bdc-017f-4b65-954a-bedb90792b66" /> |
-| AI Priority Requests | ![Priority Requests](docs/images/priority-requests.png) |
+| Browse Requests |<img width="1143" height="533" alt="image" src="https://github.com/user-attachments/assets/35b983dc-f44b-464c-85f0-f958a283d6ed" /> |
+| AI Priority Requests | <img width="1143" height="533" alt="image" src="https://github.com/user-attachments/assets/08cc791e-468e-452b-b88f-326c1d5111d7" /> |
 | Assigned Ride Dashboard | ![Helper Dashboard](docs/images/helper-dashboard.png) |
 | View Assigned Rider Contact | ![Rider Contact](docs/images/rider-contact.png) |
 | Secure Disability Certificate Viewing (Assigned only) | ![View Certificate](docs/images/view-certificate.png) |
