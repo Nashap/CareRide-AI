@@ -342,16 +342,16 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Login / Register | <img width="901" height="541" alt="image" src="https://github.com/user-attachments/assets/b19e96fb-0fb9-4cf6-9202-7a721fd532fa" /> |
 | Book Ride | <img width="724" height="560" alt="image" src="https://github.com/user-attachments/assets/2ad47bea-345c-4e3b-a3a5-1351745154d9" /> |
 | AI Helper Recommendation (Top 3 Ranking) | <img width="650" height="1351" alt="image" src="https://github.com/user-attachments/assets/f91a7760-3c59-4764-8ec7-f46caeaebe0c" /> |
-| AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
-| Ride Status Tracking | ![Ride Status Tracking](docs/images/ride-status-tracking.png) |
-| Ride History | ![Ride History](docs/images/ride-history.png) |
-| Disability Certificate Upload | ![Certificate Upload](docs/images/certificate-upload.png) |
-| Rider Profile | ![Rider Profile](docs/images/rider-profile.png) |
+| AI Chat Assistant | <img width="1077" height="560" alt="image" src="https://github.com/user-attachments/assets/3115125e-9348-453c-a61f-231c99fdb5a1" /> |
+| Ride Status Tracking | <img width="1053" height="559" alt="image" src="https://github.com/user-attachments/assets/8415b2e0-c57b-4218-a652-1d8e61759378" /> |
+| Ride History | <img width="1053" height="559" alt="image" src="https://github.com/user-attachments/assets/afbfbdf4-4d38-4ee9-af63-67b50829d266" /> |
+| Disability Certificate Upload | <img width="940" height="425" alt="image" src="https://github.com/user-attachments/assets/c36bd3d3-ae33-4cf4-81a0-a2ee5e1fb8a5" /> |
+| Rider Profile | <img width="665" height="1412" alt="image" src="https://github.com/user-attachments/assets/e4af1005-7169-478e-a33f-4da5f0f86ab0" /> |
 
 ### 🤝 Helper Experience
 | Screen | Preview |
 | --- | --- |
-| Login / Register | ![Helper Login](docs/images/helper-login.png) |
+| Login / Register | <img width="953" height="560" alt="image" src="https://github.com/user-attachments/assets/ad7a9892-58ef-4b4d-b7aa-6dd470adbdad" /> |
 | Browse Requests | ![Browse Requests](docs/images/browse-requests.png) |
 | AI Priority Requests | ![Priority Requests](docs/images/priority-requests.png) |
 | Assigned Ride Dashboard | ![Helper Dashboard](docs/images/helper-dashboard.png) |
