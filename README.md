@@ -341,7 +341,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | --- | --- |
 | Login / Register | <img width="901" height="541" alt="image" src="https://github.com/user-attachments/assets/b19e96fb-0fb9-4cf6-9202-7a721fd532fa" /> |
 | Book Ride | <img width="724" height="560" alt="image" src="https://github.com/user-attachments/assets/2ad47bea-345c-4e3b-a3a5-1351745154d9" /> |
-| AI Helper Recommendation (Top 3 Ranking) | ![AI Recommendation](docs/images/ai-recommendation.png) |
+| AI Helper Recommendation (Top 3 Ranking) | <img width="650" height="1351" alt="image" src="https://github.com/user-attachments/assets/f91a7760-3c59-4764-8ec7-f46caeaebe0c" /> |
 | AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
 | Ride Status Tracking | ![Ride Status Tracking](docs/images/ride-status-tracking.png) |
 | Ride History | ![Ride History](docs/images/ride-history.png) |
