@@ -339,7 +339,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 ### 🧑‍🦽 Rider Experience
 | Screen | Preview |
 | --- | --- |
-| Login / Register | ![Login](<img width="800" height="7626" alt="careride-git-main-care-ride vercel app_" src="https://github.com/user-attachments/assets/9852521f-7545-4204-a4e3-5055208be5bf" />) |
+| Login / Register | <img width="800" height="7626" alt="careride-git-main-care-ride vercel app_" src="https://github.com/user-attachments/assets/9852521f-7545-4204-a4e3-5055208be5bf" /> |
 | Book Ride | ![Book Ride](docs/images/book-ride.png) |
 | AI Helper Recommendation (Top 3 Ranking) | ![AI Recommendation](docs/images/ai-recommendation.png) |
 | AI Chat Assistant | ![AI Assistant](docs/images/ai-assistant.png) |
