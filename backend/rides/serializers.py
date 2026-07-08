@@ -14,8 +14,8 @@ class TravelRequestSerializer(serializers.ModelSerializer):
 
     def get_assigned_helper(self, obj):
         if obj.assigned_helper and obj.status in ["AI Recommended", "Waiting for Helper Response", "Searching for another helper", "Assigned", "Completed"]:
-            # Grab AI matching context if it exists
-            recommendation = obj.recommendations.filter(helper=obj.assigned_helper).first()
+            # Grab AI matching context if it exists using prefetched related objects
+            recommendation = next((r for r in obj.recommendations.all() if r.helper_id == obj.assigned_helper.id), None)
             
             helper_data = {
                 "id": obj.assigned_helper.id,
@@ -30,12 +30,21 @@ class TravelRequestSerializer(serializers.ModelSerializer):
             
             if obj.status in ["Assigned", "Completed"]:
                 from users.models import UserProfile
-                try:
-                    profile = UserProfile.objects.get(auth_user_id=obj.assigned_helper.auth_user_id)
+                request = self.context.get('request')
+                auth_id = str(obj.assigned_helper.auth_user_id)
+                # Cache profile on request to avoid duplicate queries
+                if request:
+                    if not hasattr(request, '_profile_cache'):
+                        request._profile_cache = {}
+                    if auth_id not in request._profile_cache:
+                        request._profile_cache[auth_id] = UserProfile.objects.filter(auth_user_id=auth_id).first()
+                    profile = request._profile_cache[auth_id]
+                else:
+                    profile = UserProfile.objects.filter(auth_user_id=auth_id).first()
+                    
+                if profile:
                     helper_data["phone_number"] = profile.phone_number
                     helper_data["email"] = profile.email
-                except UserProfile.DoesNotExist:
-                    pass
                     
             return helper_data
         return None
@@ -107,7 +116,7 @@ class TravelRequestSerializer(serializers.ModelSerializer):
         return data
 
     def get_active_helper_ids(self, obj):
-        return list(obj.recommendations.filter(status="Active").values_list("helper_id", flat=True))
+        return [r.helper_id for r in obj.recommendations.all() if r.status == "Active"]
 
     def get_my_recommendation(self, obj):
         request = self.context.get('request')
@@ -116,16 +125,18 @@ class TravelRequestSerializer(serializers.ModelSerializer):
             
         try:
             from helpers.models import Helper
-            helper = Helper.objects.get(auth_user_id=request.user.auth_user_id)
+            if not hasattr(request, '_cached_my_helper'):
+                request._cached_my_helper = Helper.objects.get(auth_user_id=request.user.auth_user_id)
+            helper = request._cached_my_helper
         except:
             return None
             
-        recommendation = obj.recommendations.filter(helper=helper).first()
+        recommendation = next((r for r in obj.recommendations.all() if r.helper_id == helper.id), None)
         if not recommendation:
             return None
             
-        # Calculate Rank
-        all_recs = obj.recommendations.order_by('-match_score')
+        # Calculate Rank using prefetched list
+        all_recs = sorted(obj.recommendations.all(), key=lambda x: (x.match_score or 0), reverse=True)
         rank = 1
         for i, rec in enumerate(all_recs):
             if rec.helper_id == helper.id:
