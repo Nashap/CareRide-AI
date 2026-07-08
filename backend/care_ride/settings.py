@@ -45,17 +45,23 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
 
-# Railway
+# Railway & Render
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "careride-ai-production.up.railway.app",
+    ".onrender.com",
 ]
 
 # Automatically allow Railway's injected public domain
 railway_domain = env("RAILWAY_PUBLIC_DOMAIN", default=None)
 if railway_domain:
     ALLOWED_HOSTS.append(railway_domain)
+
+# Automatically allow Render's injected public domain
+render_domain = env("RENDER_EXTERNAL_HOSTNAME", default=None)
+if render_domain:
+    ALLOWED_HOSTS.append(render_domain)
 
 # Application definition
 
@@ -130,19 +136,33 @@ if IS_TESTING:
         }
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": env(
-                "DB_ENGINE",
-                default="django.db.backends.postgresql",
-            ),
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
+    import dj_database_url
+    
+    # Try parsing DATABASE_URL first (Render uses this by default)
+    db_url = env("DATABASE_URL", default=None)
+    if db_url:
+        DATABASES = {
+            "default": dj_database_url.config(
+                default=db_url,
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
         }
-    }
+    else:
+        # Fallback to existing Supabase settings
+        DATABASES = {
+            "default": {
+                "ENGINE": env(
+                    "DB_ENGINE",
+                    default="django.db.backends.postgresql",
+                ),
+                "NAME": env("DB_NAME"),
+                "USER": env("DB_USER"),
+                "PASSWORD": env("DB_PASSWORD"),
+                "HOST": env("DB_HOST"),
+                "PORT": env("DB_PORT"),
+            }
+        }
 
 # Password validation
 
@@ -230,8 +250,16 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[
     "https://careride-six.vercel.app",
 ])
 
+if railway_domain:
+    CORS_ALLOWED_ORIGINS.append(f"https://{railway_domain}")
+
+if render_domain:
+    CORS_ALLOWED_ORIGINS.append(f"https://{render_domain}")
+
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
+    r"^https://.*\.onrender\.com$",
+    r"^https://.*\.up\.railway\.app$",
 ]
 
 # Railway Production Settings
@@ -246,4 +274,8 @@ USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = [
     "https://careride-ai-production.up.railway.app",
     "https://careride-six.vercel.app",
+    "https://*.onrender.com",
 ]
+
+if render_domain:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_domain}")
