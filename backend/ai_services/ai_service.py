@@ -64,7 +64,8 @@ def call_ai_recommendation(ai_input):
         response = model.generate_content(
             f"{SYSTEM_PROMPT}\n\n"
             f"Travel Request and Helpers:\n"
-            f"{json.dumps(ai_input, indent=2)}"
+            f"{json.dumps(ai_input, indent=2)}",
+            request_options={"timeout": 5.0}
         )
 
         result_text = response.text.strip()
