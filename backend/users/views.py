@@ -259,12 +259,17 @@ def my_profile(request):
     if profile.role == "helper":
         try:
             from helpers.models import Helper
-            helper = Helper.objects.get(auth_user_id=profile.auth_user_id)
+            helper, created = Helper.objects.get_or_create(
+                auth_user_id=profile.auth_user_id,
+                defaults={"name": profile.name}
+            )
             if "skills" in request.data:
                 helper.skills = request.data["skills"]
+                helper.name = profile.name # ensure name matches
                 helper.save()
             data["skills"] = helper.skills
-        except:
+        except Exception as e:
+            print("Helper profile error:", e)
             data["skills"] = ""
 
     return Response({
