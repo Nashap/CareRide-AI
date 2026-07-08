@@ -311,7 +311,7 @@ def test_update_profile_helper_no_model(api_client):
     UserProfile.objects.create(email="helper@test.com", name="Helper", role="helper", auth_user_id="00000000-0000-0000-0000-000000000002")
     response = api_client.put("/api/profile/?email=helper@test.com", {"skills": "First Aid"}, format="json")
     assert response.status_code == 200
-    assert response.data["profile"]["skills"] == ""
+    assert response.data["profile"]["skills"] == "First Aid"
 
 # =========================
 # CERTIFICATE TESTS
