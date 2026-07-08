@@ -92,7 +92,7 @@ class RecommendHelperView(APIView):
                 status=404
             )
 
-        helpers = Helper.objects.filter(availability=True)
+        helpers = Helper.objects.filter(availability=True).only("id", "name", "skills", "rating", "availability")
 
         candidates = []
 
@@ -132,7 +132,7 @@ class RecommendHelperView(APIView):
         
         # Fallback if Gemini failed or returned no helpers, but helpers exist
         if not recommended_helpers_raw:
-            available_helpers = Helper.objects.filter(availability=True).order_by('-rating')[:3]
+            available_helpers = Helper.objects.filter(availability=True).only("id").order_by('-rating')[:3]
             if available_helpers.exists():
                 fallback_scores = [85, 75, 65]
                 for i, h in enumerate(available_helpers):
@@ -151,9 +151,10 @@ class RecommendHelperView(APIView):
             status__in=["Pending", "Declined", "Expired"]
         ).delete()
         
+        helper_dict = {h.id: h for h in helpers}
         for rh in recommended_helpers_raw:
-            try:
-                helper_obj = Helper.objects.get(id=rh.get("helper_id"))
+            helper_obj = helper_dict.get(rh.get("helper_id"))
+            if helper_obj:
                 MatchRecommendation.objects.create(
                     travel_request=travel_request,
                     helper=helper_obj,
@@ -162,8 +163,6 @@ class RecommendHelperView(APIView):
                     ai_summary=summary,
                     status="Pending"
                 )
-            except Helper.DoesNotExist:
-                pass
 
         # Populate recommended helpers with full details
         if "recommended_helpers" in result:
@@ -185,8 +184,8 @@ class RecommendationDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, travel_request_id):
-        # Query native MatchRecommendation objects
-        recs = MatchRecommendation.objects.filter(travel_request_id=travel_request_id)
+        # Query native MatchRecommendation objects with select_related to avoid N+1 on helper
+        recs = MatchRecommendation.objects.select_related("helper").filter(travel_request_id=travel_request_id)
         
         if not recs.exists():
             return Response(
