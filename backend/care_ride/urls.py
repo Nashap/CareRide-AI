@@ -15,7 +15,8 @@ from drf_spectacular.views import (
 
 def home(request):
     return JsonResponse({
-        "status": "CareRide API Running"
+        "status": "ok",
+        "service": "CareRide API"
     })
 
 
