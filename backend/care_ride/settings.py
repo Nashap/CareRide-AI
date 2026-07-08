@@ -45,18 +45,12 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
 
-# Railway & Render
+# Render
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "careride-ai-production.up.railway.app",
     ".onrender.com",
 ]
-
-# Automatically allow Railway's injected public domain
-railway_domain = env("RAILWAY_PUBLIC_DOMAIN", default=None)
-if railway_domain:
-    ALLOWED_HOSTS.append(railway_domain)
 
 # Automatically allow Render's injected public domain
 render_domain = env("RENDER_EXTERNAL_HOSTNAME", default=None)
@@ -250,19 +244,15 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[
     "https://careride-six.vercel.app",
 ])
 
-if railway_domain:
-    CORS_ALLOWED_ORIGINS.append(f"https://{railway_domain}")
-
 if render_domain:
     CORS_ALLOWED_ORIGINS.append(f"https://{render_domain}")
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
     r"^https://.*\.onrender\.com$",
-    r"^https://.*\.up\.railway\.app$",
 ]
 
-# Railway Production Settings
+# Render Production Settings
 
 SECURE_PROXY_SSL_HEADER = (
     "HTTP_X_FORWARDED_PROTO",
@@ -272,9 +262,8 @@ SECURE_PROXY_SSL_HEADER = (
 USE_X_FORWARDED_HOST = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://careride-ai-production.up.railway.app",
     "https://careride-six.vercel.app",
-    "https://*.onrender.com",
+    "https://careride-ai.onrender.com",
 ]
 
 if render_domain:
