@@ -13,7 +13,7 @@ class TravelRequestViewSet(viewsets.ModelViewSet):
     queryset = TravelRequest.objects.all()
 
     def get_queryset(self):
-        qs = TravelRequest.objects.select_related("rider").all().order_by("-created_at")
+        qs = TravelRequest.objects.select_related("rider", "assigned_helper").prefetch_related("recommendations").all().order_by("-created_at")
         
         return qs
 
