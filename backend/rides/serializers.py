@@ -34,11 +34,16 @@ class TravelRequestSerializer(serializers.ModelSerializer):
                 auth_id = str(obj.assigned_helper.auth_user_id)
                 # Cache profile on request to avoid duplicate queries
                 if request:
-                    if not hasattr(request, '_profile_cache'):
-                        request._profile_cache = {}
-                    if auth_id not in request._profile_cache:
-                        request._profile_cache[auth_id] = UserProfile.objects.filter(auth_user_id=auth_id).first()
-                    profile = request._profile_cache[auth_id]
+                    cache = getattr(request, '_profile_cache', None)
+                    if not isinstance(cache, dict):
+                        cache = {}
+                        try:
+                            request._profile_cache = cache
+                        except Exception:
+                            pass
+                    if auth_id not in cache:
+                        cache[auth_id] = UserProfile.objects.filter(auth_user_id=auth_id).first()
+                    profile = cache.get(auth_id)
                 else:
                     profile = UserProfile.objects.filter(auth_user_id=auth_id).first()
                     
@@ -125,9 +130,13 @@ class TravelRequestSerializer(serializers.ModelSerializer):
             
         try:
             from helpers.models import Helper
-            if not hasattr(request, '_cached_my_helper'):
-                request._cached_my_helper = Helper.objects.get(auth_user_id=request.user.auth_user_id)
-            helper = request._cached_my_helper
+            helper = getattr(request, '_cached_my_helper', None)
+            if not isinstance(helper, Helper) or str(helper.auth_user_id) != str(request.user.auth_user_id):
+                helper = Helper.objects.get(auth_user_id=request.user.auth_user_id)
+                try:
+                    request._cached_my_helper = helper
+                except Exception:
+                    pass
         except:
             return None
             
