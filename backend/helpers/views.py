@@ -16,6 +16,6 @@ class HelperViewSet(viewsets.ModelViewSet):
     to match helpers with travel requests.
     """
 
-    queryset = Helper.objects.all()
+    queryset = Helper.objects.all().order_by('id')
     serializer_class = HelperSerializer
     permission_classes = [IsAuthenticated]
