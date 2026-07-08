@@ -10,7 +10,8 @@ def run_scheduler():
         try:
             call_command('process_timeouts')
         except Exception as e:
-            print(f"Scheduler error: {e}")
+            import logging
+            logging.getLogger(__name__).error(f"Scheduler error: {e}")
         time.sleep(10)
 
 
