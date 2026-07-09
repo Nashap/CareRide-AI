@@ -242,7 +242,7 @@ function Register() {
       </div>
 
       {/* Desktop Animated Sliding Layout */}
-      <div className="hidden md:flex relative w-full max-w-4xl h-[680px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
+      <div className="hidden md:flex relative w-full max-w-4xl h-[760px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
         
         {/* Left Form: Rider */}
         <div className="absolute top-0 left-0 w-1/2 h-full z-10">
