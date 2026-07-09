@@ -115,8 +115,8 @@ function Register() {
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">CareRide AI</h1>
       </div>
       
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 tracking-tight">{title}</h2>
-      <p className="text-gray-500 mb-8 text-center text-sm sm:text-base">{description}</p>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 tracking-tight">{title}</h2>
+      <p className="text-gray-500 mb-5 text-center text-sm sm:text-base">{description}</p>
       
       {error && role === currentRole && (
         <div className="w-full max-w-sm bg-red-100 text-red-700 rounded-xl p-3 mb-4 text-sm whitespace-pre-line text-center">
@@ -130,7 +130,7 @@ function Register() {
         </div>
       )}
 
-      <form onSubmit={(e) => handleSubmit(e, currentRole)} className="w-full max-w-sm flex flex-col gap-4">
+      <form onSubmit={(e) => handleSubmit(e, currentRole)} className="w-full max-w-sm flex flex-col gap-3">
         <FloatingInput
           type="text"
           id={`name-${currentRole}`}
@@ -178,7 +178,7 @@ function Register() {
           Create Account
         </Button>
 
-        <div className="mt-6 mb-2 relative flex items-center justify-center w-full">
+        <div className="mt-4 mb-2 relative flex items-center justify-center w-full">
           <div className="border-t border-gray-200 w-full absolute left-0"></div>
           <span className="bg-white px-4 text-sm font-medium text-gray-400 relative z-10 tracking-widest">OR</span>
         </div>
@@ -198,7 +198,7 @@ function Register() {
         </button>
       </form>
       
-      <p className="text-center text-gray-500 mt-8 font-medium">
+      <p className="text-center text-gray-500 mt-5 font-medium">
         Already have an account?{" "}
         <Link to="/login" className="text-[#1A3F75] font-bold md:hover:text-[#00002A] md:hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1A3F75] rounded-sm">
           Sign in
@@ -242,7 +242,7 @@ function Register() {
       </div>
 
       {/* Desktop Animated Sliding Layout */}
-      <div className="hidden md:flex relative w-full max-w-4xl h-[760px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
+      <div className="hidden md:flex relative w-full max-w-4xl h-[680px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
         
         {/* Left Form: Rider */}
         <div className="absolute top-0 left-0 w-1/2 h-full z-10">
