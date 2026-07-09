@@ -118,6 +118,160 @@ const MobilePinnedServices = ({ services }) => {
   );
 };
 
+const DesktopPinnedServices = ({ services }) => {
+  const containerRef = useRef(null);
+  const total = services.length;
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const springProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  useEffect(() => {
+    return springProgress.on("change", (latest) => {
+      setActiveIndex(Math.min(total - 1, Math.max(0, Math.round(latest * (total - 1)))));
+    });
+  }, [springProgress, total]);
+
+  return (
+    <div ref={containerRef} className="relative w-full h-[600vh] hidden md:block">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        <div className="w-full max-w-[1360px] mx-auto px-6 md:px-10 lg:px-12 relative z-10">
+          <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
+            
+            {/* Left Side: Cards */}
+            <div className="relative w-full md:h-[400px] lg:h-[550px] flex items-center justify-center lg:justify-start perspective-[1200px]">
+              <div className="relative w-full max-w-[340px] md:max-w-[420px] h-[400px] lg:h-full">
+                {services.map((service, index) => {
+                  
+                  const y = useTransform(springProgress, (p) => {
+                    const currentIndex = p * (total - 1);
+                    const diff = currentIndex - index;
+                    
+                    if (diff > 0) {
+                      // Card is sliding away upwards
+                      return -diff * 1200; 
+                    }
+                    // Card is coming up from stack
+                    const offset = -diff;
+                    return -offset * 32;
+                  });
+
+                  const scale = useTransform(springProgress, (p) => {
+                    const currentIndex = p * (total - 1);
+                    const diff = currentIndex - index;
+                    
+                    if (diff > 0) return 1 + (diff * 0.05); 
+                    const offset = -diff;
+                    return 1 - (offset * 0.05);
+                  });
+
+                  const opacity = useTransform(springProgress, (p) => {
+                    const currentIndex = p * (total - 1);
+                    const diff = currentIndex - index;
+                    
+                    if (diff > 0) return Math.max(0, 1 - diff * 1.5);
+                    const offset = -diff;
+                    return Math.max(0, 1 - (offset * 0.15));
+                  });
+                  
+                  const rotateX = useTransform(springProgress, (p) => {
+                     const currentIndex = p * (total - 1);
+                     const diff = currentIndex - index;
+                     if (diff > 0) return 0;
+                     const offset = -diff;
+                     return offset > 0.1 ? 2 : 0;
+                  });
+
+                  return (
+                    <motion.div
+                      key={index}
+                      className="absolute inset-0 bg-cr-card rounded-[32px] p-8 border border-cr-border flex flex-col items-start cr-service-card overflow-hidden"
+                      style={{
+                        y,
+                        scale,
+                        opacity,
+                        rotateX,
+                        zIndex: total - index,
+                        transformOrigin: "top center",
+                      }}
+                    >
+                      <div className="absolute top-6 right-8 text-cr-primary/30 font-bold text-2xl tracking-tight">
+                        {(index + 1).toString().padStart(2, '0')}
+                      </div>
+
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-cr-sage/30 text-cr-primary flex items-center justify-center mb-6 mt-2 shadow-sm">
+                        {service.icon}
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-bold text-cr-text-primary mb-3 leading-tight">
+                        {service.title}
+                      </h3>
+                      <p className="text-cr-text-muted text-sm md:text-base leading-relaxed mb-6">
+                        {service.description}
+                      </p>
+                      <button className="mt-auto text-cr-primary text-sm font-semibold hover:underline min-h-[48px]">
+                        Learn More
+                      </button>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Side: Text */}
+            <div className="flex flex-col justify-center text-center lg:text-left lg:pl-8 items-center lg:items-start w-full">
+              <span className="cr-badge-custom px-4 py-2 rounded-full text-sm md:text-base font-medium w-fit mb-8 transition-colors">
+                Our Services
+              </span>
+
+              <h2 className="text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.1] font-bold text-cr-text-primary tracking-tight mb-6">
+                Everything you need for
+                <br className="hidden xl:block" />
+                <span className="text-cr-primary"> safe travel</span>
+              </h2>
+
+              <p className="text-lg text-cr-text-muted leading-relaxed max-w-[500px] mb-10 lg:mb-12">
+                CareRide AI combines trusted helpers,
+                intelligent recommendations and accessible
+                transportation to make every journey safer
+                and easier.
+              </p>
+
+              {/* Minimal Navigation Indicator */}
+              <div className="flex items-center gap-4 text-cr-text-muted font-medium text-lg md:text-xl">
+                <span className="text-cr-primary font-bold">
+                  {(activeIndex + 1).toString().padStart(2, '0')}
+                </span>
+                <span className="w-12 md:w-16 h-[2px] bg-cr-border overflow-hidden relative">
+                   <motion.span 
+                      className="absolute left-0 top-0 h-full bg-cr-primary" 
+                      style={{ 
+                         width: useTransform(springProgress, (p) => `${p * 100}%`)
+                      }} 
+                   />
+                </span>
+                <span>
+                  {total.toString().padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function Services() {
   const services = [
     {
@@ -158,7 +312,6 @@ function Services() {
     },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -167,31 +320,6 @@ function Services() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const nextCard = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % services.length);
-  }, [services.length]);
-
-  const prevCard = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
-  }, [services.length]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextCard();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [nextCard, currentIndex]);
-
-  const handleDragEnd = (event, info) => {
-    if (!isMobile) return;
-    const swipeThreshold = 50;
-    if (info.offset.x < -swipeThreshold) {
-      nextCard();
-    } else if (info.offset.x > swipeThreshold) {
-      prevCard();
-    }
-  };
 
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -210,134 +338,8 @@ function Services() {
       {/* Mobile Sticky Scrolling Content */}
       <MobilePinnedServices services={services} />
 
-      {/* Desktop/Tablet Layout */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.2 } }
-        }}
-        className="w-full max-w-[1480px] mx-auto px-5 md:px-8 lg:px-10 relative z-10 hidden md:block py-16 md:py-24"
-      >
-
-        <div className="flex flex-col-reverse lg:grid lg:grid-cols-[60%_40%] gap-12 lg:gap-16 items-center">
-
-          {/* Left Side: Stacked Cards Container */}
-          <motion.div
-            style={isMobile ? {} : { rotateZ: stackRotate }}
-            variants={{
-              hidden: { opacity: 0, y: isMobile ? 30 : 100 },
-              visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
-            }}
-            className="relative w-full md:h-[400px] lg:h-[550px] flex items-center justify-center lg:justify-start lg:pl-10 perspective-[1200px]"
-          >
-
-
-
-            {/* Desktop Stacked Animation */}
-            <div
-              className="relative hidden md:block w-full max-w-[340px] md:max-w-[420px] h-[400px] lg:h-full cursor-grab active:cursor-grabbing"
-              onClick={() => !isMobile && nextCard()}
-            >
-              {services.map((service, index) => {
-                const offset = (index - currentIndex + services.length) % services.length;
-                const isActive = offset === 0;
-
-                return (
-                  <motion.div
-                    key={index}
-                    className="absolute inset-0 bg-cr-card rounded-[32px] p-8 border border-cr-border flex flex-col items-start cr-service-card overflow-hidden"
-                    initial={false}
-                    animate={{
-                      y: -offset * 32,
-                      x: 0,
-                      scale: 1 - (offset * 0.05),
-                      opacity: 1 - (offset * 0.15),
-                      zIndex: services.length - offset,
-                      rotateX: isActive ? 0 : 2,
-                    }}
-                    whileHover={{ 
-                      y: -offset * 32 - 10,
-                      scale: 1 - (offset * 0.05) + 0.02,
-                      transition: { duration: 0.35, ease: "easeOut" }
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 20,
-                      duration: 0.8
-                    }}
-                    style={{
-                      transformOrigin: "top center",
-                    }}
-                  >
-                    {/* Top Edge Number */}
-                    <div className="absolute top-6 right-8 text-cr-primary/30 font-bold text-2xl tracking-tight">
-                      {(index + 1).toString().padStart(2, '0')}
-                    </div>
-
-                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-cr-sage/30 text-cr-primary flex items-center justify-center mb-6 mt-2 shadow-sm">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-cr-text-primary mb-3 leading-tight">
-                      {service.title}
-                    </h3>
-                    <p className="text-cr-text-muted text-sm md:text-base leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-                    <button className="mt-auto text-cr-primary text-sm font-semibold hover:underline min-h-[48px]">
-                      Learn More
-                    </button>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-          </motion.div>
-
-          {/* Right Side: Text & Navigation Indicator */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, x: 30 },
-              visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-            }}
-            className="flex flex-col justify-center text-center lg:text-left lg:pl-8 items-center lg:items-start w-full"
-          >
-            <span className="cr-badge-custom px-4 py-2 rounded-full text-sm md:text-base font-medium w-fit mb-6 transition-colors">
-              Our Services
-            </span>
-
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-cr-text-primary leading-tight mb-4 md:mb-6">
-              Everything you need for
-              <br className="hidden xl:block" />
-              <span className="text-cr-primary"> safe travel</span>
-            </h2>
-
-            <p className="text-base md:text-lg lg:text-xl text-cr-text-muted leading-relaxed max-w-[500px] mb-8 lg:mb-12">
-              CareRide AI combines trusted helpers,
-              intelligent recommendations and accessible
-              transportation to make every journey safer
-              and easier.
-            </p>
-
-            {/* Minimal Navigation Indicator */}
-            <div className="flex items-center gap-4 text-cr-text-muted font-medium text-lg md:text-xl">
-              <span className="text-cr-primary font-bold">
-                {(currentIndex + 1).toString().padStart(2, '0')}
-              </span>
-              <span className="w-12 md:w-16 h-[2px] bg-cr-border"></span>
-              <span>
-                {services.length.toString().padStart(2, '0')}
-              </span>
-            </div>
-
-          </motion.div>
-
-        </div>
-
-      </motion.div>
+      {/* Desktop Sticky Scrolling Content */}
+      <DesktopPinnedServices services={services} />
     </section>
   );
 }
