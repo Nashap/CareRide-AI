@@ -109,7 +109,7 @@ function Hero() {
               <h1 className="text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.1] font-bold text-cr-text-primary tracking-tight">
                 Accessible mobility,
                 <br className="hidden lg:block" />
-                <span className="text-cr-primary"> with a human touch.</span>
+                <span>with a human touch.</span>
               </h1>
             </motion.div>
 
@@ -136,7 +136,7 @@ function Hero() {
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=helper"
-                  className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary w-full sm:w-auto min-h-[48px] px-8 py-3.5 md:py-4 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center h-full"
+                  className="bg-cr-card border border-cr-border text-cr-primary hover:border-cr-primary hover:text-cr-primary-hover w-full sm:w-auto min-h-[48px] px-8 py-3.5 md:py-4 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center h-full"
                 >
                   I want to help
                 </Link>
@@ -144,23 +144,23 @@ function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 border-t pt-8 lg:pt-10 border-cr-border/60 w-full">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 mt-12 lg:mt-24 w-full">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Verified Helpers</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cr-text-primary tracking-tight">
                   <CountUp to={1200} duration={2.5} suffix="+" />
                 </h3>
               </div>
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Cities</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cr-text-primary tracking-tight">
                   <CountUp to={48} duration={2} />
                 </h3>
               </div>
               <div className="col-span-2 sm:col-span-1 flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Avg. Rating</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary flex items-center gap-1">
-                  <CountUp to={4.9} duration={2} />
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cr-text-primary tracking-tight flex items-center gap-1">
+                  <CountUp to={5} duration={2} />
                   <span className="text-cr-primary">★</span>
                 </h3>
               </div>
