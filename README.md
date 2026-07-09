@@ -62,8 +62,8 @@ CareRide AI consists of:
 | Service | URL |
 | --- | --- |
 | **Frontend** | [https://careride-six.vercel.app/](https://careride-six.vercel.app/) |
-| **Backend** | [https://careride-ai-production.up.railway.app/](https://careride-ai-production.up.railway.app/) |
-| **Swagger** | [https://careride-ai-production.up.railway.app/api/schema/swagger-ui/](https://careride-ai-production.up.railway.app/api/schema/swagger-ui/) |
+| **Backend** | [https://careride-ai.onrender.com](https://careride-ai.onrender.com) |
+| **Swagger** | [https://careride-ai.onrender.com/api/schema/swagger-ui/](https://careride-ai.onrender.com/api/schema/swagger-ui/) |
 | **Postman** | [https://documenter.getpostman.com/view/55567557/2sBXwvH81g](https://documenter.getpostman.com/view/55567557/2sBXwvH81g) |
 
 ---
@@ -298,7 +298,7 @@ CareRide AI uses **Pytest**, **Pytest-Django**, and **Pytest-Cov** for automated
 * AI Recommendation Integration Test (Mocked Gemini API — external AI calls are fully mocked to prevent real network requests and ensure predictable test outcomes)
 * GitHub Actions CI Testing
 
-**Current coverage: 82%** — 11 tests passed, 0 failed.
+**Current coverage: 99%** — 105 tests passed, 0 failed.
 
 ```bash
 # Run tests
@@ -313,7 +313,8 @@ pytest --cov=. --cov-report=html
 
 Generated report: `htmlcov/index.html`
 
-<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/fe65df98-e4aa-418d-b176-63c055a47453" />
+<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/8dc84a23-cc2e-4323-a4a3-91005ff0bbb5" />
+
 
 
 ---
@@ -352,12 +353,12 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Screen | Preview |
 | --- | --- |
 | Login / Register | <img width="953" height="560" alt="image" src="https://github.com/user-attachments/assets/ad7a9892-58ef-4b4d-b7aa-6dd470adbdad" /> |
-| Browse Requests |<img width="1143" height="533" alt="image" src="https://github.com/user-attachments/assets/35b983dc-f44b-464c-85f0-f958a283d6ed" /> |
+| Browse Requests | <img width="1213" height="544" alt="image" src="https://github.com/user-attachments/assets/71fa490c-735f-416e-b764-eeaa56e29bc5" /> |
 | AI Priority Requests | <img width="1143" height="533" alt="image" src="https://github.com/user-attachments/assets/08cc791e-468e-452b-b88f-326c1d5111d7" /> |
-| Assigned Ride Dashboard | ![Helper Dashboard](docs/images/helper-dashboard.png) |
-| View Assigned Rider Contact | ![Rider Contact](docs/images/rider-contact.png) |
-| Secure Disability Certificate Viewing (Assigned only) | ![View Certificate](docs/images/view-certificate.png) |
-| Complete Ride | ![Complete Ride](docs/images/complete-ride.png) |
+| Assigned Ride Dashboard | <img width="1228" height="560" alt="image" src="https://github.com/user-attachments/assets/7a00f3b5-f7c1-457d-86f2-421b84959175" /> |
+| View Assigned Rider Contact | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/a1bb0b1b-7124-4827-bccc-131a1b892147" /> |
+| Secure Disability Certificate Viewing (Assigned only) | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/b49df055-f326-46fc-846d-25c456e7d766" /> |
+| Complete Ride | <img width="1077" height="536" alt="image" src="https://github.com/user-attachments/assets/f6933dcc-e07e-404b-a196-aa8b84daa0fd" /> |
 
 ### ⚙️ Platform & Ops
 | Screen | Preview |
@@ -370,7 +371,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 ### 📱 Mobile View
 | Screen | Preview |
 | --- | --- |
-| Responsive Rider Dashboard | ![Mobile View](docs/images/mobile-view.png) |
+| Responsive Rider Dashboard | <img width="800" height="2362" alt="image" src="https://github.com/user-attachments/assets/d0091d2d-27bc-4fde-872c-2cb40521fdca" /> |
 
 ---
 
