@@ -122,7 +122,7 @@ function Hero() {
             </motion.p>
 
             {/* Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-10 lg:mb-12 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-8 w-full sm:w-auto">
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=rider"
@@ -144,7 +144,7 @@ function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 mt-10 lg:mt-16 w-full">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 w-full">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Verified Helpers</p>
                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cr-text-primary tracking-tight">
