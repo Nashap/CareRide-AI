@@ -79,7 +79,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-28 pb-16 lg:pt-40 lg:pb-24 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
+      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-24 pb-16 lg:pt-32 lg:pb-20 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <motion.div 
@@ -99,13 +99,13 @@ function Hero() {
             className="flex flex-col items-center lg:items-start text-center lg:text-left w-full relative z-10 pt-2 lg:pt-0"
           >
             {/* Badge */}
-            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 cr-badge-custom shadow-sm transition-colors">
+            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 cr-badge-custom shadow-sm transition-colors">
               <Sparkles size={16} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="!text-[#FFFFFF] dark:!text-[#FFFFFF]" />
               AI-powered helper matching
             </motion.div>
 
             {/* Heading */}
-            <motion.div variants={itemVariants} className="overflow-hidden w-full mb-6">
+            <motion.div variants={itemVariants} className="overflow-hidden w-full mb-5">
               <h1 className="text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.1] font-bold text-cr-text-primary tracking-tight">
                 Accessible mobility,
                 <br className="hidden lg:block" />
@@ -114,7 +114,7 @@ function Hero() {
             </motion.div>
 
             {/* Description */}
-            <motion.p variants={itemVariants} className="text-lg text-cr-text-muted mb-10 lg:mb-12 max-w-[500px] leading-relaxed mx-auto lg:mx-0">
+            <motion.p variants={itemVariants} className="text-lg text-cr-text-muted mb-8 lg:mb-10 max-w-[500px] leading-relaxed mx-auto lg:mx-0">
               CareRide AI connects elderly riders,
               people with disabilities, and patients
               with verified helpers using AI to match
@@ -122,7 +122,7 @@ function Hero() {
             </motion.p>
 
             {/* Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-12 lg:mb-16 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-10 lg:mb-12 w-full sm:w-auto">
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=rider"
@@ -144,7 +144,7 @@ function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 mt-12 lg:mt-24 w-full">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 mt-10 lg:mt-16 w-full">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Verified Helpers</p>
                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-cr-text-primary tracking-tight">
