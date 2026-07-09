@@ -211,7 +211,7 @@ function Register() {
     <div className="min-h-screen bg-gradient-to-br from-[#F3F4F6] to-[#E5E7EB] flex items-center justify-center p-4 sm:p-6 md:p-8">
       
       {/* Mobile Toggle Layout (Visible only on small screens) */}
-      <div className="w-full max-w-md md:hidden bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/40 overflow-hidden flex flex-col">
+      <div className="w-full max-w-sm md:hidden bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/40 overflow-hidden flex flex-col">
         <div className="grid grid-cols-2 bg-gray-100/80 p-1 m-6 mb-2 rounded-2xl">
           <button
             onClick={() => setRole("rider")}
@@ -242,7 +242,7 @@ function Register() {
       </div>
 
       {/* Desktop Animated Sliding Layout */}
-      <div className="hidden md:flex relative w-full max-w-5xl h-[720px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
+      <div className="hidden md:flex relative w-full max-w-4xl h-[680px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
         
         {/* Left Form: Rider */}
         <div className="absolute top-0 left-0 w-1/2 h-full z-10">
