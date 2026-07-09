@@ -79,7 +79,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-20 pb-16 lg:pt-[118px] lg:pb-20 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
+      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-20 pb-16 lg:pt-24 lg:pb-20 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <motion.div 
