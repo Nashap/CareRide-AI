@@ -79,16 +79,18 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-20 pb-12 lg:py-0 min-h-[auto] md:min-h-[88vh] flex items-center overflow-hidden"
+      className="relative bg-cr-bg pt-28 pb-16 md:pt-36 md:pb-24 lg:pt-40 lg:pb-32 overflow-hidden"
       onMouseMove={handleMouseMove}
     >
+      {/* Background Gradients */}
       <motion.div 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--cr-primary)_0%,transparent_50%)] opacity-5 blur-3xl pointer-events-none"
+        className="absolute top-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,#1A3F75_0%,transparent_60%)] opacity-[0.08] blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3"
         style={{ opacity: bgOpacity }}
       />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[radial-gradient(circle_at_center,#5F82A8_0%,transparent_60%)] opacity-[0.05] blur-[80px] pointer-events-none transform -translate-x-1/3 translate-y-1/3" />
 
-      <div className="w-full max-w-[1480px] mx-auto px-4 md:px-8 lg:px-10 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-6 lg:gap-8 items-center">
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-8 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
 
           {/* Left Side: Text */}
           <motion.div 
@@ -96,17 +98,17 @@ function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center lg:items-start text-center lg:text-left w-full relative z-10 pt-2 lg:pt-0"
+            className="flex flex-col items-center lg:items-start text-center lg:text-left w-full relative z-10"
           >
             {/* Badge */}
-            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 md:mb-8 cr-badge-custom shadow-sm transition-colors">
-              <Sparkles size={16} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="!text-[#FFFFFF] dark:!text-[#FFFFFF]" />
+            <motion.div variants={badgeVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 bg-cr-primary/10 text-cr-primary border border-cr-primary/20 shadow-sm backdrop-blur-md transition-all md:hover:bg-cr-primary/15 md:hover:shadow-md cursor-default">
+              <Sparkles size={16} className="text-cr-primary" />
               AI-powered helper matching
             </motion.div>
 
             {/* Heading */}
             <motion.div variants={itemVariants} className="overflow-hidden w-full">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-cr-text-primary break-words">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.2rem] xl:text-[5rem] font-extrabold tracking-tight text-cr-text-primary leading-[1.12] mb-6">
                 Accessible mobility,
                 <br className="hidden lg:block" />
                 <span className="text-cr-primary"> with a human touch.</span>
@@ -114,7 +116,7 @@ function Hero() {
             </motion.div>
 
             {/* Description */}
-            <motion.p variants={itemVariants} className="text-base md:text-lg text-cr-text-muted mt-6 mb-8 md:mb-10 max-w-[480px] leading-relaxed mx-auto lg:mx-0">
+            <motion.p variants={itemVariants} className="text-lg md:text-xl lg:text-[1.35rem] text-cr-text-muted mb-10 max-w-[540px] leading-relaxed mx-auto lg:mx-0 font-medium">
               CareRide AI connects elderly riders,
               people with disabilities, and patients
               with verified helpers using AI to match
@@ -122,21 +124,21 @@ function Hero() {
             </motion.p>
 
             {/* Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-12 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 md:gap-5 mb-14 w-full sm:w-auto mx-auto lg:mx-0">
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=rider"
-                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white w-full sm:w-auto min-h-[48px] px-8 py-3.5 md:py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2"
+                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white w-full sm:w-auto min-h-[52px] px-8 py-4 rounded-xl font-bold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2 text-base md:text-lg"
                 >
                   I need a ride
-                  <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </motion.div>
 
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=helper"
-                  className="bg-cr-card border border-cr-border hover:border-cr-primary hover:text-cr-primary w-full sm:w-auto min-h-[48px] px-8 py-3.5 md:py-4 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center h-full"
+                  className="bg-white border-2 border-cr-border hover:border-cr-primary hover:text-cr-primary w-full sm:w-auto min-h-[52px] px-8 py-4 rounded-xl font-bold text-cr-text-primary shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center h-full text-base md:text-lg"
                 >
                   I want to help
                 </Link>
@@ -144,25 +146,25 @@ function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 border-t mt-6 lg:mt-12 pt-6 lg:pt-8 border-cr-border/60 w-full">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-8 md:gap-12 border-t mt-4 pt-8 border-cr-border/80 w-full max-w-[600px] mx-auto lg:mx-0">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Verified Helpers</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary">
+                <h3 className="text-3xl md:text-4xl font-extrabold text-cr-text-primary tracking-tight">
                   <CountUp to={1200} duration={2.5} suffix="+" />
                 </h3>
+                <p className="text-cr-text-muted text-sm md:text-base font-semibold mt-1">Verified Helpers</p>
               </div>
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Cities</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary">
+                <h3 className="text-3xl md:text-4xl font-extrabold text-cr-text-primary tracking-tight">
                   <CountUp to={48} duration={2} />
                 </h3>
+                <p className="text-cr-text-muted text-sm md:text-base font-semibold mt-1">Cities Active</p>
               </div>
               <div className="col-span-2 sm:col-span-1 flex flex-col items-center lg:items-start text-center lg:text-left">
-                <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Avg. Rating</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary flex items-center gap-1">
+                <h3 className="text-3xl md:text-4xl font-extrabold text-cr-text-primary tracking-tight flex items-center gap-1.5">
                   <CountUp to={4.9} duration={2} />
-                  <span className="text-cr-primary">★</span>
+                  <span className="text-cr-primary text-2xl md:text-3xl">★</span>
                 </h3>
+                <p className="text-cr-text-muted text-sm md:text-base font-semibold mt-1">Avg. Rating</p>
               </div>
             </motion.div>
 
@@ -176,17 +178,19 @@ function Hero() {
               rotateX: mouseYSpring,
               rotateY: mouseXSpring
             }}
-            initial={{ opacity: 0, scale: 0.92, y: 40 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="relative flex justify-center perspective-[1000px] w-full"
+            className="relative flex justify-center perspective-[1200px] w-full"
           >
             <motion.div 
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
-              className="bg-cr-beige rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] overflow-hidden w-full max-w-full lg:max-w-[760px] max-h-[60vh] lg:max-h-[80vh] flex items-center justify-center"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+              className="relative w-full max-w-full lg:max-w-[800px] rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(26,63,117,0.25)] border border-white/60 bg-white/40 backdrop-blur-md p-2 lg:p-3"
             >
-              <HeroAnimation />
+              <div className="w-full aspect-video rounded-[2rem] overflow-hidden bg-cr-beige/50">
+                <HeroAnimation />
+              </div>
             </motion.div>
           </motion.div>
 
