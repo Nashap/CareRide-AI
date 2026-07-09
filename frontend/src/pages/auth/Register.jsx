@@ -17,6 +17,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
@@ -37,6 +38,11 @@ function Register() {
       setError("Password must be at least 8 characters long.");
       return;
     }
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -44,7 +50,8 @@ function Register() {
       setSuccess("");
 
       await registerUser({
-        ...formData,
+        name: formData.name,
+        password: formData.password,
         email: formData.email.trim().toLowerCase(),
         role: submittedRole,
       });
@@ -151,7 +158,15 @@ function Register() {
           showStrength={true}
           value={formData.password}
           onChange={handleChange}
-          className="bg-gray-50 border-gray-200 text-gray-900"
+        />
+        
+        <PasswordInput
+          id={`confirm-password-${currentRole}`}
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          required
+          value={formData.confirmPassword}
+          onChange={handleChange}
         />
         
         <Button
