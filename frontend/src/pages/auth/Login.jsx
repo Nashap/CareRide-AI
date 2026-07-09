@@ -73,18 +73,18 @@ function Login() {
   };
 
   const renderForm = (currentRole, title, description) => (
-    <div className="flex flex-col items-center justify-center h-full px-6 sm:px-12 md:px-14 w-full">
+    <div className="flex flex-col items-center justify-center h-full px-6 sm:px-12 md:px-14 w-full bg-white/80 md:bg-transparent">
       
       {/* Mobile Branding (Hidden on desktop overlay) */}
       <div className="flex justify-center items-center gap-2 mb-6 md:hidden">
-        <div className="w-10 h-10 rounded-full bg-[#1A3F75] flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-[#1A3F75] flex items-center justify-center shadow-md">
           <Accessibility size={20} className="text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">CareRide AI</h1>
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">CareRide AI</h1>
       </div>
       
-      <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-      <p className="text-gray-500 mb-8 text-center">{description}</p>
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 tracking-tight">{title}</h2>
+      <p className="text-gray-500 mb-8 text-center text-sm sm:text-base">{description}</p>
       
       {error && role === currentRole && (
         <div className="w-full max-w-sm bg-red-100 text-red-700 rounded-xl p-3 mb-5 text-sm whitespace-pre-line text-center">
@@ -93,33 +93,45 @@ function Login() {
       )}
 
       <form onSubmit={(e) => handleSubmit(e, currentRole)} className="w-full max-w-sm flex flex-col gap-4">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full bg-gray-50 border border-[#DDEAF5] rounded-xl p-3.5 focus:outline-none focus:ring-2 focus:ring-[rgba(26,63,117,0.18)] focus:border-[#1A3F75] transition-all"
-        />
+        <div className="relative w-full">
+          <input
+            type="email"
+            id={`email-${currentRole}`}
+            name="email"
+            placeholder="Email Address"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            className="peer w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-[#1A3F75]/20 focus:border-[#1A3F75] transition-all placeholder-transparent"
+            aria-label="Email Address"
+          />
+          <label
+            htmlFor={`email-${currentRole}`}
+            className="absolute left-4 top-2 text-xs font-medium text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-xs peer-focus:text-[#1A3F75] pointer-events-none"
+          >
+            Email Address
+          </label>
+        </div>
         
         <PasswordInput
+          id={`password-${currentRole}`}
           name="password"
           placeholder="Password"
           required
           value={formData.password}
           onChange={handleChange}
-          className="bg-gray-50 border-[#DDEAF5]"
+          className="bg-gray-50 border-gray-200 text-gray-900"
         />
         
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-2 bg-[#00002A] md:hover:bg-[#1A3F75] active:bg-[#163764] text-white rounded-xl py-3.5 font-bold transition-all shadow-none transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+          className="w-full mt-2 bg-[#1A3F75] md:hover:bg-[#00002A] active:bg-[#00001A] text-white rounded-xl py-3.5 font-bold transition-all shadow-md md:hover:shadow-lg transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1A3F75] min-h-[44px]"
+          aria-label={loading ? "Signing In" : "Sign In"}
         >
           {loading ? (
             <>
-              <Loader2 size={18} className="animate-spin" />
+              <Loader2 size={18} className="animate-spin" aria-hidden="true" />
               Signing In...
             </>
           ) : (
@@ -128,17 +140,19 @@ function Login() {
         </button>
 
         <div className="mt-6 mb-2 relative flex items-center justify-center w-full">
-          <div className="border-t border-[#DDEAF5] w-full absolute left-0"></div>
+          <div className="border-t border-gray-200 w-full absolute left-0"></div>
           <span className="bg-white px-4 text-sm font-medium text-gray-400 relative z-10 tracking-widest">OR</span>
         </div>
 
         <button
           type="button"
-          className="w-full border border-[#DDEAF5] rounded-xl py-3.5 flex items-center justify-center gap-3 md:hover:bg-gray-50 transition-all font-semibold text-gray-600"
+          className="w-full bg-white border border-gray-200 rounded-xl py-3.5 flex items-center justify-center gap-3 md:hover:bg-gray-50 active:bg-gray-100 transition-all font-semibold text-gray-700 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-200 min-h-[44px]"
+          aria-label="Continue with Google"
         >
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt="Google"
+            alt=""
+            aria-hidden="true"
             className="w-5 h-5"
           />
           Continue with Google
@@ -147,7 +161,7 @@ function Login() {
       
       <p className="text-center text-gray-500 mt-8 font-medium">
         Don't have an account?{" "}
-        <Link to="/register" className="text-[#1A3F75] font-bold md:hover:text-[#00002A] md:hover:underline">
+        <Link to="/register" className="text-[#1A3F75] font-bold md:hover:text-[#00002A] md:hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1A3F75] rounded-sm">
           Create Account
         </Link>
       </p>
@@ -155,29 +169,31 @@ function Login() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#F3F4F6] to-[#E5E7EB] flex items-center justify-center p-4 sm:p-6 md:p-8">
       
       {successMessage && <Toast message={successMessage} onClose={() => setSuccessMessage("")} />}
 
       {/* Mobile Toggle Layout (Visible only on small screens) */}
-      <div className="w-full max-w-md md:hidden bg-white rounded-3xl shadow-[0_20px_60px_rgba(26,63,117,0.10)] overflow-hidden flex flex-col">
-        <div className="grid grid-cols-2 bg-gray-100 p-1 m-6 mb-2 rounded-2xl">
+      <div className="w-full max-w-md md:hidden bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/40 overflow-hidden flex flex-col">
+        <div className="grid grid-cols-2 bg-gray-100/80 p-1 m-6 mb-2 rounded-2xl">
           <button
             onClick={() => setRole("rider")}
-            className={`py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3F75] min-h-[44px] ${
               role === "rider" ? "bg-white shadow-sm text-[#1A3F75]" : "text-gray-500 hover:text-gray-700"
             }`}
+            aria-pressed={role === "rider"}
           >
-            <Accessibility size={18} />
+            <Accessibility size={18} aria-hidden="true" />
             Rider
           </button>
           <button
             onClick={() => setRole("helper")}
-            className={`py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3F75] min-h-[44px] ${
               role === "helper" ? "bg-white shadow-sm text-[#1A3F75]" : "text-gray-500 hover:text-gray-700"
             }`}
+            aria-pressed={role === "helper"}
           >
-            <HandHeart size={18} />
+            <HandHeart size={18} aria-hidden="true" />
             Helper
           </button>
         </div>
@@ -189,7 +205,7 @@ function Login() {
       </div>
 
       {/* Desktop Animated Sliding Layout */}
-      <div className="hidden md:flex relative w-full max-w-5xl h-[640px] bg-white rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.10)] overflow-hidden">
+      <div className="hidden md:flex relative w-full max-w-5xl h-[640px] bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_20px_60px_rgba(26,63,117,0.12)] border border-white/40 overflow-hidden">
         
         {/* Left Form: Rider */}
         <div className="absolute top-0 left-0 w-1/2 h-full z-10">
@@ -240,7 +256,7 @@ function Login() {
               </p>
               <button
                 onClick={() => setRole("rider")}
-                className="px-12 py-4 border-2 border-white rounded-full font-bold text-white hover:bg-[rgba(255,255,255,0.10)] transition-all transform hover:scale-105"
+                className="px-12 py-4 border-2 border-white rounded-full font-bold text-white hover:bg-[rgba(255,255,255,0.10)] transition-all transform hover:scale-105 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 min-h-[44px]"
               >
                 I'm a Rider
               </button>
@@ -259,7 +275,7 @@ function Login() {
               </p>
               <button
                 onClick={() => setRole("helper")}
-                className="px-12 py-4 border-2 border-white rounded-full font-bold text-white hover:bg-[rgba(255,255,255,0.10)] transition-all transform hover:scale-105"
+                className="px-12 py-4 border-2 border-white rounded-full font-bold text-white hover:bg-[rgba(255,255,255,0.10)] transition-all transform hover:scale-105 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 min-h-[44px]"
               >
                 I'm a Helper
               </button>
