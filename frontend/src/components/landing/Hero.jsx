@@ -79,7 +79,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-24 pb-16 lg:pt-32 lg:pb-20 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
+      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-20 pb-16 lg:pt-28 lg:pb-20 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <motion.div 
@@ -99,7 +99,7 @@ function Hero() {
             className="flex flex-col items-center lg:items-start text-center lg:text-left w-full relative z-10 pt-2 lg:pt-0"
           >
             {/* Badge */}
-            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 cr-badge-custom shadow-sm transition-colors">
+            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-10 cr-badge-custom shadow-sm transition-colors">
               <Sparkles size={16} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="!text-[#FFFFFF] dark:!text-[#FFFFFF]" />
               AI-powered helper matching
             </motion.div>
