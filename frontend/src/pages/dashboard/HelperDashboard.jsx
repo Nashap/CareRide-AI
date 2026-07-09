@@ -152,7 +152,7 @@ export default function HelperDashboard() {
             {/* Statistics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
               {/* Assigned Rides */}
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Assigned Rides</p>
@@ -165,7 +165,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Pending Requests */}
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Pending Requests</p>
@@ -178,7 +178,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Completed Rides */}
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Completed Rides</p>
@@ -191,7 +191,7 @@ export default function HelperDashboard() {
               </div>
 
               {/* Average Rating */}
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-cr-accent text-sm">Average Rating</p>
@@ -205,7 +205,7 @@ export default function HelperDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 mb-8 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 mb-8 border border-cr-border">
               <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <button
@@ -255,7 +255,7 @@ export default function HelperDashboard() {
             </div>
 
             {/* Today's Assigned Ride */}
-            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-10 border border-cr-border">
               <h2 className="text-xl font-bold mb-6">Today's Assigned Ride</h2>
 
               {recentRide ? (
