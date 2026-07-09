@@ -6,6 +6,7 @@ import { loginUser } from "../../services/authService";
 import Toast from "../../components/common/Toast";
 import LoadingScreen from "../../components/common/LoadingScreen";
 import PasswordInput from "../../components/common/PasswordInput";
+import FloatingInput from "../../components/common/FloatingInput";
 
 function Login() {
   const navigate = useNavigate();
@@ -93,25 +94,15 @@ function Login() {
       )}
 
       <form onSubmit={(e) => handleSubmit(e, currentRole)} className="w-full max-w-sm flex flex-col gap-4">
-        <div className="relative w-full">
-          <input
-            type="email"
-            id={`email-${currentRole}`}
-            name="email"
-            placeholder="Email Address"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="peer w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-[#1A3F75]/20 focus:border-[#1A3F75] transition-all placeholder-transparent"
-            aria-label="Email Address"
-          />
-          <label
-            htmlFor={`email-${currentRole}`}
-            className="absolute left-4 top-2 text-xs font-medium text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-xs peer-focus:text-[#1A3F75] pointer-events-none"
-          >
-            Email Address
-          </label>
-        </div>
+        <FloatingInput
+          type="email"
+          id={`email-${currentRole}`}
+          name="email"
+          placeholder="Email Address"
+          required
+          value={formData.email}
+          onChange={handleChange}
+        />
         
         <PasswordInput
           id={`password-${currentRole}`}
