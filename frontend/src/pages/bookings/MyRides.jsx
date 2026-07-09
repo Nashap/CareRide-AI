@@ -16,6 +16,7 @@ import LoadingScreen from "../../components/common/LoadingScreen";
 import EmptyState from "../../components/dashboard/EmptyState";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
 import Toast from "../../components/common/Toast";
+import Button from "../../components/common/Button";
 
 import {
   getTravelRequests,
@@ -144,17 +145,14 @@ export default function MyRides() {
 
               </div>
 
-              <button
+              <Button
                 onClick={() => navigate("/book-ride")}
-                className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white px-6 py-3 rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center gap-2"
+                variant="primary"
+                className="px-6 py-3"
               >
-
-                <Plus size={18} />
-
+                <Plus size={18} className="mr-2" />
                 Book a New Ride
-
-              </button>
-
+              </Button>
             </div>
 
             {loading ? (
@@ -389,18 +387,20 @@ export default function MyRides() {
                         <p className="font-medium text-cr-primary mb-2">No AI helpers are currently available.</p>
                         <p className="text-cr-secondary mb-4">All AI recommended helpers have declined, or no helpers matched your criteria. You can manually browse our helper directory or cancel the ride.</p>
                         <div className="flex flex-col sm:flex-row gap-3">
-                           <button 
+                           <Button 
                              onClick={() => navigate("/helpers")} 
-                             className="group bg-cr-primary md:hover:bg-cr-primary-hover text-white w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 flex items-center justify-center gap-2"
+                             variant="primary"
+                             className="w-full sm:w-auto"
                            >
                              Browse Helpers
-                           </button>
-                           <button 
+                           </Button>
+                           <Button 
                              onClick={() => openDeleteDialog(ride.id)} 
-                             className="bg-cr-card border border-red-200 md:hover:border-red-500 md:hover:bg-red-50 text-red-600 w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2"
+                             variant="outline"
+                             className="w-full sm:w-auto !text-red-600 !border-red-200 md:hover:!border-red-500 md:hover:!bg-red-50"
                            >
                              Cancel Ride
-                           </button>
+                           </Button>
                         </div>
                       </div>
                     )}
@@ -415,13 +415,14 @@ export default function MyRides() {
                     {/* Delete Button (Hide if waiting for available helper to avoid duplicate buttons, or if Expired) */}
                     {ride.status !== "Waiting for another available helper" && ride.status !== "Expired" && (
                       <div className="flex justify-end mt-6">
-                        <button
+                        <Button
                           onClick={() => openDeleteDialog(ride.id)}
-                          className="flex items-center justify-center gap-2 bg-cr-card border border-red-200 md:hover:border-red-500 md:hover:bg-red-50 text-red-600 w-full sm:w-auto px-6 py-3 min-h-[48px] rounded-xl font-semibold shadow-sm md:hover:shadow-md transition-all duration-300"
+                          variant="outline"
+                          className="w-full sm:w-auto !text-red-600 !border-red-200 md:hover:!border-red-500 md:hover:!bg-red-50"
                         >
-                          <Trash2 size={18} />
+                          <Trash2 size={18} className="mr-2" />
                           Cancel Ride
-                        </button>
+                        </Button>
                       </div>
                     )}
 
