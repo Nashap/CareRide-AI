@@ -155,7 +155,6 @@ function Register() {
           name="password"
           placeholder="Password"
           required
-          showStrength={true}
           value={formData.password}
           onChange={handleChange}
         />
