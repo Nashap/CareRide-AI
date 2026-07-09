@@ -103,7 +103,7 @@ export default function RiderDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-10">
 
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -132,7 +132,7 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -161,7 +161,7 @@ export default function RiderDashboard() {
 
               </div>
 
-              <div className="bg-cr-card rounded-[24px] shadow-sm md:shadow-lg md:hover:shadow-xl md:hover:-translate-y-1 transition-all duration-300 p-6 md:p-8 border border-cr-border">
+              <div className="bg-cr-card rounded-[24px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] transition-shadow p-6 md:p-8 border border-cr-border">
 
                 <div className="flex items-center justify-between">
 
@@ -194,7 +194,7 @@ export default function RiderDashboard() {
 
             {/* Quick Actions */}
 
-            <div className="bg-cr-card rounded-[32px] shadow-md md:shadow-xl p-6 md:p-10 mb-8 border border-cr-border">
+            <div className="bg-cr-card rounded-[32px] shadow-[0_8px_30px_rgba(26,63,117,0.08)] md:hover:shadow-[0_12px_40px_rgba(26,63,117,0.12)] p-6 md:p-10 mb-8 border border-cr-border transition-shadow">
 
               <h2 className="text-xl font-bold mb-6">
                 Quick Actions
