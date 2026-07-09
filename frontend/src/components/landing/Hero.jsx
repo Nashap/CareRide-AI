@@ -79,7 +79,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-20 pb-12 lg:py-0 min-h-[auto] md:min-h-[88vh] flex items-center overflow-hidden"
+      className="relative bg-gradient-to-b from-cr-bg to-cr-surface pt-28 pb-16 lg:pt-40 lg:pb-24 min-h-[auto] md:min-h-[90vh] flex items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <motion.div 
@@ -87,8 +87,8 @@ function Hero() {
         style={{ opacity: bgOpacity }}
       />
 
-      <div className="w-full max-w-[1480px] mx-auto px-4 md:px-8 lg:px-10 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-6 lg:gap-8 items-center">
+      <div className="w-full max-w-[1360px] mx-auto px-6 md:px-10 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
 
           {/* Left Side: Text */}
           <motion.div 
@@ -99,14 +99,14 @@ function Hero() {
             className="flex flex-col items-center lg:items-start text-center lg:text-left w-full relative z-10 pt-2 lg:pt-0"
           >
             {/* Badge */}
-            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 md:mb-8 cr-badge-custom shadow-sm transition-colors">
+            <motion.div variants={badgeVariants} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8 cr-badge-custom shadow-sm transition-colors">
               <Sparkles size={16} style={{ opacity: 1, filter: 'none', mixBlendMode: 'normal', visibility: 'visible' }} className="!text-[#FFFFFF] dark:!text-[#FFFFFF]" />
               AI-powered helper matching
             </motion.div>
 
             {/* Heading */}
-            <motion.div variants={itemVariants} className="overflow-hidden w-full">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-cr-text-primary break-words">
+            <motion.div variants={itemVariants} className="overflow-hidden w-full mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.1] font-bold text-cr-text-primary tracking-tight">
                 Accessible mobility,
                 <br className="hidden lg:block" />
                 <span className="text-cr-primary"> with a human touch.</span>
@@ -114,7 +114,7 @@ function Hero() {
             </motion.div>
 
             {/* Description */}
-            <motion.p variants={itemVariants} className="text-base md:text-lg text-cr-text-muted mt-6 mb-8 md:mb-10 max-w-[480px] leading-relaxed mx-auto lg:mx-0">
+            <motion.p variants={itemVariants} className="text-lg text-cr-text-muted mb-10 lg:mb-12 max-w-[500px] leading-relaxed mx-auto lg:mx-0">
               CareRide AI connects elderly riders,
               people with disabilities, and patients
               with verified helpers using AI to match
@@ -122,7 +122,7 @@ function Hero() {
             </motion.p>
 
             {/* Buttons */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-12 w-full sm:w-auto">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap gap-4 mb-12 lg:mb-16 w-full sm:w-auto">
               <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
                 <Link
                   to="/register?role=rider"
@@ -144,7 +144,7 @@ function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 border-t mt-6 lg:mt-12 pt-6 lg:pt-8 border-cr-border/60 w-full">
+            <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8 border-t pt-8 lg:pt-10 border-cr-border/60 w-full">
               <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
                 <p className="text-cr-text-muted text-sm md:text-base font-medium mb-1">Verified Helpers</p>
                 <h3 className="text-2xl md:text-3xl font-bold text-cr-text-primary">
@@ -184,7 +184,7 @@ function Hero() {
             <motion.div 
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
-              className="bg-cr-beige rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] overflow-hidden w-full max-w-full lg:max-w-[760px] max-h-[60vh] lg:max-h-[80vh] flex items-center justify-center"
+              className="bg-cr-beige rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] overflow-hidden w-full flex items-center justify-center"
             >
               <HeroAnimation />
             </motion.div>
