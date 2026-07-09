@@ -21,6 +21,8 @@ import { getProfile, updateProfile, uploadCertificate, getMyCertificate } from "
 import { getCurrentUser } from "../../services/authService";
 import LoadingScreen from "../../components/common/LoadingScreen";
 import CustomSelect from "../../components/common/CustomSelect";
+import FloatingInput from "../../components/common/FloatingInput";
+import Button from "../../components/common/Button";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -257,48 +259,40 @@ export default function Profile() {
                   <hr className="border-cr-border mb-8" />
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div>
-                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Full Name</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      />
-                    </div>
+                    <FloatingInput
+                      name="name"
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
 
                     <div>
-                      <label className="block mb-2 font-medium text-sm text-gray-400">Email Address (Read-only)</label>
-                      <div className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-gray-400 flex items-center gap-2">
-                        <Mail size={18} />
-                        {formData.email}
+                      <div className="relative w-full">
+                        <div className="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 pt-6 pb-2 text-gray-500 flex items-center gap-2 cursor-not-allowed min-h-[52px]">
+                          <Mail size={16} />
+                          {formData.email}
+                        </div>
+                        <label className="absolute left-4 top-2 text-xs font-medium text-gray-500 pointer-events-none">
+                          Email Address (Read-only)
+                        </label>
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Phone Number</label>
-                      <input
-                        type="text"
-                        name="phone_number"
-                        value={formData.phone_number}
-                        onChange={handleChange}
-                        placeholder="Enter phone number"
-                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      />
-                    </div>
+                    <FloatingInput
+                      name="phone_number"
+                      placeholder="Phone Number"
+                      value={formData.phone_number}
+                      onChange={handleChange}
+                    />
 
-                    <div>
-                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Date of Birth</label>
-                      <input
-                        type="date"
-                        name="date_of_birth"
-                        value={formData.date_of_birth}
-                        onChange={handleChange}
-                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20"
-                      />
-                    </div>
+                    <FloatingInput
+                      type="date"
+                      name="date_of_birth"
+                      placeholder="Date of Birth"
+                      value={formData.date_of_birth}
+                      onChange={handleChange}
+                    />
 
                     <div>
                       <label className="block mb-2 font-medium text-sm text-cr-secondary">Gender</label>
@@ -314,58 +308,53 @@ export default function Profile() {
                     </div>
                     
                     <div className="md:col-span-2">
-                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Home Address</label>
-                      <input
-                        type="text"
+                      <FloatingInput
                         name="address"
+                        placeholder="Home Address"
                         value={formData.address}
                         onChange={handleChange}
-                        placeholder="Enter full address"
                         required
-                        className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                       />
                     </div>
 
                     {!isHelper && (
-                      <div>
-                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Disability / Mobility Support Type</label>
-                        <input
-                          type="text"
-                          name="disability_type"
-                          value={formData.disability_type}
-                          onChange={handleChange}
-                          placeholder="e.g. Wheelchair, Visually Impaired"
-                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                        />
-                      </div>
+                      <FloatingInput
+                        name="disability_type"
+                        placeholder="Disability / Mobility Support Type (e.g. Wheelchair)"
+                        value={formData.disability_type}
+                        onChange={handleChange}
+                      />
                     )}
                     
                     {isHelper && (
                       <div className="md:col-span-2">
-                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Skills / Assistance Provided</label>
-                        <input
-                          type="text"
+                        <FloatingInput
                           name="skills"
+                          placeholder="Skills / Assistance Provided (e.g. CPR Certified)"
                           value={formData.skills}
                           onChange={handleChange}
-                          placeholder="e.g. CPR Certified, First Aid, Mobility and travel assistance"
                           required
-                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
                         />
                       </div>
                     )}
                   </div>
 
                   {!isHelper && (
-                    <div className="mt-6 md:mt-8">
-                      <label className="block mb-2 font-medium text-sm text-cr-secondary">Medical Notes / Special Instructions</label>
+                    <div className="mt-6 md:mt-8 relative w-full">
                       <textarea
+                        id="medical_notes"
                         name="medical_notes"
+                        placeholder="Medical Notes / Special Instructions"
                         value={formData.medical_notes}
                         onChange={handleChange}
-                        placeholder="Add any specific health warnings or helpers instructions..."
-                        className="w-full min-h-[140px] bg-cr-bg border border-cr-border rounded-[14px] p-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400 resize-none"
+                        className="peer w-full min-h-[140px] bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-[#1A3F75]/20 focus:border-[#1A3F75] transition-all placeholder-transparent resize-none"
                       />
+                      <label
+                        htmlFor="medical_notes"
+                        className="absolute left-4 top-2 text-xs font-medium text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-xs peer-focus:text-[#1A3F75] pointer-events-none"
+                      >
+                        Medical Notes / Special Instructions
+                      </label>
                     </div>
                   )}
                 </div>
@@ -383,29 +372,18 @@ export default function Profile() {
                     <hr className="border-cr-border mb-8" />
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                      <div>
-                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Contact Name</label>
-                        <input
-                          type="text"
-                          name="emergency_contact_name"
-                          value={formData.emergency_contact_name}
-                          onChange={handleChange}
-                          placeholder="Emergency contact full name"
-                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block mb-2 font-medium text-sm text-cr-secondary">Contact Phone Number</label>
-                        <input
-                          type="text"
-                          name="emergency_contact_phone"
-                          value={formData.emergency_contact_phone}
-                          onChange={handleChange}
-                          placeholder="Emergency contact phone number"
-                          className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                        />
-                      </div>
+                      <FloatingInput
+                        name="emergency_contact_name"
+                        placeholder="Emergency Contact Name"
+                        value={formData.emergency_contact_name}
+                        onChange={handleChange}
+                      />
+                      <FloatingInput
+                        name="emergency_contact_phone"
+                        placeholder="Emergency Contact Phone"
+                        value={formData.emergency_contact_phone}
+                        onChange={handleChange}
+                      />
                     </div>
                   </div>
                 )}
@@ -434,8 +412,9 @@ export default function Profile() {
                           </p>
                         </div>
                         <div className="flex items-center">
-                          <button
+                          <Button
                             type="button"
+                            variant="outline"
                             onClick={async () => {
                               try {
                                 const freshCert = await getMyCertificate();
@@ -447,10 +426,9 @@ export default function Profile() {
                                 setError("Failed to open certificate.");
                               }
                             }}
-                            className="bg-white border border-[#1A3F75] hover:bg-[#1A3F75] hover:text-white text-[#1A3F75] h-[48px] px-6 rounded-[14px] font-semibold shadow-sm hover:shadow-md transition-all duration-300 text-sm whitespace-nowrap"
                           >
                             View Certificate
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     ) : (
@@ -473,21 +451,16 @@ export default function Profile() {
                       <p className="text-xs text-gray-500">Supported formats: PDF, JPG, PNG. Max size: 5 MB.</p>
                       
                       {certFile && (
-                        <button
+                        <Button
                           type="button"
+                          variant="primary"
+                          loading={uploadingCert}
                           onClick={handleUploadCert}
-                          disabled={uploadingCert}
-                          className="mt-4 bg-[#1A3F75] hover:bg-cr-primary text-white h-[52px] px-8 rounded-[14px] font-bold shadow-[0_4px_15px_rgba(26,63,117,0.15)] hover:shadow-[0_8px_20px_rgba(26,63,117,0.25)] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none w-fit"
+                          className="mt-4 w-fit"
+                          aria-label={uploadingCert ? "Uploading" : "Upload Selected File"}
                         >
-                          {uploadingCert ? (
-                            <>
-                              <Loader2 size={18} className="animate-spin" />
-                              Uploading...
-                            </>
-                          ) : (
-                            "Upload Selected File"
-                          )}
-                        </button>
+                          Upload Selected File
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -495,23 +468,15 @@ export default function Profile() {
 
                 {/* Actions */}
                 <div className="flex justify-end pt-4 w-full">
-                  <button
+                  <Button
                     type="submit"
-                    disabled={saving}
-                    className="w-full md:w-auto group bg-cr-primary md:hover:bg-[#1A3F75] text-white px-10 h-[56px] rounded-[14px] font-bold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform md:hover:-translate-y-0.5 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-lg"
+                    variant="primary"
+                    loading={saving}
+                    className="w-full md:w-auto"
                   >
-                    {saving ? (
-                      <>
-                        <Loader2 size={20} className="animate-spin" />
-                        Saving Profile...
-                      </>
-                    ) : (
-                      <>
-                        <Save size={20} className="group-hover:scale-110 transition-transform" />
-                        Save Changes
-                      </>
-                    )}
-                  </button>
+                    {!saving && <Save size={20} className="mr-2 group-hover:scale-110 transition-transform" />}
+                    Save Changes
+                  </Button>
                 </div>
               </motion.form>
             )}
