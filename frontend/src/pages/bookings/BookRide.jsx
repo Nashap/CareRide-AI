@@ -6,6 +6,8 @@ import RiderNavbar from "../../components/dashboard/RiderNavbar";
 import RiderSidebar from "../../components/dashboard/RiderSidebar";
 import { motion } from "framer-motion";
 import CustomSelect from "../../components/common/CustomSelect";
+import FloatingInput from "../../components/common/FloatingInput";
+import Button from "../../components/common/Button";
 
 import { createTravelRequest } from "../../services/travelService";
 import { getCurrentUser } from "../../services/authService";
@@ -164,12 +166,13 @@ export default function BookRide() {
                 <p className="text-cr-accent mb-8">
                   Please complete your profile before booking your first ride.
                 </p>
-                <button
+                <Button
                   onClick={() => navigate("/profile")}
-                  className="group bg-cr-primary hover:bg-cr-primary-hover text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_20px_rgba(26,63,117,0.25)] hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all duration-300 inline-block"
+                  variant="primary"
+                  className="px-8 mt-4"
                 >
                   Complete Profile
-                </button>
+                </Button>
               </div>
             ) : (
               <>
@@ -219,64 +222,40 @@ export default function BookRide() {
 
                 <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 
-                  <div>
-                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
-                      Pickup Location
-                    </label>
-                    <input
-                      type="text"
-                      name="pickup_location"
-                      value={formData.pickup_location}
-                      onChange={handleChange}
-                      placeholder="Enter pickup location"
-                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      required
-                    />
-                  </div>
+                  <FloatingInput
+                    name="pickup_location"
+                    placeholder="Pickup Location"
+                    value={formData.pickup_location}
+                    onChange={handleChange}
+                    required
+                  />
 
-                  <div>
-                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
-                      Destination
-                    </label>
-                    <input
-                      type="text"
-                      name="destination"
-                      value={formData.destination}
-                      onChange={handleChange}
-                      placeholder="Enter destination"
-                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      required
-                    />
-                  </div>
+                  <FloatingInput
+                    name="destination"
+                    placeholder="Destination"
+                    value={formData.destination}
+                    onChange={handleChange}
+                    required
+                  />
 
-                  <div>
-                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
-                      Travel Date
-                    </label>
-                    <input
-                      type="date"
-                      name="travel_date"
-                      value={formData.travel_date}
-                      onChange={handleChange}
-                      min={new Date().toISOString().split("T")[0]}
-                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      required
-                    />
-                  </div>
+                  <FloatingInput
+                    type="date"
+                    name="travel_date"
+                    placeholder="Travel Date"
+                    value={formData.travel_date}
+                    onChange={handleChange}
+                    min={new Date().toISOString().split("T")[0]}
+                    required
+                  />
                   
-                  <div>
-                    <label className="block mb-2 font-medium text-sm text-cr-secondary">
-                      Travel Time
-                    </label>
-                    <input
-                      type="time"
-                      name="travel_time"
-                      value={formData.travel_time}
-                      onChange={handleChange}
-                      className="w-full h-[52px] bg-cr-bg border border-cr-border rounded-[14px] px-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400"
-                      required
-                    />
-                  </div>
+                  <FloatingInput
+                    type="time"
+                    name="travel_time"
+                    placeholder="Travel Time"
+                    value={formData.travel_time}
+                    onChange={handleChange}
+                    required
+                  />
 
                   <div>
                     <label className="block mb-2 font-medium text-sm text-cr-secondary">
@@ -356,37 +335,35 @@ export default function BookRide() {
 
                 </div>
 
-                <div className="mt-6 md:mt-8">
-                  <label className="block mb-2 font-medium text-sm text-cr-secondary">
-                    Additional Notes
-                  </label>
+                <div className="mt-6 md:mt-8 relative w-full">
                   <textarea
+                    id="additional_note"
                     name="additional_note"
+                    placeholder="Additional Notes"
                     value={formData.additional_note}
                     onChange={handleChange}
-                    placeholder="Enter additional information..."
-                    className="w-full min-h-[140px] bg-cr-bg border border-cr-border rounded-[14px] p-4 text-sm text-cr-text-primary transition-all duration-300 focus:outline-none focus:border-cr-secondary focus:ring-4 focus:ring-[#A9C7E3]/20 placeholder:text-gray-400 resize-none"
+                    className="peer w-full min-h-[140px] bg-gray-50 border border-gray-200 text-gray-900 rounded-xl px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-[#1A3F75]/20 focus:border-[#1A3F75] transition-all placeholder-transparent resize-none"
                   />
+                  <label
+                    htmlFor="additional_note"
+                    className="absolute left-4 top-2 text-xs font-medium text-gray-500 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-xs peer-focus:text-[#1A3F75] pointer-events-none"
+                  >
+                    Additional Notes
+                  </label>
                 </div>
 
               </div>
 
               <div className="flex justify-end">
 
-                <button
+                <Button
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-cr-primary md:hover:bg-cr-primary-hover text-white py-4 rounded-xl font-bold shadow-sm md:shadow-[0_8px_20px_rgba(26,63,117,0.25)] md:hover:shadow-[0_12px_25px_rgba(26,63,117,0.35)] transition-all transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                  variant="primary"
+                  loading={loading}
+                  className="w-full mt-4"
                 >
-                  {loading ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" />
-                      Booking Ride...
-                    </>
-                  ) : (
-                    "Book Ride"
-                  )}
-                </button>
+                  Book Ride
+                </Button>
 
               </div>
 
