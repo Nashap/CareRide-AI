@@ -358,14 +358,14 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Assigned Ride Dashboard | <img width="1228" height="560" alt="image" src="https://github.com/user-attachments/assets/7a00f3b5-f7c1-457d-86f2-421b84959175" /> |
 | View Assigned Rider Contact | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/a1bb0b1b-7124-4827-bccc-131a1b892147" /> |
 | Secure Disability Certificate Viewing (Assigned only) | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/b49df055-f326-46fc-846d-25c456e7d766" /> |
-| Complete Ride | <img width="1077" height="536" alt="image" src="https://github.com/user-attachments/assets/f6933dcc-e07e-404b-a196-aa8b84959175" /> |
+| Complete Ride | <img width="1077" height="536" alt="image" src="https://github.com/user-attachments/assets/0138be99-8426-4b33-a06f-6de7c080879d" /> |
 
 ### ⚙️ Platform & Ops
 | Screen | Preview |
 | --- | --- |
-| Swagger Documentation | ![Swagger] (<img width="1003" height="550" alt="image" src="https://github.com/user-attachments/assets/41e7c4e7-6690-46ce-aa91-d4c8868e8251" />) |
+| Swagger Documentation | ![Swagger] <img width="1003" height="550" alt="image" src="https://github.com/user-attachments/assets/41e7c4e7-6690-46ce-aa91-d4c8868e8251" /> |
 | MkDocs Documentation | ![MkDocs](docs/images/mkdocs.png) |
-| Test Coverage Report | ![Coverage] (<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/8dc84a23-cc2e-4323-a4a3-91005ff0bbb5" />) |
+| Test Coverage Report | ![Coverage] <img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/8dc84a23-cc2e-4323-a4a3-91005ff0bbb5" /> |
 | UptimeRobot Monitoring | ![Uptime](docs/images/uptimerobot.png) |
 
 ### 📱 Mobile View
