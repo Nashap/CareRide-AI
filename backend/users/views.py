@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse
 
 from care_ride.supabase_client import get_supabase
 
@@ -24,9 +24,39 @@ class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
     @extend_schema(
+        tags=["Authentication"],
+        summary="Register a new user",
+        description="Creates a new user account in Supabase and the local database. Role can be 'rider' or 'helper'.",
         request=RegisterSerializer,
-        responses={200: dict},
-        summary="Register User"
+        responses={
+            200: OpenApiResponse(
+                description="Successfully registered",
+                examples=[
+                    OpenApiExample(
+                        'Success',
+                        value={
+                            "message": "User registered successfully",
+                            "user_id": "123e4567-e89b-12d3-a456-426614174000",
+                            "role": "rider",
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        }
+                    )
+                ]
+            ),
+            400: OpenApiResponse(description="Bad Request - Invalid data or signup failed"),
+            503: OpenApiResponse(description="Service Unavailable - Supabase registered but local DB failed")
+        },
+        examples=[
+            OpenApiExample(
+                'Register Rider',
+                value={
+                    "name": "John Doe",
+                    "email": "john@example.com",
+                    "password": "SecurePassword123!",
+                    "role": "rider"
+                }
+            )
+        ]
     )
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -94,9 +124,42 @@ class RegisterAPIView(APIView):
 # LOGIN
 # =========================
 @extend_schema(
+    tags=["Authentication"],
+    summary="Login user",
+    description="Authenticates a user against Supabase. Returns a JWT access token for API authorization.",
     request=LoginSerializer,
-    responses={200: dict},
-    summary="Login User"
+    responses={
+        200: OpenApiResponse(
+            description="Successfully authenticated",
+            examples=[
+                OpenApiExample(
+                    'Success',
+                    value={
+                        "message": "Login successful",
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                        "id": 1,
+                        "user_id": "123e4567-e89b-12d3-a456-426614174000",
+                        "name": "John Doe",
+                        "email": "john@example.com",
+                        "role": "rider"
+                    }
+                )
+            ]
+        ),
+        400: OpenApiResponse(description="Bad Request - Validation error"),
+        401: OpenApiResponse(description="Unauthorized - Incorrect email/password or email not verified"),
+        404: OpenApiResponse(description="Not Found - User does not exist"),
+        500: OpenApiResponse(description="Internal Server Error - DB Connection issues")
+    },
+    examples=[
+        OpenApiExample(
+            'Login Request',
+            value={
+                "email": "john@example.com",
+                "password": "SecurePassword123!"
+            }
+        )
+    ]
 )
 @api_view(["POST"])
 def login(request):
@@ -193,6 +256,17 @@ def login(request):
 # =========================
 # PROFILE
 # =========================
+@extend_schema(
+    tags=["Users"],
+    summary="Get or Update Profile",
+    description="Retrieves or updates the profile details for the given email.",
+    request=UserProfileSerializer,
+    responses={
+        200: OpenApiResponse(description="Successful operation"),
+        400: OpenApiResponse(description="Bad Request"),
+        404: OpenApiResponse(description="Profile not found")
+    }
+)
 @api_view(["GET", "PUT"])
 def my_profile(request):
 
@@ -277,6 +351,34 @@ def my_profile(request):
         "profile": data
     })
 
+@extend_schema(
+    tags=["Users"],
+    summary="Get User Certificate",
+    description="Retrieves a signed URL for downloading the user's latest uploaded disability certificate.",
+    responses={
+        200: OpenApiResponse(
+            description="Successful retrieval",
+            examples=[
+                OpenApiExample(
+                    'Has Certificate',
+                    value={
+                        "has_certificate": True,
+                        "uploaded_at": "2023-10-10T12:00:00Z",
+                        "url": "https://supabase.co/storage/v1/object/signed/disability-certificates/..."
+                    }
+                ),
+                OpenApiExample(
+                    'No Certificate',
+                    value={
+                        "has_certificate": False
+                    }
+                )
+            ]
+        ),
+        404: OpenApiResponse(description="User not found"),
+        500: OpenApiResponse(description="Internal Server Error")
+    }
+)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def my_certificate(request):
@@ -318,9 +420,38 @@ class UploadCertificateView(APIView):
     permission_classes = [IsAuthenticated]
 
     @extend_schema(
-        request=UploadCertificateSerializer,
-        responses={200: dict},
-        summary="Upload Disability Certificate"
+        tags=["Users"],
+        summary="Upload Disability Certificate",
+        description="Allows riders to upload a PDF/JPG/PNG certificate for verification. Maximum size is 5MB.",
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            }
+        },
+        responses={
+            200: OpenApiResponse(
+                description="Successfully uploaded",
+                examples=[
+                    OpenApiExample(
+                        'Success',
+                        value={
+                            "message": "Certificate uploaded successfully",
+                            "certificate_id": 12,
+                            "uploaded_at": "2023-10-10T12:00:00Z"
+                        }
+                    )
+                ]
+            ),
+            400: OpenApiResponse(description="Bad Request - Missing file, size limit exceeded, or unsupported format"),
+            404: OpenApiResponse(description="Not Found - User not found"),
+            500: OpenApiResponse(description="Internal Server Error")
+        }
     )
     def post(self, request):
 
