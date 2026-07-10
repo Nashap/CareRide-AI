@@ -364,7 +364,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Screen | Preview |
 | --- | --- |
 | Swagger Documentation | ![Swagger] <img width="1003" height="550" alt="image" src="https://github.com/user-attachments/assets/41e7c4e7-6690-46ce-aa91-d4c8868e8251" /> |
-| MkDocs Documentation | ![MkDocs](docs/images/mkdocs.png) |
+| MkDocs Documentation | ![MkDocs] <img width="1284" height="545" alt="image" src="https://github.com/user-attachments/assets/41eed2eb-70a7-43ed-bf7a-2c5035916c46" /> |
 | Test Coverage Report | ![Coverage] <img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/8dc84a23-cc2e-4323-a4a3-91005ff0bbb5" /> |
 | UptimeRobot Monitoring | ![Uptime](docs/images/uptimerobot.png) |
 
