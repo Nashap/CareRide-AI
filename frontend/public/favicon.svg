@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12335f"/>
+      <stop offset="100%" stop-color="#1c4a8f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#bg4)"/>
+
+  <!-- Monogram: C in navy/white, R in light blue, road/wheel accent -->
+  <text x="14" y="42" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30" fill="#ffffff">C</text>
+  <text x="33" y="42" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30" fill="#7fb2ec">R</text>
+
+  <!-- underline road accent -->
+  <path d="M12 49c8 4 20 4 40-2" fill="none" stroke="#7fb2ec" stroke-width="3" stroke-linecap="round"/>
+</svg>
