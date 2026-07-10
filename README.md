@@ -277,7 +277,7 @@ Create a `.env` file in the `backend` directory with the following variables:
 
 ## 📚 API Documentation & Testing
 
-* **Swagger UI:** [View Swagger Docs](https://careride-ai.onrender.com/api/schema/swagger-ui/)
+* **Swagger UI:** [View Swagger Docs](https://careride-ai.onrender.com/api/schema/swagger-ui)
 * **OpenAPI Schema:** `http://127.0.0.1:8000/api/schema/`
 * **Postman Collection:** [View API Collection](https://documenter.getpostman.com/view/55567557/2sBXwvH81g)
 * **MkDocs Documentation:** Run `mkdocs serve` and visit `http://127.0.0.1:8001/`
@@ -363,9 +363,9 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 ### ⚙️ Platform & Ops
 | Screen | Preview |
 | --- | --- |
-| Swagger Documentation | ![Swagger](docs/images/swagger.png) |
+| Swagger Documentation | ![Swagger] (<img width="1003" height="550" alt="image" src="https://github.com/user-attachments/assets/41e7c4e7-6690-46ce-aa91-d4c8868e8251" />) |
 | MkDocs Documentation | ![MkDocs](docs/images/mkdocs.png) |
-| Test Coverage Report | ![Coverage](docs/images/coverage-report.png) |
+| Test Coverage Report | ![Coverage] (<img width="1958" height="3134" alt="_C__Users_nasha_OneDrive_zlaqa_CareRide_backend_htmlcov_index html (1)" src="https://github.com/user-attachments/assets/8dc84a23-cc2e-4323-a4a3-91005ff0bbb5" />) |
 | UptimeRobot Monitoring | ![Uptime](docs/images/uptimerobot.png) |
 
 ### 📱 Mobile View
