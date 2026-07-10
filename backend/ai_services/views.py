@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
 
 from .serializers import AIRecommendationSerializer
 from .ai_service import call_ai_recommendation
@@ -19,15 +19,15 @@ from helpers.models import Helper
 # ======================================================
 
 @extend_schema(
+    tags=["AI Recommendations"],
     summary="Generate AI Helper Recommendation",
-    description="""
-    Uses Gemini AI to analyze a travel request and generate
-    ranked helper recommendations.
-
-    The generated recommendations are stored in Supabase.
-    """,
+    description="Uses Gemini AI to analyze a travel request and generate ranked helper recommendations.",
     request=AIRecommendationSerializer,
-    responses={201: dict},
+    responses={
+        201: OpenApiResponse(description="AI Recommendation Generated Successfully"),
+        400: OpenApiResponse(description="Bad Request - travel_request_id is required"),
+        404: OpenApiResponse(description="Not Found - Travel request not found")
+    }
 )
 @method_decorator(
     ratelimit(
@@ -183,6 +183,15 @@ class RecommendationDetailView(APIView):
     """
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        tags=["AI Recommendations"],
+        summary="Get Recommendation Details",
+        description="Fetches the AI recommendation details for a specific travel request, including ranked helpers and reasoning.",
+        responses={
+            200: OpenApiResponse(description="Successfully retrieved recommendation details"),
+            404: OpenApiResponse(description="No recommendation found for this travel request")
+        }
+    )
     def get(self, request, travel_request_id):
         # Query native MatchRecommendation objects with select_related to avoid N+1 on helper
         recs = MatchRecommendation.objects.select_related("helper").filter(travel_request_id=travel_request_id)
@@ -219,6 +228,27 @@ class RecommendationDetailView(APIView):
 # AI ASSISTANT (TOOL USE)
 # ======================================================
 
+@extend_schema(
+    tags=["AI Assistant"],
+    summary="Chat with AI Assistant",
+    description="Interact with the CareRide AI Assistant. The assistant can help users navigate the app and provides natural language interactions.",
+    request={
+        "application/json": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "I need help finding a helper for a medical appointment."
+                }
+            }
+        }
+    },
+    responses={
+        200: OpenApiResponse(description="Successfully processed chat message"),
+        400: OpenApiResponse(description="Bad Request - message is required"),
+        500: OpenApiResponse(description="Internal Server Error")
+    }
+)
 @api_view(["POST"])
 def ai_chat_view(request):
     """
