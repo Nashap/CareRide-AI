@@ -24,7 +24,26 @@ from helpers.models import Helper
     description="Uses Gemini AI to analyze a travel request and generate ranked helper recommendations.",
     request=AIRecommendationSerializer,
     responses={
-        201: OpenApiResponse(description="AI Recommendation Generated Successfully"),
+        201: OpenApiResponse(
+            description="AI Recommendation Generated Successfully",
+            examples=[
+                OpenApiExample(
+                    'Success',
+                    value={
+                        "travel_request_id": 10,
+                        "recommended_helpers": [
+                            {
+                                "helper_id": 1,
+                                "name": "Alice Smith",
+                                "match_score": 95,
+                                "reason": "Alice has 5 years of experience with wheelchair assistance."
+                            }
+                        ],
+                        "summary": "AI identified Alice as the best match based on her extensive experience."
+                    }
+                )
+            ]
+        ),
         400: OpenApiResponse(description="Bad Request - travel_request_id is required"),
         404: OpenApiResponse(description="Not Found - Travel request not found")
     }
@@ -188,7 +207,30 @@ class RecommendationDetailView(APIView):
         summary="Get Recommendation Details",
         description="Fetches the AI recommendation details for a specific travel request, including ranked helpers and reasoning.",
         responses={
-            200: OpenApiResponse(description="Successfully retrieved recommendation details"),
+            200: OpenApiResponse(
+                description="Successfully retrieved recommendation details",
+                examples=[
+                    OpenApiExample(
+                        'Details Response',
+                        value={
+                            "travel_request_id": 10,
+                            "recommended_helpers": [
+                                {
+                                    "helper_id": 1,
+                                    "name": "Alice Smith",
+                                    "skills": "Wheelchair Assistance, CPR",
+                                    "rating": 4.9,
+                                    "availability": True,
+                                    "match_score": 95,
+                                    "reason": "Alice is an exact match for your needs."
+                                }
+                            ],
+                            "summary": "Found 1 highly compatible helper.",
+                            "model_used": "gemini-2.5-flash"
+                        }
+                    )
+                ]
+            ),
             404: OpenApiResponse(description="No recommendation found for this travel request")
         }
     )
@@ -244,7 +286,17 @@ class RecommendationDetailView(APIView):
         }
     },
     responses={
-        200: OpenApiResponse(description="Successfully processed chat message"),
+        200: OpenApiResponse(
+            description="Successfully processed chat message",
+            examples=[
+                OpenApiExample(
+                    'Success',
+                    value={
+                        "response": "Hello! I am the CareRide AI Assistant. How can I help you book your next ride?"
+                    }
+                )
+            ]
+        ),
         400: OpenApiResponse(description="Bad Request - message is required"),
         500: OpenApiResponse(description="Internal Server Error")
     }
