@@ -3,12 +3,68 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiResponse, OpenApiExample
 
 from .models import TravelRequest
 from .serializers import TravelRequestSerializer
 from helpers.models import Helper
 
 
+@extend_schema_view(
+    list=extend_schema(
+        tags=["Travel Requests"],
+        summary="List Travel Requests",
+        description="Returns a list of all travel requests. Supports filtering by service_type, status, etc."
+    ),
+    retrieve=extend_schema(
+        tags=["Travel Requests"],
+        summary="Retrieve a Travel Request",
+        description="Returns a specific travel request by its ID."
+    ),
+    create=extend_schema(
+        tags=["Travel Requests"],
+        summary="Create a Travel Request",
+        description="Riders use this to create a new travel request. The rider ID is automatically inferred from the authenticated user."
+    ),
+    update=extend_schema(
+        tags=["Travel Requests"],
+        summary="Update a Travel Request",
+        description="Updates an existing travel request."
+    ),
+    partial_update=extend_schema(
+        tags=["Travel Requests"],
+        summary="Partially update a Travel Request"
+    ),
+    destroy=extend_schema(
+        tags=["Travel Requests"],
+        summary="Delete a Travel Request"
+    ),
+    assign=extend_schema(
+        tags=["Travel Requests"],
+        summary="Assign a Helper to a Request",
+        description="Assigns a specific helper to this travel request based on the AI recommendation workflow."
+    ),
+    helper_decline=extend_schema(
+        tags=["Travel Requests"],
+        summary="Helper Declines Request",
+        description="Allows a helper to decline a travel request assigned/recommended to them."
+    ),
+    accept=extend_schema(
+        tags=["Travel Requests"],
+        summary="Helper Accepts Request",
+        description="Allows a helper to accept a travel request. Only the recommended helper can accept in exclusive mode."
+    ),
+    complete=extend_schema(
+        tags=["Travel Requests"],
+        summary="Complete a Travel Request",
+        description="Marks an assigned travel request as Completed. Can only be done by the assigned helper."
+    ),
+    certificate=extend_schema(
+        tags=["Travel Requests"],
+        summary="Get Rider Certificate",
+        description="Allows the assigned helper or the rider to download the rider's disability certificate for verification."
+    )
+)
 class TravelRequestViewSet(viewsets.ModelViewSet):
     queryset = TravelRequest.objects.all()
 
