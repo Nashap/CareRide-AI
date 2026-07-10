@@ -1,1 +1,139 @@
-site_name: My Docs
+site_name: CareRide AI
+site_description: >-
+  Connecting elderly individuals, persons with disabilities, and patients with
+  verified helpers through a full-stack AI-powered mobility assistance and
+  transportation platform.
+site_author: Nasha P
+site_url: https://nashap.github.io/CareRide-AI/
+
+repo_name: Nashap/CareRide-AI
+repo_url: https://github.com/Nashap/CareRide-AI
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2026 Nasha P — CareRide AI (Educational / Internship Project)
+
+docs_dir: docs
+site_dir: site
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Environment Variables: getting-started/environment-variables.md
+  - Features: features.md
+  - Architecture:
+      - System Architecture: architecture/overview.md
+      - AI Recommendation Workflow: architecture/ai-workflow.md
+  - API Reference:
+      - Overview: api/overview.md
+      - Swagger UI: api/swagger.md
+      - Postman Collections: api/postman.md
+  - Testing & Coverage: testing.md
+  - Deployment & Monitoring: deployment.md
+  - Screenshots: screenshots.md
+  - Roadmap: roadmap.md
+  - Contributing: contributing.md
+  - About:
+      - Author: about/author.md
+      - License: about/license.md
+
+theme:
+  name: material
+  language: en
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - toc.follow
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Nashap/CareRide-AI
+      name: GitHub Repository
+    - icon: fontawesome/brands/github
+      link: https://github.com/Nashap
+      name: Author on GitHub
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - toc:
+      permalink: true
+      title: On this page
+  - admonition
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - tables
+  - abbr
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.critic
+  - pymdownx.mark
+  - pymdownx.caret
+  - pymdownx.tilde
+
+plugins:
+  - search:
+      lang: en
+  - awesome-pages
+  - git-revision-date-localized:
+      enable_creation_date: true
+      fallback_to_build_date: true
+  - minify:
+      minify_html: true
