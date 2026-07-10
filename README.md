@@ -63,7 +63,7 @@ CareRide AI consists of:
 | --- | --- |
 | **Frontend** | [https://careride-six.vercel.app/](https://careride-six.vercel.app/) |
 | **Backend** | [https://careride-ai.onrender.com](https://careride-ai.onrender.com) |
-| **Swagger** | [https://careride-ai.onrender.com/api/schema/swagger-ui/](https://careride-ai.onrender.com/api/schema/swagger-ui) |
+| **Swagger** | [https://careride-ai.onrender.com/api/schema/swagger-ui](https://careride-ai.onrender.com/api/schema/swagger-ui) |
 | **Postman** | [https://documenter.getpostman.com/view/55567557/2sBXwvH81g](https://documenter.getpostman.com/view/55567557/2sBXwvH81g) |
 
 ---
