@@ -10,7 +10,7 @@
 ![Gemini AI](https://img.shields.io/badge/Gemini_AI-8E75B2?style=flat&logo=google&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
-![Railway](https://img.shields.io/badge/Railway-131415?style=flat&logo=railway&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=flat&logo=render&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
 ![Coverage](https://img.shields.io/badge/Coverage-99%25-brightgreen)
 ![Uptime](https://img.shields.io/badge/Uptime-100%25-brightgreen)
@@ -51,7 +51,7 @@ CareRide AI is a modern, complete Full-Stack AI application. It intelligently br
 
 CareRide AI consists of:
 * **React Frontend** — completed and deployed on Vercel
-* **Django REST Backend** — deployed on Railway
+* **Django REST Backend** — deployed on Render
 * **Supabase PostgreSQL**
 * **Gemini AI**
 
@@ -87,7 +87,7 @@ CareRide AI consists of:
 * ✅ MkDocs Documentation
 * ✅ Automated Test Suite — 82% Code Coverage
 * ✅ GitHub Actions CI Configured
-* ✅ Railway Deployment (Backend)
+* ✅ Render Deployment (Backend)
 * ✅ Vercel Deployment (Frontend)
 * ✅ UptimeRobot Monitoring Configured
 
@@ -145,7 +145,7 @@ CareRide AI consists of:
 | **Project Documentation** | MkDocs |
 | **Testing** | Pytest, Pytest-Django, Pytest-Cov |
 | **CI/CD** | GitHub Actions |
-| **Deployment** | Railway (Backend), Vercel (Frontend) |
+| **Deployment** | Render (Backend), Vercel (Frontend) |
 
 ---
 
@@ -277,7 +277,7 @@ Create a `.env` file in the `backend` directory with the following variables:
 
 ## 📚 API Documentation & Testing
 
-* **Swagger UI:** [View Swagger Docs](https://careride-ai-production.up.railway.app/api/schema/swagger-ui/)
+* **Swagger UI:** [View Swagger Docs](https://careride-ai.onrender.com/api/schema/swagger-ui/)
 * **OpenAPI Schema:** `http://127.0.0.1:8000/api/schema/`
 * **Postman Collection:** [View API Collection](https://documenter.getpostman.com/view/55567557/2sBXwvH81g)
 * **MkDocs Documentation:** Run `mkdocs serve` and visit `http://127.0.0.1:8001/`
@@ -358,7 +358,7 @@ The CareRide AI production deployment is continuously monitored using **UptimeRo
 | Assigned Ride Dashboard | <img width="1228" height="560" alt="image" src="https://github.com/user-attachments/assets/7a00f3b5-f7c1-457d-86f2-421b84959175" /> |
 | View Assigned Rider Contact | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/a1bb0b1b-7124-4827-bccc-131a1b892147" /> |
 | Secure Disability Certificate Viewing (Assigned only) | <img width="782" height="273" alt="image" src="https://github.com/user-attachments/assets/b49df055-f326-46fc-846d-25c456e7d766" /> |
-| Complete Ride | <img width="1077" height="536" alt="image" src="https://github.com/user-attachments/assets/f6933dcc-e07e-404b-a196-aa8b84daa0fd" /> |
+| Complete Ride | <img width="1077" height="536" alt="image" src="https://github.com/user-attachments/assets/f6933dcc-e07e-404b-a196-aa8b84959175" /> |
 
 ### ⚙️ Platform & Ops
 | Screen | Preview |
