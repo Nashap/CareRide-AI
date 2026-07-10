@@ -40,10 +40,18 @@ SECRET_KEY = env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
 
+import sys
+
+IS_TESTING = (
+    "test" in sys.argv
+    or any("pytest" in arg for arg in sys.argv)
+)
+
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
+    if not IS_TESTING:
+        SECURE_SSL_REDIRECT = True
 
 # Render
 ALLOWED_HOSTS = [
@@ -114,13 +122,6 @@ WSGI_APPLICATION = 'care_ride.wsgi.application'
 # ==========================================================
 # Database Configuration
 # ==========================================================
-
-import sys
-
-IS_TESTING = (
-    "test" in sys.argv
-    or any("pytest" in arg for arg in sys.argv)
-)
 
 if IS_TESTING:
     DATABASES = {
@@ -268,3 +269,37 @@ CSRF_TRUSTED_ORIGINS = [
 
 if render_domain:
     CSRF_TRUSTED_ORIGINS.append(f"https://{render_domain}")
+
+# Swagger / OpenAPI Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'CareRide AI REST API',
+    'DESCRIPTION': 'A professional API for CareRide - A service connecting people with disabilities to specialized travel helpers.',
+    'VERSION': 'v1.0.0',
+    'CONTACT': {
+        'name': 'CareRide Support',
+        'email': 'support@careride.com',
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+    'SERVERS': [
+        {
+            'url': 'https://careride-ai.onrender.com',
+            'description': 'Production Server (Render)',
+        },
+        {
+            'url': 'http://localhost:8000',
+            'description': 'Local Development Server',
+        }
+    ],
+    'SECURITY': [{'bearerAuth': []}],
+    'SECURITY_DEFINITIONS': {
+        'bearerAuth': {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT',
+        }
+    },
+    'CAMELIZE_NAMES': True,
+    'COMPONENT_SPLIT_REQUEST': True,
+}
