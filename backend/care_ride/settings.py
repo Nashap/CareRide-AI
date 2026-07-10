@@ -273,14 +273,13 @@ if render_domain:
 # Swagger / OpenAPI Configuration
 SPECTACULAR_SETTINGS = {
     'TITLE': 'CareRide AI REST API',
-    'DESCRIPTION': 'A professional API for CareRide - A service connecting people with disabilities to specialized travel helpers.',
+    'DESCRIPTION': 'CareRide AI is an AI-powered accessible transportation platform that connects elderly individuals, patients, and people with disabilities to verified travel helpers through secure REST APIs and intelligent AI recommendations.\n\nThe API provides:\n• Secure JWT Authentication\n• Rider & Helper Management\n• AI-Powered Helper Recommendations\n• AI Chat Assistant\n• Travel Request Management\n• Ride Assignment Workflow',
     'VERSION': 'v1.0.0',
     'CONTACT': {
-        'name': 'CareRide Support',
-        'email': 'support@careride.com',
+        'name': 'Nasha P - AI & Full-Stack Developer',
     },
     'LICENSE': {
-        'name': 'MIT License',
+        'name': 'Educational Project',
     },
     'SERVERS': [
         {
