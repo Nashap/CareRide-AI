@@ -33,6 +33,7 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [dobError, setDobError] = useState("");
 
   const [certificateData, setCertificateData] = useState(null);
   const [certFile, setCertFile] = useState(null);
@@ -106,6 +107,9 @@ export default function Profile() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "date_of_birth") {
+      setDobError("");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -113,6 +117,7 @@ export default function Profile() {
     setSaving(true);
     setError("");
     setSuccess("");
+    setDobError("");
 
     if (formData.date_of_birth) {
       const dob = new Date(formData.date_of_birth);
@@ -124,22 +129,22 @@ export default function Profile() {
       }
 
       if (dob > today) {
-        setError("Date of birth cannot be in the future.");
+        setDobError("Date of birth cannot be in the future.");
         setSaving(false);
         return;
       }
       if (dob.toDateString() === today.toDateString()) {
-        setError("Date of birth cannot be today.");
+        setDobError("Date of birth cannot be today.");
         setSaving(false);
         return;
       }
       if (age < 18) {
-        setError("You must be at least 18 years old.");
+        setDobError("You must be at least 18 years old to use CareRide.");
         setSaving(false);
         return;
       }
       if (age > 120) {
-        setError("Invalid date of birth. Age exceeds 120 years.");
+        setDobError("Invalid date of birth. Age exceeds 120 years.");
         setSaving(false);
         return;
       }
@@ -286,13 +291,17 @@ export default function Profile() {
                       onChange={handleChange}
                     />
 
-                    <FloatingInput
-                      type="date"
-                      name="date_of_birth"
-                      placeholder="Date of Birth"
-                      value={formData.date_of_birth}
-                      onChange={handleChange}
-                    />
+                    <div className="flex flex-col">
+                      <FloatingInput
+                        type="date"
+                        name="date_of_birth"
+                        placeholder="Date of Birth"
+                        value={formData.date_of_birth}
+                        onChange={handleChange}
+                        max={new Date().toISOString().split("T")[0]}
+                      />
+                      {dobError && <span className="text-red-500 text-xs mt-1 ml-1">{dobError}</span>}
+                    </div>
 
                     <div>
                       <label className="block mb-2 font-medium text-sm text-cr-secondary">Gender</label>
