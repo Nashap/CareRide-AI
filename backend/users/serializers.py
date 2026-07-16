@@ -66,6 +66,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "profile_completed",
         ]
 
+    def validate_date_of_birth(self, value):
+        from datetime import date
+        if value:
+            today = date.today()
+            if value > today:
+                raise serializers.ValidationError("Date of birth cannot be in the future.")
+            age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+            if age < 18:
+                raise serializers.ValidationError("You must be at least 18 years old to use CareRide.")
+        return value
+
+
     def get_profile_completed(self, obj):
         if not obj.name or not obj.phone_number or not obj.address:
             return False
